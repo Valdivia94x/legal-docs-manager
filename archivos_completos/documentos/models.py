@@ -426,6 +426,209 @@ class Pagare(models.Model):
             
         ultima_cuota_pagada = max(cuotas_pagadas, key=lambda x: x["numero"])
         return ultima_cuota_pagada["saldo"]
+    
+    def generar_tabla_amortizacion_automatica(self):
+        """Tabla de amortización (Sistema Francés) con PAGO TOTAL CONSTANTE
+        incluyendo IVA del interés.
+        - La cuota fija 'cuota_base_eff' se calcula con una tasa efectiva i*(1+IVA).
+        - En cada periodo: capital = cuota_base_eff - (interés + IVA_interés).
+        - El Pago Total = cuota_base_eff + gastos + IVA_gastos (constante).
+        - En la última cuota se ajusta capital por redondeos para cerrar saldo=0.00.
+        """
+        from datetime import timedelta
+        from dateutil.relativedelta import relativedelta
+
+        # Requisitos mínimos
+        if not all([self.monto_numeric, self.num_pagos, self.tasa_interes_ordinario, self.fecha_emision]):
+            return []
+
+        # Parámetros base
+        P = float(self.monto_numeric)
+        n = int(self.num_pagos)
+        tasa_anual = float(self.tasa_interes_ordinario) / 100.0
+        fecha_inicio = self.fecha_emision
+
+        # Periodicidad -> tasa por periodo y delta de fecha
+        per = (self.periodicidad or "mensual").lower()
+        if per == "quincenal":
+            i = tasa_anual / 24.0
+            delta = timedelta(days=15)
+        elif per == "semanal":
+            i = tasa_anual / 52.0
+            delta = timedelta(weeks=1)
+        else:  # mensual (default)
+            i = tasa_anual / 12.0
+            delta = relativedelta(months=1)
+
+        # IVA
+        IVA = 0.16
+
+        # Gastos por periodo (si guardas TOTAL del crédito, cambia a / n)
+        costo_admon = float(self.gastos_admon) if getattr(self, "gastos_admon", None) else 350.00
+        # Si self.gastos_admon fuera TOTAL del crédito:
+        # costo_admon = (float(self.gastos_admon) / n) if getattr(self, "gastos_admon", None) else 350.00
+        iva_costo_admon = round(costo_admon * IVA, 2)
+
+        # --- CUOTA que incluye IVA del interés ---
+        # Usamos tasa efectiva por periodo: i_eff = i * (1 + IVA)
+        i_eff = i * (1.0 + IVA)
+
+        if i_eff > 0:
+            cuota_base_eff = P * (i_eff * (1 + i_eff) ** n) / ((1 + i_eff) ** n - 1)
+        else:
+            cuota_base_eff = P / n
+
+        # Pago total fijo (incluye gastos + IVA gastos)
+        pago_total_const = round(cuota_base_eff + costo_admon + iva_costo_admon, 2)
+
+        tabla = []
+        saldo = P
+        residuo_cap = 0.0  # acumula centavos por redondeo
+
+        for k in range(1, n + 1):
+            # Fecha de pago
+            if per == "quincenal":
+                fecha_pago = fecha_inicio + timedelta(days=15 * k)
+            elif per == "semanal":
+                fecha_pago = fecha_inicio + timedelta(weeks=k)
+            else:
+                fecha_pago = fecha_inicio + relativedelta(months=k)
+
+            # Interés del periodo (sin IVA)
+            interes = saldo * i
+            iva_interes = interes * IVA
+
+            # Capital como residuo de la CUOTA EFECTIVA (que ya considera IVA del interés)
+            capital_teorico = cuota_base_eff - (interes + iva_interes)
+            capital = round(capital_teorico, 2)
+            residuo_cap += (capital_teorico - capital)
+
+            # En la última cuota: ajustar capital para cerrar saldo = 0.00 (sin tocar el pago total)
+            if k == n:
+                ajuste = saldo - capital
+                capital = round(capital + ajuste + residuo_cap, 2)
+
+            # Redondeos para la fila
+            interes = round(interes, 2)
+            iva_interes = round(iva_interes, 2)
+
+            # Pago total (constante por diseño)
+            total = pago_total_const
+
+            # Nuevo saldo
+            nuevo_saldo = round(max(0.0, saldo - capital), 2)
+
+            tabla.append({
+                "numero": k,
+                "fecha": fecha_pago.strftime("%d/%m/%Y"),
+                "capital": capital,
+                "saldo": nuevo_saldo,
+                "costo_admon": round(costo_admon, 2),
+                "iva_costo_admon": round(iva_costo_admon, 2),
+                "interes": interes,
+                "iva_interes": iva_interes,
+                "total": total,  # constante e incluye IVA del interés
+                "estado": "pendiente",
+                "fecha_pago_real": None,
+                "etapa": "Etapa de Estudios" if k <= n * 0.8 else "Etapa de Egreso",
+            })
+
+            saldo = nuevo_saldo
+
+        return tabla
+
+        """Genera automáticamente la tabla de amortización basada en los datos del pagaré"""
+        # from datetime import datetime, timedelta
+        # from dateutil.relativedelta import relativedelta
+        # import math
+        
+        # if not all([self.monto_numeric, self.num_pagos, self.tasa_interes_ordinario, self.fecha_emision]):
+        #     return []
+        
+        # # Parámetros base
+        # monto_principal = float(self.monto_numeric)
+        # num_pagos = self.num_pagos
+        # tasa_anual = float(self.tasa_interes_ordinario) / 100
+        # fecha_inicio = self.fecha_emision
+        
+        # # Calcular periodicidad
+        # if self.periodicidad == 'mensual':
+        #     tasa_periodo = tasa_anual / 12
+        #     delta_periodo = relativedelta(months=1)
+        # elif self.periodicidad == 'quincenal':
+        #     tasa_periodo = tasa_anual / 24
+        #     delta_periodo = timedelta(days=15)
+        # elif self.periodicidad == 'semanal':
+        #     tasa_periodo = tasa_anual / 52
+        #     delta_periodo = timedelta(weeks=1)
+        # else:  # mensual por defecto
+        #     tasa_periodo = tasa_anual / 12
+        #     delta_periodo = relativedelta(months=1)
+        
+        # # Calcular pago fijo (sistema francés)
+        # if tasa_periodo > 0:
+        #     pago_fijo = monto_principal * (tasa_periodo * (1 + tasa_periodo)**num_pagos) / ((1 + tasa_periodo)**num_pagos - 1)
+        # else:
+        #     pago_fijo = monto_principal / num_pagos
+        
+        # # Generar tabla
+        # tabla = []
+        # saldo_insoluto = monto_principal
+        # fecha_actual = fecha_inicio
+        
+        # # Gastos fijos por pago
+        # costo_admon = float(self.gastos_admon or 0) / num_pagos if self.gastos_admon else 350.00
+        # iva_costo_admon = costo_admon * 0.16  # 16% IVA
+        
+        # for i in range(1, num_pagos + 1):
+        #     # Calcular fecha de pago
+        #     if self.periodicidad == 'mensual':
+        #         fecha_pago = fecha_inicio + relativedelta(months=i)
+        #     elif self.periodicidad == 'quincenal':
+        #         fecha_pago = fecha_inicio + timedelta(days=15 * i)
+        #     elif self.periodicidad == 'semanal':
+        #         fecha_pago = fecha_inicio + timedelta(weeks=i)
+        #     else:
+        #         fecha_pago = fecha_inicio + relativedelta(months=i)
+            
+        #     # Calcular intereses sobre saldo insoluto
+        #     interes_ordinario = saldo_insoluto * tasa_periodo
+        #     iva_interes = interes_ordinario * 0.16  # 16% IVA
+            
+        #     # Calcular capital (último pago ajusta el saldo restante)
+        #     if i == num_pagos:
+        #         capital = saldo_insoluto
+        #     else:
+        #         capital = pago_fijo - interes_ordinario
+        #         if capital < 0:
+        #             capital = 0
+            
+        #     # Calcular total del pago
+        #     pago_total = capital + costo_admon + iva_costo_admon + interes_ordinario + iva_interes
+            
+        #     # Actualizar saldo
+        #     nuevo_saldo = max(0, saldo_insoluto - capital)
+            
+        #     # Agregar cuota a la tabla
+        #     cuota = {
+        #         "numero": i,
+        #         "fecha": fecha_pago.strftime("%d/%m/%Y"),
+        #         "capital": round(capital, 2),
+        #         "saldo": round(nuevo_saldo, 2),
+        #         "costo_admon": round(costo_admon, 2),
+        #         "iva_costo_admon": round(iva_costo_admon, 2),
+        #         "interes": round(interes_ordinario, 2),
+        #         "iva_interes": round(iva_interes, 2),
+        #         "total": round(pago_total, 2),
+        #         "estado": "pendiente",
+        #         "fecha_pago_real": None,
+        #         "etapa": "Etapa de Estudios" if i <= num_pagos * 0.8 else "Etapa de Egreso"
+        #     }
+            
+        #     tabla.append(cuota)
+        #     saldo_insoluto = nuevo_saldo
+        
+        # return tabla
 
 
 class ContratoCredito(models.Model):

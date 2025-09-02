@@ -34,6 +34,9 @@ from num2words import num2words
 # DOCX imports
 try:
     from docx import Document
+    from docx.shared import Pt
+    from docx.enum.table import WD_TABLE_ALIGNMENT
+    from docx.oxml.shared import OxmlElement, qn
     DOCX_AVAILABLE = True
 except ImportError:
     DOCX_AVAILABLE = False
@@ -1279,6 +1282,13 @@ def generar_docx_pagare(pagare):
     for eng, esp in meses.items():
         fecha_emision_formateada = fecha_emision_formateada.replace(eng, esp)
     
+    # Generar tabla de amortización automática si no existe o está vacía
+    tabla_amortizacion = pagare.tabla_amortizacion
+    if not tabla_amortizacion and pagare.monto_numeric and pagare.num_pagos:
+        print("DEBUG: Generando tabla de amortización automática...")
+        tabla_amortizacion = pagare.generar_tabla_amortizacion_automatica()
+        print(f"DEBUG: Tabla generada con {len(tabla_amortizacion)} cuotas")
+    
     # Diccionario de reemplazos
     replacements = {
         '{{lugar_emision}}': pagare.lugar_emision or '[LUGAR_EMISION]',
@@ -1303,16 +1313,16 @@ def generar_docx_pagare(pagare):
         '{{lugar_pago}}': pagare.lugar_pago or '[LUGAR_PAGO]',
         '{{forma_pago}}': pagare.forma_pago or '[FORMA_PAGO]',
         '{{tasa_interes_ordinario}}': f"{pagare.tasa_interes_ordinario}%" if pagare.tasa_interes_ordinario else '[TASA_INTERES_ORDINARIO]',
-        '{{tasa_interes_ordinario_letra}}': num2words(pagare.tasa_interes_ordinario, lang="es").capitalize(),
+        '{{tasa_interes_ordinario_letra}}': num2words(pagare.tasa_interes_ordinario, lang="es").capitalize() if pagare.tasa_interes_ordinario else '[TASA_INTERES_ORDINARIO_LETRA]',
         '{{tasa_interes_moratorio}}': f"{pagare.tasa_interes_moratorio}%" if pagare.tasa_interes_moratorio else '[TASA_INTERES_MORATORIO]',
-        '{{tasa_interes_moratorio_letra}}': num2words(pagare.tasa_interes_moratorio, lang="es").capitalize(),
+        '{{tasa_interes_moratorio_letra}}': num2words(pagare.tasa_interes_moratorio, lang="es").capitalize() if pagare.tasa_interes_moratorio else '[TASA_INTERES_MORATORIO_LETRA]',
         '{{base_calculo_dias}}': str(pagare.base_intereses) if pagare.base_intereses else '[BASE_CALCULO_DIAS]',
-        '{{base_calculo_dias_letra}}': num2words(pagare.base_intereses, lang="es").capitalize(),
+        '{{base_calculo_dias_letra}}': num2words(pagare.base_intereses, lang="es").capitalize() if pagare.base_intereses else '[BASE_CALCULO_DIAS_LETRA]',
         '{{gastos_administracion}}': f"${pagare.gastos_admon:,.2f}" if pagare.gastos_admon else '[GASTOS_ADMINISTRACION]',
-        '{{gastos_administracion_letra}}': num2words(pagare.gastos_admon, lang="es").capitalize(),
+        '{{gastos_administracion_letra}}': num2words(pagare.gastos_admon, lang="es").capitalize() if pagare.gastos_admon else '[GASTOS_ADMINISTRACION_LETRA]',
         '{{permitir_prepago}}': 'Sí' if pagare.prepago_permitido else 'No',
         '{{dias_aviso_prepago}}': str(pagare.dias_aviso_prepago) if pagare.dias_aviso_prepago else '[DIAS_AVISO_PREPAGO]',
-        '{{dias_aviso_prepago_letra}}': num2words(pagare.dias_aviso_prepago, lang="es").capitalize(),
+        '{{dias_aviso_prepago_letra}}': num2words(pagare.dias_aviso_prepago, lang="es").capitalize() if pagare.dias_aviso_prepago else '[DIAS_AVISO_PREPAGO_LETRA]',
         '{{condicion_prepago}}': pagare.condicion_prepago or '[CONDICION_PREPAGO]',
         '{{tiene_garantia_aval}}': 'Sí' if pagare.tiene_garantia else 'No',
         '{{nombre_aval}}': pagare.aval_nombre or '[NOMBRE_AVAL]',
@@ -1375,12 +1385,123 @@ def generar_docx_pagare(pagare):
     for paragraph in doc.paragraphs:
         replace_in_paragraph(paragraph, replacements)
     
-    # Reemplazar en tablas
+    # Buscar tabla de amortización existente para llenar
+    tabla_amortizacion_encontrada = False
+    tabla_target = None
+    
+    for table_idx, table in enumerate(doc.tables):
+        # Buscar tabla que tenga los encabezados de amortización
+        if len(table.rows) > 0 and len(table.columns) >= 10:
+            primera_fila = table.rows[0]
+            headers_text = ' '.join([cell.text.strip() for cell in primera_fila.cells])
+            
+            # Verificar si contiene encabezados típicos de tabla de amortización
+            if any(header in headers_text.lower() for header in ['mes', 'capital', 'saldo', 'costo', 'interes']):
+                tabla_amortizacion_encontrada = True
+                tabla_target = table
+                print(f"DEBUG: Tabla de amortización encontrada: tabla {table_idx} con {len(table.rows)} filas y {len(table.columns)} columnas")
+                break
+    
+    # Reemplazar placeholder {{TABLA_AMORTIZACION}} sin modificar lógica
+    for paragraph in doc.paragraphs:
+        if "{{TABLA_AMORTIZACION}}" in paragraph.text or "TABLA DE AMORTIZACIÓN" in paragraph.text:
+            paragraph.clear()  # Limpiar el párrafo que contiene el placeholder
+    
+    # Si se encontró la tabla y tenemos datos de amortización, llenarla
+    if tabla_amortizacion_encontrada and tabla_amortizacion:
+        print("DEBUG: Llenando tabla de amortización existente...")
+        try:
+            # Limpiar filas existentes (excepto encabezados)
+            rows_to_remove = []
+            for i in range(len(tabla_target.rows) - 1, 0, -1):  # Empezar desde el final
+                rows_to_remove.append(i)
+            
+            # Remover filas de datos anteriores
+            for row_idx in rows_to_remove:
+                if row_idx < len(tabla_target.rows):
+                    tabla_target._element.remove(tabla_target.rows[row_idx]._element)
+            
+            # Aplicar formato de tabla con cuadrícula (bordes completos)
+            def set_table_borders(table):
+                """Aplica bordes completos a toda la tabla"""
+                tbl = table._tbl
+                tblPr = tbl.tblPr
+                
+                # Crear elemento de bordes
+                tblBorders = OxmlElement('w:tblBorders')
+                
+                # Definir todos los bordes
+                border_types = ['top', 'left', 'bottom', 'right', 'insideH', 'insideV']
+                for border_type in border_types:
+                    border = OxmlElement(f'w:{border_type}')
+                    border.set(qn('w:val'), 'single')
+                    border.set(qn('w:sz'), '4')  # Grosor del borde
+                    border.set(qn('w:space'), '0')
+                    border.set(qn('w:color'), '000000')  # Color negro
+                    tblBorders.append(border)
+                
+                tblPr.append(tblBorders)
+            
+            # Aplicar bordes a la tabla
+            set_table_borders(tabla_target)
+            
+            # Insertar datos de la tabla calculada
+            max_rows = min(len(tabla_amortizacion), 48)
+            for i, cuota in enumerate(tabla_amortizacion[:max_rows]):
+                # Agregar nueva fila
+                new_row = tabla_target.add_row()
+                
+                # Datos de la fila según formato de la derecha (sin símbolos de peso, números simples)
+                row_data = [
+                    str(cuota.get('numero', i+1)),                    # Mes
+                    f"{cuota.get('capital', 0):,.2f}",               # Colegiatura (sin $)
+                    f"{cuota.get('saldo', 0):,.2f}",                 # Saldo Insoluto (sin $)
+                    f"{cuota.get('capital', 0):,.2f}",               # Capital (sin $)
+                    f"{cuota.get('costo_admon', 0):,.2f}",           # Costo Admón. (sin $)
+                    f"{cuota.get('iva_costo_admon', 0):,.2f}",       # IVA Costo Admón. (sin $)
+                    f"{cuota.get('interes', 0):,.2f}",               # Int Ordinario (sin $)
+                    f"{cuota.get('iva_interes', 0):,.2f}",           # IVA Int Ordinario (sin $)
+                    f"{cuota.get('total', 0):,.2f}",                 # Pago Total (sin $)
+                    cuota.get('fecha', ''),                          # Fecha Pago
+                    cuota.get('etapa', 'Etapa de Estudios')         # Etapa
+                ]
+                
+                # Llenar celdas disponibles
+                for col_idx, data in enumerate(row_data):
+                    if col_idx < len(new_row.cells):
+                        new_row.cells[col_idx].text = data
+                        # Formatear texto: Arial Narrow 10pt, centrado
+                        for paragraph in new_row.cells[col_idx].paragraphs:
+                            paragraph.alignment = 1  # CENTER
+                            for run in paragraph.runs:
+                                run.font.name = 'Arial Narrow'
+                                run.font.size = Pt(10)
+            
+            # También aplicar formato a los encabezados existentes
+            if len(tabla_target.rows) > 0:
+                header_row = tabla_target.rows[0]
+                for cell in header_row.cells:
+                    for paragraph in cell.paragraphs:
+                        paragraph.alignment = 1  # CENTER
+                        for run in paragraph.runs:
+                            run.font.name = 'Arial Narrow'
+                            run.font.size = Pt(10)
+                            run.bold = True
+            
+            print(f"DEBUG: Tabla llenada con {max_rows} filas de datos")
+            
+        except Exception as e:
+            print(f"DEBUG: Error al llenar tabla de amortización: {e}")
+            import traceback
+            traceback.print_exc()
+    
+    # Reemplazar en tablas restantes (las que no eran la tabla de amortización)
     for table in doc.tables:
-        for row in table.rows:
-            for cell in row.cells:
-                for paragraph in cell.paragraphs:
-                    replace_in_paragraph(paragraph, replacements)
+        if table != tabla_target:  # Skip the table we already processed
+            for row in table.rows:
+                for cell in row.cells:
+                    for paragraph in cell.paragraphs:
+                        replace_in_paragraph(paragraph, replacements)
     
     # Reemplazar en headers y footers
     for section in doc.sections:
