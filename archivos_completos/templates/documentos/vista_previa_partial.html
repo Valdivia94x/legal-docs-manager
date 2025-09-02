@@ -1,0 +1,80 @@
+{% if form_data %}
+<div class="document-preview">
+    <div class="text-center mb-3">
+        <h6 class="text-primary">ACTA DE ASAMBLEA GENERAL</h6>
+        {% if form_data.tipo_asamblea %}
+            <small class="text-muted">{{ form_data.get_tipo_asamblea_display|default:form_data.tipo_asamblea }}</small>
+        {% endif %}
+    </div>
+    
+    {% if form_data.nombre_sociedad %}
+        <p><strong>Sociedad:</strong> {{ form_data.nombre_sociedad }}</p>
+    {% endif %}
+    
+    {% if form_data.fecha_asamblea %}
+        <p><strong>Fecha:</strong> {{ form_data.fecha_asamblea }}</p>
+    {% endif %}
+    
+    {% if form_data.hora_inicio %}
+        <p><strong>Hora de Inicio:</strong> {{ form_data.hora_inicio }}</p>
+    {% endif %}
+    
+    {% if form_data.domicilio %}
+        <p><strong>Domicilio:</strong> {{ form_data.domicilio }}</p>
+    {% endif %}
+    
+    {% if form_data.presidente or form_data.secretario %}
+        <div class="mt-3">
+            <h6 class="text-primary">Personas Clave</h6>
+            {% if form_data.presidente %}
+                <p><strong>Presidente:</strong> {{ form_data.presidente }}</p>
+            {% endif %}
+            {% if form_data.secretario %}
+                <p><strong>Secretario:</strong> {{ form_data.secretario }}</p>
+            {% endif %}
+            {% if form_data.escrutador %}
+                <p><strong>Escrutador:</strong> {{ form_data.escrutador }}</p>
+            {% endif %}
+            {% if form_data.comisario %}
+                <p><strong>Comisario:</strong> {{ form_data.comisario }}</p>
+            {% endif %}
+        </div>
+    {% endif %}
+    
+    {% if form_data.periodo_financiero or form_data.cierre_ejercicio %}
+        <div class="mt-3">
+            <h6 class="text-primary">Información Financiera</h6>
+            {% if form_data.periodo_financiero %}
+                <p><strong>Período:</strong> {{ form_data.periodo_financiero }}</p>
+            {% endif %}
+            {% if form_data.cierre_ejercicio %}
+                <p><strong>Cierre:</strong> {{ form_data.cierre_ejercicio }}</p>
+            {% endif %}
+            {% if form_data.honorarios_aprobados %}
+                <p><strong>Honorarios:</strong> {{ form_data.honorarios_aprobados }}</p>
+            {% endif %}
+        </div>
+    {% endif %}
+    
+    {% if form_data.tiene_anexos %}
+        <div class="mt-3">
+            <h6 class="text-primary">Anexos</h6>
+            <p><span class="badge bg-success">Incluye Anexos</span></p>
+            {% if form_data.descripcion_anexos %}
+                <p><small>{{ form_data.descripcion_anexos }}</small></p>
+            {% endif %}
+        </div>
+    {% endif %}
+    
+    {% if form_data.hora_finalizacion %}
+        <div class="mt-3">
+            <p><strong>Hora de Finalización:</strong> {{ form_data.hora_finalizacion }}</p>
+        </div>
+    {% endif %}
+</div>
+{% else %}
+<div class="text-center text-muted">
+    <i class="fas fa-file-alt fa-2x mb-2"></i>
+    <p>Completa el formulario para ver la vista previa</p>
+</div>
+{% endif %}

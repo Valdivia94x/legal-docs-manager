@@ -1,0 +1,303 @@
+{% extends 'base.html' %}
+
+{% block title %}Detalle Contrato de Prenda - Asistente Legal{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h1>
+                    <i class="fas fa-handshake text-primary me-2"></i>
+                    Detalle del Contrato de Prenda
+                </h1>
+                <div class="btn-group" role="group">
+                    <a href="{% url 'documentos:lista_contrato_prenda' %}" class="btn btn-secondary me-2">
+                        <i class="fas fa-arrow-left me-2"></i>Volver a Lista
+                    </a>
+                    <a href="{% url 'documentos:editar_contrato_prenda' contrato.pk %}" class="btn btn-warning text-white">
+                        <i class="fas fa-edit me-2"></i>Editar
+                    </a>
+                    <a href="{% url 'documentos:descargar_docx_prenda' contrato.pk %}" class="btn btn-primary">
+                        <i class="fas fa-file-word me-2"></i>DOCX
+                    </a>
+                    <a href="{% url 'documentos:eliminar_contrato_prenda' contrato.pk %}" class="btn btn-outline-danger">
+                        <i class="fas fa-trash me-2"></i>Eliminar
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Información General -->
+        <div class="col-lg-6 mb-4">
+            <div class="card h-100">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="fas fa-info-circle text-primary me-2"></i>
+                        Información General
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <strong>Fecha del Contrato:</strong><br>
+                            <span class="text-muted">{{ contrato.fecha_contrato|date:"d/m/Y" }}</span>
+                        </div>
+                        <div class="col-sm-6">
+                            <strong>Lugar:</strong><br>
+                            <span class="text-muted">{{ contrato.lugar_contrato }}</span>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <strong>Estado:</strong><br>
+                            <span class="badge {{ contrato.get_estado_badge_class }} fs-6">
+                                {{ contrato.get_estado_display }}
+                            </span>
+                        </div>
+                        <div class="col-sm-6">
+                            <strong>Creado:</strong><br>
+                            <span class="text-muted">{{ contrato.fecha_creacion|date:"d/m/Y H:i" }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Fideicomiso -->
+        <div class="col-lg-6 mb-4">
+            <div class="card h-100">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="fas fa-university text-primary me-2"></i>
+                        Fideicomiso
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <strong>Número:</strong><br>
+                            <span class="text-muted">{{ contrato.numero_fideicomiso }}</span>
+                        </div>
+                        <div class="col-sm-6">
+                            <strong>Fecha de Constitución:</strong><br>
+                            <span class="text-muted">{{ contrato.fecha_fideicomiso|date:"d/m/Y" }}</span>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-12">
+                            <strong>Fecha Aprobación Proyecto:</strong><br>
+                            <span class="text-muted">{{ contrato.fecha_aprobacion_proyecto|date:"d/m/Y" }}</span>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-12">
+                            <strong>Descripción del Proyecto:</strong><br>
+                            <span class="text-muted">{{ contrato.descripcion_proyecto }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Deudor Prendario -->
+        <div class="col-lg-4 mb-4">
+            <div class="card h-100">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="fas fa-user-tie text-primary me-2"></i>
+                        Deudor Prendario
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <strong>Razón Social:</strong><br>
+                        <span class="text-muted">{{ contrato.deudor_nombre }}</span>
+                    </div>
+                    <div class="mb-3">
+                        <strong>Representante Legal:</strong><br>
+                        <span class="text-muted">{{ contrato.deudor_representante }}</span>
+                    </div>
+                    <div class="mb-3">
+                        <strong>Escritura de Constitución:</strong><br>
+                        <small class="text-muted">
+                            No. {{ contrato.deudor_constitucion_escritura_num }}<br>
+                            {{ contrato.deudor_constitucion_fecha|date:"d/m/Y" }}<br>
+                            {{ contrato.deudor_constitucion_notario }}
+                        </small>
+                    </div>
+                    <div class="mb-3">
+                        <strong>Domicilio:</strong><br>
+                        <small class="text-muted">{{ contrato.domicilio_deudor }}</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Acreedor Prendario -->
+        <div class="col-lg-4 mb-4">
+            <div class="card h-100">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="fas fa-building text-primary me-2"></i>
+                        Acreedor Prendario
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <strong>Razón Social:</strong><br>
+                        <span class="text-muted">{{ contrato.acreedor_nombre }}</span>
+                    </div>
+                    <div class="mb-3">
+                        <strong>Delegado Fiduciario:</strong><br>
+                        <span class="text-muted">{{ contrato.delegado_fiduciario }}</span>
+                    </div>
+                    <div class="mb-3">
+                        <strong>Escritura del Delegado:</strong><br>
+                        <small class="text-muted">
+                            No. {{ contrato.delegado_fiduciario_escritura_num }}<br>
+                            {{ contrato.delegado_fiduciario_fecha|date:"d/m/Y" }}<br>
+                            {{ contrato.delegado_fiduciario_notario }}
+                        </small>
+                    </div>
+                    <div class="mb-3">
+                        <strong>Domicilio:</strong><br>
+                        <small class="text-muted">{{ contrato.domicilio_acreedor }}</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Fideicomitente -->
+        <div class="col-lg-4 mb-4">
+            <div class="card h-100">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="fas fa-handshake text-primary me-2"></i>
+                        Fideicomitente
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <strong>Razón Social:</strong><br>
+                        <span class="text-muted">{{ contrato.fideicomitente_nombre }}</span>
+                    </div>
+                    <div class="mb-3">
+                        <strong>Representante Legal:</strong><br>
+                        <span class="text-muted">{{ contrato.fideicomitente_representante }}</span>
+                    </div>
+                    <div class="mb-3">
+                        <strong>Escritura del Representante:</strong><br>
+                        <small class="text-muted">
+                            No. {{ contrato.fideicomitente_rep_escritura_num }}<br>
+                            {{ contrato.fideicomitente_rep_fecha|date:"d/m/Y" }}<br>
+                            {{ contrato.fideicomitente_rep_notario }}
+                        </small>
+                    </div>
+                    <div class="mb-3">
+                        <strong>Domicilio:</strong><br>
+                        <small class="text-muted">{{ contrato.domicilio_fideicomitente }}</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Acciones Pignoradas -->
+        <div class="col-lg-6 mb-4">
+            <div class="card h-100">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="fas fa-chart-line text-success me-2"></i>
+                        Acciones Pignoradas
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="text-center mb-3">
+                        <div class="display-4 text-success fw-bold">
+                            {{ contrato.acciones_pledged_cantidad|floatformat:0 }}
+                        </div>
+                        <small class="text-muted">acciones</small>
+                    </div>
+                    <div class="text-center">
+                        <strong>En palabras:</strong><br>
+                        <span class="text-muted">{{ contrato.acciones_pledged_texto }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Información de Auditoría -->
+        <div class="col-lg-6 mb-4">
+            <div class="card h-100">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="fas fa-clock text-info me-2"></i>
+                        Información de Auditoría
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <strong>Creado por:</strong><br>
+                            <span class="text-muted">{{ contrato.usuario.get_full_name|default:contrato.usuario.username }}</span>
+                        </div>
+                        <div class="col-sm-6">
+                            <strong>Fecha de Creación:</strong><br>
+                            <span class="text-muted">{{ contrato.fecha_creacion|date:"d/m/Y H:i" }}</span>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <strong>Última Actualización:</strong><br>
+                            <span class="text-muted">{{ contrato.fecha_actualizacion|date:"d/m/Y H:i" }}</span>
+                        </div>
+                        <div class="col-sm-6">
+                            <strong>Estado Actual:</strong><br>
+                            <span class="badge {{ contrato.get_estado_badge_class }}">
+                                {{ contrato.get_estado_display }}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Anexos (si existen) -->
+    {% if contrato.anexo_contrato_promesa %}
+    <div class="row">
+        <div class="col-12 mb-4">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="fas fa-paperclip text-primary me-2"></i>
+                        Anexos
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <i class="fas fa-file-pdf fa-2x text-danger me-3"></i>
+                        <div>
+                            <strong>Contrato de Promesa</strong><br>
+                            <a href="{{ contrato.anexo_contrato_promesa.url }}" class="btn btn-sm btn-outline-primary" target="_blank">
+                                <i class="fas fa-download me-2"></i>Descargar
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

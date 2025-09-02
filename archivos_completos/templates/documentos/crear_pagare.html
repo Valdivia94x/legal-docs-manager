@@ -1,0 +1,448 @@
+{% extends 'base.html' %}
+
+{% block title %}Crear Pagaré{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <div class="card shadow-sm">
+                <div class="card-header bg-success text-white">
+                    <h4 class="mb-0">
+                        <i class="fas fa-file-invoice-dollar me-2"></i>Crear Pagaré
+                    </h4>
+                </div>
+                <div class="card-body">
+                    {% if form.errors %}
+                        <div class="alert alert-danger">
+                            <h6>Por favor corrige los siguientes errores:</h6>
+                            <ul class="mb-0">
+                                {% for field, errors in form.errors.items %}
+                                    {% for error in errors %}
+                                        <li>{{ field }}: {{ error }}</li>
+                                    {% endfor %}
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    {% endif %}
+
+                    <form method="post">
+                        {% csrf_token %}
+                        
+                        <!-- Datos Generales -->
+                        <div class="row mb-4">
+                            <div class="col-12">
+                                <h6 class="text-success mb-3">
+                                    <i class="fas fa-info-circle me-2"></i>Datos Generales
+                                </h6>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="{{ form.lugar_emision.id_for_label }}" class="form-label">{{ form.lugar_emision.label }}</label>
+                                    {{ form.lugar_emision }}
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="{{ form.fecha_emision.id_for_label }}" class="form-label">{{ form.fecha_emision.label }}</label>
+                                    {{ form.fecha_emision }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Acreedor -->
+                        <div class="row mb-4">
+                            <div class="col-12">
+                                <h6 class="text-success mb-3">
+                                    <i class="fas fa-user-tie me-2"></i>Acreedor
+                                </h6>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="{{ form.acreedor_nombre.id_for_label }}" class="form-label">{{ form.acreedor_nombre.label }}</label>
+                                    {{ form.acreedor_nombre }}
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="{{ form.acreedor_rfc.id_for_label }}" class="form-label">{{ form.acreedor_rfc.label }}</label>
+                                    {{ form.acreedor_rfc }}
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="mb-3">
+                                    <label for="{{ form.acreedor_domicilio.id_for_label }}" class="form-label">{{ form.acreedor_domicilio.label }}</label>
+                                    {{ form.acreedor_domicilio }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Deudor -->
+                        <div class="row mb-4">
+                            <div class="col-12">
+                                <h6 class="text-success mb-3">
+                                    <i class="fas fa-user me-2"></i>Deudor
+                                </h6>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="{{ form.deudor_nombre.id_for_label }}" class="form-label">{{ form.deudor_nombre.label }}</label>
+                                    {{ form.deudor_nombre }}
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="{{ form.deudor_rfc.id_for_label }}" class="form-label">{{ form.deudor_rfc.label }}</label>
+                                    {{ form.deudor_rfc }}
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="{{ form.deudor_representante.id_for_label }}" class="form-label">{{ form.deudor_representante.label }}</label>
+                                    {{ form.deudor_representante }}
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="mb-3">
+                                    <label for="{{ form.deudor_domicilio.id_for_label }}" class="form-label">{{ form.deudor_domicilio.label }}</label>
+                                    {{ form.deudor_domicilio }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Términos Financieros -->
+                        <div class="row mb-4">
+                            <div class="col-12">
+                                <h6 class="text-success mb-3">
+                                    <i class="fas fa-dollar-sign me-2"></i>Términos Financieros
+                                </h6>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <label for="{{ form.monto_numeric.id_for_label }}" class="form-label">{{ form.monto_numeric.label }}</label>
+                                    {{ form.monto_numeric }}
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <label for="{{ form.moneda.id_for_label }}" class="form-label">{{ form.moneda.label }}</label>
+                                    {{ form.moneda }}
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <label for="{{ form.concepto.id_for_label }}" class="form-label">{{ form.concepto.label }}</label>
+                                    {{ form.concepto }}
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="mb-3">
+                                    <label for="{{ form.monto_literal.id_for_label }}" class="form-label">{{ form.monto_literal.label }}</label>
+                                    {{ form.monto_literal }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Condiciones de Pago -->
+                        <div class="row mb-4">
+                            <div class="col-12">
+                                <h6 class="text-success mb-3">
+                                    <i class="fas fa-calendar-alt me-2"></i>Condiciones de Pago
+                                </h6>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <label for="{{ form.tipo_pago.id_for_label }}" class="form-label">{{ form.tipo_pago.label }}</label>
+                                    {{ form.tipo_pago }}
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <label for="{{ form.num_pagos.id_for_label }}" class="form-label">{{ form.num_pagos.label }}</label>
+                                    {{ form.num_pagos }}
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <label for="{{ form.periodicidad.id_for_label }}" class="form-label">{{ form.periodicidad.label }}</label>
+                                    {{ form.periodicidad }}
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="{{ form.lugar_pago.id_for_label }}" class="form-label">{{ form.lugar_pago.label }}</label>
+                                    {{ form.lugar_pago }}
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="{{ form.forma_pago.id_for_label }}" class="form-label">{{ form.forma_pago.label }}</label>
+                                    {{ form.forma_pago }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Intereses -->
+                        <div class="row mb-4">
+                            <div class="col-12">
+                                <h6 class="text-success mb-3">
+                                    <i class="fas fa-percentage me-2"></i>Intereses y Cargos
+                                </h6>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="mb-3">
+                                    <label for="{{ form.tasa_interes_ordinario.id_for_label }}" class="form-label">{{ form.tasa_interes_ordinario.label }}</label>
+                                    {{ form.tasa_interes_ordinario }}
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="mb-3">
+                                    <label for="{{ form.tasa_interes_moratorio.id_for_label }}" class="form-label">{{ form.tasa_interes_moratorio.label }}</label>
+                                    {{ form.tasa_interes_moratorio }}
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="mb-3">
+                                    <label for="{{ form.base_intereses.id_for_label }}" class="form-label">{{ form.base_intereses.label }}</label>
+                                    {{ form.base_intereses }}
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="mb-3">
+                                    <label for="{{ form.gastos_admon.id_for_label }}" class="form-label">{{ form.gastos_admon.label }}</label>
+                                    {{ form.gastos_admon }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Prepago -->
+                        <div class="row mb-4">
+                            <div class="col-12">
+                                <h6 class="text-success mb-3">
+                                    <i class="fas fa-fast-forward me-2"></i>Prepago
+                                </h6>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <div class="form-check">
+                                        {{ form.prepago_permitido }}
+                                        <label class="form-check-label" for="{{ form.prepago_permitido.id_for_label }}">
+                                            {{ form.prepago_permitido.label }}
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <label for="{{ form.dias_aviso_prepago.id_for_label }}" class="form-label">{{ form.dias_aviso_prepago.label }}</label>
+                                    {{ form.dias_aviso_prepago }}
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <label for="{{ form.condicion_prepago.id_for_label }}" class="form-label">{{ form.condicion_prepago.label }}</label>
+                                    {{ form.condicion_prepago }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Garantías y Avales -->
+                        <div class="row mb-4">
+                            <div class="col-12">
+                                <h6 class="text-success mb-3">
+                                    <i class="fas fa-shield-alt me-2"></i>Garantías y Avales
+                                </h6>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <div class="form-check">
+                                        {{ form.tiene_garantia }}
+                                        <label class="form-check-label" for="{{ form.tiene_garantia.id_for_label }}">
+                                            {{ form.tiene_garantia.label }}
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <label for="{{ form.aval_nombre.id_for_label }}" class="form-label">{{ form.aval_nombre.label }}</label>
+                                    {{ form.aval_nombre }}
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="mb-3">
+                                    <label for="{{ form.descripcion_garantia.id_for_label }}" class="form-label">{{ form.descripcion_garantia.label }}</label>
+                                    {{ form.descripcion_garantia }}
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="mb-3">
+                                    <label for="{{ form.aval_domicilio.id_for_label }}" class="form-label">{{ form.aval_domicilio.label }}</label>
+                                    {{ form.aval_domicilio }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Cláusulas Legales -->
+                        <!--
+                        <div class="row mb-4">
+                            <div class="col-12">
+                                <h6 class="text-success mb-3">
+                                    <i class="fas fa-gavel me-2"></i>Cláusulas Legales
+                                </h6>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="{{ form.jurisdiccion.id_for_label }}" class="form-label">{{ form.jurisdiccion.label }}</label>
+                                    {{ form.jurisdiccion }}
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="{{ form.ley_aplicable.id_for_label }}" class="form-label">{{ form.ley_aplicable.label }}</label>
+                                    {{ form.ley_aplicable }}
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="mb-3">
+                                    <label for="{{ form.eventos_incumplimiento.id_for_label }}" class="form-label">{{ form.eventos_incumplimiento.label }}</label>
+                                    {{ form.eventos_incumplimiento }}
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="mb-3">
+                                    <label for="{{ form.clausula_aceleracion.id_for_label }}" class="form-label">{{ form.clausula_aceleracion.label }}</label>
+                                    {{ form.clausula_aceleracion }}
+                                </div>
+                            </div>
+                        </div>
+                        -->
+
+                        <!-- Información Adicional -->
+                        <div class="row mb-4">
+                            <div class="col-12">
+                                <h6 class="text-success mb-3">
+                                    <i class="fas fa-plus-circle me-2"></i>Información Adicional
+                                </h6>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <label for="{{ form.num_paginas.id_for_label }}" class="form-label">{{ form.num_paginas.label }}</label>
+                                    {{ form.num_paginas }}
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <label for="{{ form.estado.id_for_label }}" class="form-label">{{ form.estado.label }}</label>
+                                    {{ form.estado }}
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="mb-3">
+                                    <label for="{{ form.anexos.id_for_label }}" class="form-label">{{ form.anexos.label }}</label>
+                                    {{ form.anexos }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Botones -->
+                        <div class="row mt-4">
+                            <div class="col-12">
+                                <div class="d-flex justify-content-between">
+                                    <div>
+                                        <button type="button" class="btn btn-secondary me-2" onclick="cargarEjemplo()">
+                                            <i class="fas fa-magic me-1"></i>Cargar Ejemplo
+                                        </button>
+                                    </div>
+                                    <div>
+                                        <a href="{% url 'home' %}" class="btn btn-outline-secondary me-2">
+                                            <i class="fas fa-times me-1"></i>Cancelar
+                                        </a>
+                                        <button type="submit" class="btn btn-success">
+                                            <i class="fas fa-save me-1"></i>Guardar Pagaré
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function cargarEjemplo() {
+    // Datos Generales
+    setValue('id_lugar_emision', 'Ciudad de México, México');
+    setValue('id_fecha_emision', '2025-01-15');
+    
+    // Acreedor
+    setValue('id_acreedor_nombre', 'Fomento Mexicano de Posgrados 101, S.A. de C.V.');
+    setValue('id_acreedor_rfc', 'FMP101234567');
+    setValue('id_acreedor_domicilio', 'Av. Universidad 1234, Col. Del Valle, C.P. 03100, Ciudad de México, México');
+    
+    // Deudor
+    setValue('id_deudor_nombre', 'Juan Carlos Pérez García');
+    setValue('id_deudor_rfc', 'PEGJ850315ABC');
+    setValue('id_deudor_representante', '');
+    setValue('id_deudor_domicilio', 'Calle Reforma 567, Col. Centro, C.P. 06000, Ciudad de México, México');
+    
+    // Términos Financieros
+    setValue('id_monto_numeric', '250000.00');
+    setValue('id_monto_literal', 'Doscientos cincuenta mil pesos 00/100 M.N.');
+    setValue('id_moneda', 'Pesos Mexicanos');
+    setValue('id_concepto', 'Préstamo para estudios de posgrado');
+    
+    // Condiciones de Pago
+    setValue('id_tipo_pago', 'parcialidades');
+    setValue('id_num_pagos', '12');
+    setValue('id_periodicidad', 'mensual');
+    setValue('id_lugar_pago', 'Ciudad de México, México');
+    setValue('id_forma_pago', 'Transferencia bancaria');
+    
+    // Intereses
+    setValue('id_tasa_interes_ordinario', '18.50');
+    setValue('id_tasa_interes_moratorio', '24.00');
+    setValue('id_base_intereses', '360');
+    setValue('id_gastos_admon', '500.00');
+    
+    // Prepago
+    setCheckbox('id_prepago_permitido', true);
+    setValue('id_dias_aviso_prepago', '30');
+    setValue('id_condicion_prepago', 'Sin penalización después de 6 meses');
+    
+    // Garantías
+    setCheckbox('id_tiene_garantia', true);
+    setValue('id_aval_nombre', 'María Elena Rodríguez Hernández');
+    setValue('id_descripcion_garantia', 'Aval solidario del deudor principal');
+    setValue('id_aval_domicilio', 'Av. Insurgentes 890, Col. Roma Norte, C.P. 06700, Ciudad de México, México');
+    
+    // Cláusulas Legales
+    setValue('id_jurisdiccion', 'Ciudad de México, México');
+    setValue('id_ley_aplicable', 'Leyes de los Estados Unidos Mexicanos');
+    setValue('id_eventos_incumplimiento', 'Falta de pago por más de 30 días, incumplimiento de obligaciones contractuales, insolvencia del deudor');
+    setValue('id_clausula_aceleracion', 'En caso de incumplimiento, el acreedor podrá dar por vencido anticipadamente el plazo y exigir el pago inmediato del saldo insoluto más intereses y gastos.');
+    
+    // Información Adicional
+    setValue('id_num_paginas', '3');
+    setValue('id_estado', 'borrador');
+    setValue('id_anexos', 'Tabla de amortización, Copia de identificación del deudor');
+}
+
+function setValue(id, value) {
+    const element = document.getElementById(id);
+    if (element) {
+        element.value = value;
+    }
+}
+
+function setCheckbox(id, checked) {
+    const element = document.getElementById(id);
+    if (element) {
+        element.checked = checked;
+    }
+}
+</script>
+{% endblock %}

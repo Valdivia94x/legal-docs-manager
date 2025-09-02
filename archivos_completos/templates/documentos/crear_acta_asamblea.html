@@ -1,0 +1,1085 @@
+{% extends 'base.html' %}
+
+{% block title %}Crear Acta de Asamblea - Asistente Legal{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <h1 class="mb-4">
+            <i class="fas fa-users text-success me-2"></i>
+            Crear Acta de Asamblea
+        </h1>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-8">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="fas fa-wpforms me-2"></i>
+                    Información del Acta de Asamblea
+                </h5>
+            </div>
+            <div class="card-body">
+                <form method="post" id="documento-form">
+                    {% csrf_token %}
+                    
+                    <!-- Información Básica -->
+                    <h6 class="text-primary mb-3"><i class="fas fa-info-circle me-2"></i>Información Básica</h6>
+                    <div class="row mb-3">
+                        <div class="col-md-8">
+                            <label for="{{ form.razon_social.id_for_label }}" class="form-label">{{ form.razon_social.label }}</label>
+                            {{ form.razon_social }}
+                            {% if form.razon_social.help_text %}
+                                <div class="form-text">{{ form.razon_social.help_text }}</div>
+                            {% endif %}
+                        </div>
+                        <div class="col-md-4">
+                            <label for="{{ form.tipo_asamblea.id_for_label }}" class="form-label">{{ form.tipo_asamblea.label }}</label>
+                            {{ form.tipo_asamblea }}
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label for="{{ form.caracter.id_for_label }}" class="form-label">{{ form.caracter.label }}</label>
+                            {{ form.caracter }}
+                            <div class="form-text">Ej: General de Accionistas, Extraordinaria, etc.</div>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="{{ form.fecha.id_for_label }}" class="form-label">{{ form.fecha.label }}</label>
+                            {{ form.fecha }}
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-md-4">
+                            <label for="{{ form.hora_inicio.id_for_label }}" class="form-label">{{ form.hora_inicio.label }}</label>
+                            {{ form.hora_inicio }}
+                        </div>
+                        <div class="col-md-4">
+                            <label for="{{ form.hora_cierre.id_for_label }}" class="form-label">{{ form.hora_cierre.label }}</label>
+                            {{ form.hora_cierre }}
+                            <div class="form-text">Opcional</div>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="{{ form.porcentaje_capital_presente.id_for_label }}" class="form-label">{{ form.porcentaje_capital_presente.label }}</label>
+                            {{ form.porcentaje_capital_presente }}
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="{{ form.lugar.id_for_label }}" class="form-label">{{ form.lugar.label }}</label>
+                        {{ form.lugar }}
+                        <div class="form-text">Dirección completa donde se celebra la asamblea</div>
+                    </div>
+
+                    <!-- Convocatoria -->
+                    <h6 class="text-primary mb-3"><i class="fas fa-bell me-2"></i>Convocatoria</h6>
+                    <div class="row mb-3">
+                        <div class="col-md-4">
+                            <div class="form-check">
+                                {{ form.convocatoria_omitida }}
+                                <label class="form-check-label" for="{{ form.convocatoria_omitida.id_for_label }}">
+                                    {{ form.convocatoria_omitida.label }}
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-md-8">
+                            <label for="{{ form.fundamento_convocatoria.id_for_label }}" class="form-label">{{ form.fundamento_convocatoria.label }}</label>
+                            {{ form.fundamento_convocatoria }}
+                            <div class="form-text">Fundamento legal si la convocatoria fue omitida</div>
+                        </div>
+                    </div>
+
+                    <!-- Personas Clave -->
+                    <h6 class="text-primary mb-3"><i class="fas fa-user-tie me-2"></i>Personas Clave</h6>
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label for="{{ form.presidente.id_for_label }}" class="form-label">{{ form.presidente.label }} *</label>
+                            {{ form.presidente }}
+                        </div>
+                        <div class="col-md-6">
+                            <label for="{{ form.secretario.id_for_label }}" class="form-label">{{ form.secretario.label }} *</label>
+                            {{ form.secretario }}
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label for="{{ form.escrutador.id_for_label }}" class="form-label">{{ form.escrutador.label }}</label>
+                            {{ form.escrutador }}
+                            <div class="form-text">Opcional</div>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="{{ form.comisario.id_for_label }}" class="form-label">{{ form.comisario.label }}</label>
+                            {{ form.comisario }}
+                            <div class="form-text">Opcional</div>
+                        </div>
+                    </div>
+
+                    <!-- Método de Votación -->
+                    <h6 class="text-primary mb-3"><i class="fas fa-vote-yea me-2"></i>Votación</h6>
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label for="{{ form.metodo_votacion_general.id_for_label }}" class="form-label">{{ form.metodo_votacion_general.label }}</label>
+                            {{ form.metodo_votacion_general }}
+                        </div>
+                        <div class="col-md-6">
+                            <label for="{{ form.estado.id_for_label }}" class="form-label">{{ form.estado.label }}</label>
+                            {{ form.estado }}
+                        </div>
+                    </div>
+
+                    <!-- Información Adicional -->
+                    <h6 class="text-primary mb-3"><i class="fas fa-info me-2"></i>Información Adicional</h6>
+                    <div class="alert alert-info">
+                        <i class="fas fa-lightbulb me-2"></i>
+                        <strong>Nota:</strong> Los siguientes campos son opcionales. Puedes completarlos ahora o después en la edición.
+                    </div>
+                    
+                    <!-- Campos JSON Opcionales -->
+                    <div class="accordion" id="camposAdicionales">
+                        <!-- Asistentes -->
+                         <!--
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="headingAsistentes">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseAsistentes" aria-expanded="false">
+                                    <i class="fas fa-users me-2"></i>Asistentes
+                                </button>
+                            </h2>
+                            <div id="collapseAsistentes" class="accordion-collapse collapse" data-bs-parent="#camposAdicionales">
+                                <div class="accordion-body">
+                                    <label for="{{ form.asistentes_texto.id_for_label }}" class="form-label">{{ form.asistentes_texto.label }}</label>
+                                    {{ form.asistentes_texto }}
+                                    <div class="form-text">{{ form.asistentes_texto.help_text }}</div>
+                                </div>
+                            </div>
+                        </div>
+                        -->
+                        
+                        <!-- Orden del Día -->
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="headingOrdenDia">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOrdenDia">
+                                    <i class="fas fa-list-ol me-2"></i>Orden del Día y Resoluciones
+                                </button>
+                            </h2>
+                            <div id="collapseOrdenDia" class="accordion-collapse collapse" data-bs-parent="#camposAdicionales">
+                                <div class="accordion-body">
+                                    {# Campo oculto para compatibilidad con el backend #}
+                                    <div class="visually-hidden">
+                                        {{ form.orden_dia_texto.label_tag }}
+                                        {{ form.orden_dia_texto }}
+                                    </div>
+
+                                    <div id="orden-dia-editor" class="mb-3">
+                                      <div class="d-flex align-items-center justify-content-between">
+                                        <h6 class="mb-0">Orden del Día y Resoluciones</h6>
+                                        <button type="button" class="btn btn-sm btn-primary" id="btn-add-punto">➕ Añadir orden del día</button>
+                                      </div>
+
+                                      <div id="puntos-container" class="mt-3"></div>
+
+                                      <div class="form-text">
+                                        Agrega los puntos del orden del día y, dentro de cada uno, sus resoluciones.
+                                      </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Nombramientos -->
+                         <!--
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="headingNombramientos">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseNombramientos" aria-expanded="false">
+                                    <i class="fas fa-user-plus me-2"></i>Nombramientos
+                                </button>
+                            </h2>
+                            <div id="collapseNombramientos" class="accordion-collapse collapse" data-bs-parent="#camposAdicionales">
+                                <div class="accordion-body">
+                                    <label for="{{ form.nombramientos_texto.id_for_label }}" class="form-label">{{ form.nombramientos_texto.label }}</label>
+                                    {{ form.nombramientos_texto }}
+                                    <div class="form-text">{{ form.nombramientos_texto.help_text }}</div>
+                                </div>
+                            </div>
+                        </div>
+                        -->
+                        
+                        <!-- Dividendos -->
+                         <!--
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="headingDividendos">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseDividendos" aria-expanded="false">
+                                    <i class="fas fa-dollar-sign me-2"></i>Dividendos
+                                </button>
+                            </h2>
+                            <div id="collapseDividendos" class="accordion-collapse collapse" data-bs-parent="#camposAdicionales">
+                                <div class="accordion-body">
+                                    <label for="{{ form.dividendos_texto.id_for_label }}" class="form-label">{{ form.dividendos_texto.label }}</label>
+                                    {{ form.dividendos_texto }}
+                                    <div class="form-text">{{ form.dividendos_texto.help_text }}</div>
+                                </div>
+                            </div>
+                        </div>
+                        -->
+                        
+                        <!-- Delegados -->
+                         <!--
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="headingDelegados">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseDelegados" aria-expanded="false">
+                                    <i class="fas fa-handshake me-2"></i>Delegados
+                                </button>
+                            </h2>
+                            <div id="collapseDelegados" class="accordion-collapse collapse" data-bs-parent="#camposAdicionales">
+                                <div class="accordion-body">
+                                    <label for="{{ form.delegados_texto.id_for_label }}" class="form-label">{{ form.delegados_texto.label }}</label>
+                                    {{ form.delegados_texto }}
+                                    <div class="form-text">{{ form.delegados_texto.help_text }}</div>
+                                </div>
+                            </div>
+                        </div>
+                        -->
+                        
+                        <!-- Anexos -->
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="headingAnexos">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseAnexos" aria-expanded="false">
+                                    <i class="fas fa-paperclip me-2"></i>Anexos
+                                </button>
+                            </h2>
+                            <div id="collapseAnexos" class="accordion-collapse collapse" data-bs-parent="#camposAdicionales">
+                                <div class="accordion-body">
+                                    <label for="{{ form.anexos_texto.id_for_label }}" class="form-label">{{ form.anexos_texto.label }}</label>
+                                    {{ form.anexos_texto }}
+                                    <div class="form-text">{{ form.anexos_texto.help_text }}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="d-flex justify-content-between">
+                        <a href="{% url 'documentos:lista' %}" class="btn btn-secondary">
+                            <i class="fas fa-arrow-left me-2"></i>Cancelar
+                        </a>
+                        <button type="submit" class="btn btn-success">
+                            <i class="fas fa-save me-2"></i>Crear Acta de Asamblea
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-4">
+        <div class="card">
+            <div class="card-header">
+                <h6 class="mb-0">
+                    <i class="fas fa-eye me-2"></i>
+                    Vista Previa
+                </h6>
+            </div>
+            <div class="card-body">
+                <div id="vista-previa">
+                    <p class="text-muted text-center">
+                        <i class="fas fa-file-alt fa-2x mb-2"></i><br>
+                        La vista previa aparecerá aquí mientras completas el formulario
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Ayuda -->
+        <div class="card mt-3">
+            <div class="card-header">
+                <h6 class="mb-0">
+                    <i class="fas fa-question-circle me-2"></i>
+                    Ayuda
+                </h6>
+            </div>
+            <div class="card-body">
+                <div class="small">
+                    <p><strong>Campos obligatorios:</strong></p>
+                    <ul class="mb-2">
+                        <li>Razón Social</li>
+                        <li>Tipo de Asamblea</li>
+                        <li>Fecha</li>
+                        <li>Hora de Inicio</li>
+                        <li>Lugar</li>
+                        <li>Presidente</li>
+                        <li>Secretario</li>
+                        <li>% Capital Presente</li>
+                    </ul>
+                    <p><strong>Tip:</strong> Puedes guardar el acta como borrador y completar los detalles más tarde.</p>
+                    
+                    <hr class="my-3">
+                    
+                    <div class="d-grid">
+                        <button type="button" class="btn btn-outline-info btn-sm" id="cargar-ejemplo">
+                            <i class="fas fa-magic me-2"></i>
+                            Cargar Ejemplo
+                        </button>
+                    </div>
+                    <div class="form-text mt-2">
+                        Llena el formulario con datos de ejemplo para pruebas rápidas
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+console.log('🔥 Script cargado');
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('🔥 DOMContentLoaded ejecutado');
+    // Vista previa en tiempo real
+    const form = document.getElementById('documento-form');
+    const inputs = form.querySelectorAll('input, select, textarea');
+    const vistaPrevia = document.getElementById('vista-previa');
+    let updateTimeout;
+    
+    // Cargar vista previa inicial
+    actualizarVistaPrevia();
+    
+    inputs.forEach(input => {
+        input.addEventListener('input', debounceUpdate);
+        input.addEventListener('change', debounceUpdate);
+    });
+    
+    function debounceUpdate() {
+        clearTimeout(updateTimeout);
+        updateTimeout = setTimeout(actualizarVistaPrevia, 300); // Esperar 300ms antes de actualizar
+    }
+    
+    function actualizarVistaPrevia() {
+        const formData = new FormData(form);
+        
+        // Mostrar indicador de carga
+        vistaPrevia.style.opacity = '0.7';
+        
+        fetch('{% url "documentos:vista_previa" %}', {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+            }
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Error en la respuesta del servidor');
+            }
+            return response.text();
+        })
+        .then(html => {
+            vistaPrevia.innerHTML = html;
+            vistaPrevia.style.opacity = '1';
+            
+            // Procesar campos JSON dinámicamente
+            procesarCamposJSON();
+            
+            // Scroll suave al top de la vista previa si es necesario
+            const documentoPreview = vistaPrevia.querySelector('.documento-preview');
+            if (documentoPreview) {
+                documentoPreview.scrollTop = 0;
+            }
+        })
+        .catch(error => {
+            console.error('Error actualizando vista previa:', error);
+            vistaPrevia.innerHTML = `
+                <div class="alert alert-warning">
+                    <i class="fas fa-exclamation-triangle me-2"></i>
+                    Error al actualizar la vista previa. Intenta de nuevo.
+                </div>
+            `;
+            vistaPrevia.style.opacity = '1';
+        });
+    }
+    
+    // Función para procesar campos JSON dinámicamente en la vista previa
+    function procesarCamposJSON() {
+        // Procesar Orden del Día
+        const ordenDiaTexto = document.getElementById('id_orden_dia_texto')?.value || '';
+        const ordenDiaPreview = document.getElementById('preview-orden-dia');
+        if (ordenDiaPreview && ordenDiaTexto.trim()) {
+            const puntos = ordenDiaTexto.split('\n').filter(p => p.trim());
+            ordenDiaPreview.innerHTML = puntos.map(punto => `<li>${punto.trim()}</li>`).join('');
+        }
+        
+        // Procesar Resoluciones
+        const resolucionesTexto = document.getElementById('id_resoluciones_texto')?.value || '';
+        const resolucionesPreview = document.getElementById('preview-resoluciones');
+        if (resolucionesPreview && resolucionesTexto.trim()) {
+            const paragrafos = resolucionesTexto.split('\n\n').filter(p => p.trim());
+            if (paragrafos.length === 0) {
+                // Si no hay párrafos, dividir por líneas
+                const lineas = resolucionesTexto.split('\n').filter(l => l.trim());
+                resolucionesPreview.innerHTML = lineas.map(linea => `<p class="mb-2">${linea.trim()}</p>`).join('');
+            } else {
+                resolucionesPreview.innerHTML = paragrafos.map(parrafo => `<p class="mb-2">${parrafo.trim().replace(/\n/g, '<br>')}</p>`).join('');
+            }
+        }
+        
+        // Procesar Nombramientos
+        const nombramientosTexto = document.getElementById('id_nombramientos_texto')?.value || '';
+        const nombramientosPreview = document.getElementById('preview-nombramientos');
+        if (nombramientosPreview && nombramientosTexto.trim()) {
+            const nombramientos = nombramientosTexto.split('\n').filter(n => n.trim());
+            nombramientosPreview.innerHTML = nombramientos.map(nombramiento => `<p class="mb-1">• ${nombramiento.trim()}</p>`).join('');
+        }
+        
+        // Procesar Delegados
+        const delegadosTexto = document.getElementById('id_delegados_texto')?.value || '';
+        const delegadosPreview = document.getElementById('preview-delegados');
+        if (delegadosPreview && delegadosTexto.trim()) {
+            const delegados = delegadosTexto.split('\n').filter(d => d.trim());
+            delegadosPreview.innerHTML = delegados.map(delegado => `<p class="mb-1">• ${delegado.trim()}</p>`).join('');
+        }
+        
+        // Procesar Asistentes (si existe el elemento)
+        const asistentesTexto = document.getElementById('id_asistentes_texto')?.value || '';
+        const asistentesPreview = document.getElementById('preview-asistentes');
+        if (asistentesPreview && asistentesTexto.trim()) {
+            const asistentes = asistentesTexto.split('\n').filter(a => a.trim());
+            asistentesPreview.innerHTML = asistentes.map(asistente => `<p class="mb-1">• ${asistente.trim()}</p>`).join('');
+        }
+    }
+
+    // Validación de porcentaje
+    const porcentajeInput = document.getElementById('id_porcentaje_capital_presente');
+    if (porcentajeInput) {
+        porcentajeInput.addEventListener('input', function() {
+            let value = parseFloat(this.value);
+            if (isNaN(value)) return;
+            if (value < 0) this.value = 0;
+            if (value > 100) this.value = 100;
+        });
+        
+        // Validación visual
+        porcentajeInput.addEventListener('blur', function() {
+            const value = parseFloat(this.value);
+            if (value < 50) {
+                this.classList.add('border-warning');
+                this.title = 'Porcentaje menor al 50% - Verificar quórum legal';
+            } else {
+                this.classList.remove('border-warning');
+                this.title = '';
+            }
+        });
+    }
+
+    // Mostrar/ocultar fundamento de convocatoria
+    const convocatoriaOmitida = document.getElementById('id_convocatoria_omitida');
+    const fundamentoDiv = document.querySelector('#id_fundamento_convocatoria').closest('.col-md-8');
+    
+    function toggleFundamento() {
+        if (convocatoriaOmitida.checked) {
+            fundamentoDiv.style.display = 'block';
+            fundamentoDiv.style.animation = 'fadeIn 0.3s ease-in';
+        } else {
+            fundamentoDiv.style.display = 'none';
+            document.getElementById('id_fundamento_convocatoria').value = '';
+        }
+        debounceUpdate(); // Actualizar vista previa
+    }
+    
+    convocatoriaOmitida.addEventListener('change', toggleFundamento);
+    toggleFundamento(); // Ejecutar al cargar
+    
+    // Botón Cargar Ejemplo
+    const cargarEjemploBtn = document.getElementById('cargar-ejemplo');
+    cargarEjemploBtn.addEventListener('click', function() {
+        // Datos de ejemplo realistas para una Acta de Asamblea
+        document.getElementById('id_razon_social').value = 'Corporativo Tecnológico Innovador S.A. de C.V.';
+        document.getElementById('id_tipo_asamblea').value = 'ordinaria';
+        document.getElementById('id_caracter').value = 'primera_convocatoria';
+        document.getElementById('id_fecha').value = '2024-03-15';
+        document.getElementById('id_hora_inicio').value = '10:00';
+        document.getElementById('id_hora_cierre').value = '12:30';
+        document.getElementById('id_lugar').value = 'Sala de Juntas Principal, Torre Corporativa, Av. Paseo de la Reforma 123, Piso 15, Col. Tabacalera, Alcaldía Cuauhtémoc, C.P. 06030, Ciudad de México, México';
+        document.getElementById('id_porcentaje_capital_presente').value = '95.750';
+        document.getElementById('id_convocatoria_omitida').checked = false;
+        document.getElementById('id_fundamento_convocatoria').value = 'Artículo 178 de la Ley General de Sociedades Mercantiles y Artículo 15 de los Estatutos Sociales';
+        document.getElementById('id_presidente').value = 'Lic. María Elena Rodríguez Vázquez';
+        document.getElementById('id_secretario').value = 'C.P. Carlos Alberto Mendoza López';
+        document.getElementById('id_escrutador').value = 'Ing. Ana Patricia Herrera Sánchez';
+        document.getElementById('id_comisario').value = 'Lic. Roberto Jiménez Castillo';
+        document.getElementById('id_metodo_votacion_general').value = 'economica';
+        document.getElementById('id_estado').value = 'borrador';
+        
+        // Datos de ejemplo mejorados para campos JSON
+        document.getElementById('id_asistentes_texto').value = 'ACCIONISTAS PRESENTES:\n\nLic. María Elena Rodríguez Vázquez - Presidente del Consejo de Administración\n• Acciones: 35,000 (35% del capital social)\n• RFC: ROMV750815ABC\n\nC.P. Carlos Alberto Mendoza López - Secretario del Consejo\n• Acciones: 25,000 (25% del capital social)\n• RFC: MELC680420DEF\n\nIng. José Luis Martínez Torres - Consejero\n• Acciones: 20,000 (20% del capital social)\n• RFC: MATJ720310GHI\n\nLic. Carmen Sofía Delgado Ruiz - Consejera\n• Acciones: 15,750 (15.75% del capital social)\n• RFC: DERC850925JKL\n\nFUNCIONARIOS:\n\nIng. Ana Patricia Herrera Sánchez - Escrutador\nLic. Roberto Jiménez Castillo - Comisario Propietario\nC.P. Fernando Alejandro Vega Morales - Comisario Suplente';
+        
+        document.getElementById('id_orden_dia_texto').value = 'ORDEN DEL DÍA\n\nI. Verificación del quórum legal y declaración de instalación de la Asamblea\n\nII. Lectura, discusión y en su caso aprobación del orden del día\n\nIII. Presentación, discusión y en su caso aprobación del informe anual del Consejo de Administración correspondiente al ejercicio fiscal 2023, de conformidad con el artículo 172 de la Ley General de Sociedades Mercantiles\n\nIV. Presentación, discusión y en su caso aprobación de los estados financieros auditados al 31 de diciembre de 2023, incluyendo:\n   a) Balance General\n   b) Estado de Resultados\n   c) Estado de Cambios en el Patrimonio\n   d) Estado de Flujos de Efectivo\n   e) Notas a los Estados Financieros\n\nV. Resoluciones sobre la aplicación de resultados del ejercicio 2023 y decreto de dividendos\n\nVI. Ratificación o en su caso nombramiento de los miembros del Consejo de Administración para el ejercicio 2024\n\nVII. Ratificación o en su caso nombramiento del Comisario Propietario y Suplente para el ejercicio 2024\n\nVIII. Determinación de emolumentos de consejeros y comisarios\n\nIX. Nombramiento de delegados especiales para formalizar acuerdos\n\nX. Asuntos varios';
+        
+        document.getElementById('id_resoluciones_texto').value = 'RESOLUCIONES ADOPTADAS POR UNANIMIDAD:\n\nPRIMERA.- Se aprobó por unanimidad el informe anual del Consejo de Administración correspondiente al ejercicio fiscal 2023, reconociendo la gestión eficiente y los resultados positivos obtenidos durante el período.\n\nSEGUNDA.- Se aprobaron los estados financieros auditados al 31 de diciembre de 2023, dictaminados por el despacho "Auditores Asociados S.C.", los cuales reflejan:\n• Activos totales: $45,750,000.00\n• Pasivos totales: $12,250,000.00\n• Capital contable: $33,500,000.00\n• Utilidad neta del ejercicio: $5,125,000.00\n\nTERCERA.- Se acordó la aplicación de resultados del ejercicio 2023 de la siguiente manera:\n• Reserva legal (5%): $256,250.00\n• Dividendos a distribuir: $4,000,000.00\n• Utilidades retenidas: $868,750.00\n\nCUARTA.- Se decretó el pago de dividendos por $4,000,000.00 pesos, equivalente a $40.00 pesos por acción, pagaderos el 30 de abril de 2024 mediante transferencia bancaria.\n\nQUINTA.- Se ratificaron en sus cargos a todos los miembros del Consejo de Administración para el ejercicio 2024.\n\nSEXTA.- Se ratificó al Lic. Roberto Jiménez Castillo como Comisario Propietario y al C.P. Fernando Alejandro Vega Morales como Comisario Suplente para el ejercicio 2024.';
+        
+        document.getElementById('id_nombramientos_texto').value = 'CONSEJO DE ADMINISTRACIÓN 2024:\n\nPresidente del Consejo:\n• Lic. María Elena Rodríguez Vázquez\n• RFC: ROMV750815ABC\n• Domicilio: Av. Universidad 1500, Col. Del Valle, CDMX\n• Emolumentos anuales: $480,000.00\n\nSecretario del Consejo:\n• C.P. Carlos Alberto Mendoza López\n• RFC: MELC680420DEF\n• Domicilio: Calle Insurgentes Sur 2000, Col. San Ángel, CDMX\n• Emolumentos anuales: $360,000.00\n\nConsejeros:\n• Ing. José Luis Martínez Torres\n  RFC: MATJ720310GHI\n  Emolumentos anuales: $240,000.00\n\n• Lic. Carmen Sofía Delgado Ruiz\n  RFC: DERC850925JKL\n  Emolumentos anuales: $240,000.00\n\nCOMISARIOS 2024:\n\nComisario Propietario:\n• Lic. Roberto Jiménez Castillo\n• RFC: JICR770605MNO\n• Emolumentos anuales: $180,000.00\n\nComisario Suplente:\n• C.P. Fernando Alejandro Vega Morales\n• RFC: VEMF820918PQR\n• Emolumentos anuales: $120,000.00';
+        
+        document.getElementById('id_dividendos_texto').value = 'DECRETO DE DIVIDENDOS EJERCICIO 2023:\n\nUtilidad neta del ejercicio: $5,125,000.00\nMenos: Reserva legal (5%): $256,250.00\nUtilidad distribuible: $4,868,750.00\n\nDIVIDENDOS APROBADOS:\n• Monto total: $4,000,000.00\n• Dividendo por acción: $40.00\n• Total de acciones: 100,000\n• Porcentaje de distribución: 82.16%\n\nFECHA Y FORMA DE PAGO:\n• Fecha de pago: 30 de abril de 2024\n• Forma de pago: Transferencia bancaria\n• Banco pagador: BBVA México S.A.\n• Cuenta concentradora: 0123456789\n\nRETENCIONES:\n• ISR (10%): Se retendrá conforme a la legislación fiscal vigente\n• Los accionistas recibirán constancia de retenciones\n\nUTILIDAES RETENIDAS:\n• Monto retenido: $868,750.00\n• Destino: Reinversión y crecimiento corporativo';
+        
+        document.getElementById('id_delegados_texto').value = 'DELEGADOS ESPECIALES DESIGNADOS:\n\nDELEGADO PRINCIPAL:\n• Lic. María Elena Rodríguez Vázquez\n• Cargo: Presidente del Consejo de Administración\n• RFC: ROMV750815ABC\n• Facultades: Amplias y suficientes para:\n  - Formalizar ante Notario Público las resoluciones adoptadas\n  - Realizar trámites ante el Registro Público de Comercio\n  - Gestionar inscripciones y modificaciones estatutarias\n  - Representar a la sociedad ante autoridades fiscales\n  - Otorgar y firmar toda documentación necesaria\n\nDELEGADO ALTERNO:\n• C.P. Carlos Alberto Mendoza López\n• Cargo: Secretario del Consejo de Administración\n• RFC: MELC680420DEF\n• Facultades: Las mismas que el delegado principal\n• Actuará en ausencia o impedimento del delegado principal\n\nVIGENCIA:\n• Las facultades otorgadas tendrán vigencia de 12 meses\n• Podrán ser revocadas en cualquier momento por la Asamblea\n• Se autoriza la sustitución de delegados si fuera necesario\n\nNOTARIO PÚBLICO:\n• Lic. Patricia Morales Hernández\n• Notario Público No. 85 del D.F.\n• Domicilio: Av. Revolución 1425, Col. Guadalupe Inn, CDMX';
+        
+        document.getElementById('id_anexos_texto').value = 'ANEXOS QUE FORMAN PARTE INTEGRAL DEL ACTA:\n\nANEXO I - ESTADOS FINANCIEROS AUDITADOS 2023:\n• Balance General al 31 de diciembre de 2023\n• Estado de Resultados del ejercicio 2023\n• Estado de Cambios en el Patrimonio 2023\n• Estado de Flujos de Efectivo 2023\n• Notas a los Estados Financieros\n• 47 páginas, firmado por C.P. Alejandro Ruiz Mendoza\n\nANEXO II - DICTAMEN DEL AUDITOR INDEPENDIENTE:\n• Dictamen sin salvedades emitido por "Auditores Asociados S.C."\n• Fecha: 15 de febrero de 2024\n• Registro ante CNBV: AUD-001-2020\n• 8 páginas\n\nANEXO III - INFORME DEL CONSEJO DE ADMINISTRACIÓN:\n• Informe anual de actividades y resultados\n• Análisis de mercado y perspectivas 2024\n• Proyectos de inversión y expansión\n• 23 páginas\n\nANEXO IV - PROPUESTA DE DISTRIBUCIÓN DE UTILIDADES:\n• Cálculo detallado de dividendos\n• Cronograma de pagos\n• Análisis de impacto fiscal\n• 6 páginas\n\nANEXO V - CURRÍCULUM VITAE DE FUNCIONARIOS:\n• CV actualizado de consejeros ratificados\n• CV actualizado de comisarios ratificados\n• Declaraciones de independencia\n• 15 páginas\n\nANEXO VI - LISTA DE ASISTENCIA:\n• Lista firmada por todos los asistentes\n• Poderes y representaciones\n• Constancia de quórum legal\n• 4 páginas\n\nTodos los anexos se encuentran debidamente foliados, rubricados y forman parte integral de la presente acta.';
+        
+        // Abrir automáticamente todas las secciones del acordeón para mostrar los datos cargados
+        const accordionSections = [
+            'collapseAsistentes',
+            'collapseOrdenDia', 
+            'collapseResoluciones',
+            'collapseNombramientos',
+            'collapseDividendos',
+            'collapseDelegados',
+            'collapseAnexos'
+        ];
+        
+        accordionSections.forEach(sectionId => {
+            const section = document.getElementById(sectionId);
+            if (section) {
+                section.classList.add('show');
+                // También actualizar el botón del acordeón
+                const button = document.querySelector(`[data-bs-target="#${sectionId}"]`);
+                if (button) {
+                    button.classList.remove('collapsed');
+                    button.setAttribute('aria-expanded', 'true');
+                }
+            }
+        });
+        
+        // Actualizar vista previa
+        actualizarVistaPrevia();
+        
+        // Mostrar toast de confirmación
+        const toast = document.createElement('div');
+        toast.className = 'toast show position-fixed top-0 end-0 m-3';
+        toast.style.zIndex = '9999';
+        toast.innerHTML = `
+            <div class="toast-header bg-info text-white">
+                <i class="fas fa-magic me-2"></i>
+                <strong class="me-auto">Ejemplo Cargado</strong>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast"></button>
+            </div>
+            <div class="toast-body">
+                Formulario llenado con datos de ejemplo. ¡Listo para guardar!
+            </div>
+        `;
+        document.body.appendChild(toast);
+        
+        // Remover toast después de 3 segundos
+        setTimeout(() => {
+            toast.remove();
+        }, 3000);
+        
+        // Scroll al inicio del formulario
+        document.getElementById('documento-form').scrollIntoView({ 
+            behavior: 'smooth', 
+            block: 'start' 
+        });
+    
+    // Validación de horas
+    const horaInicio = document.getElementById('id_hora_inicio');
+    const horaCierre = document.getElementById('id_hora_cierre');
+    
+    function validarHoras() {
+        if (horaInicio.value && horaCierre.value) {
+            const inicio = new Date('2000-01-01 ' + horaInicio.value);
+            const cierre = new Date('2000-01-01 ' + horaCierre.value);
+            
+            if (cierre <= inicio) {
+                horaCierre.classList.add('border-danger');
+                horaCierre.title = 'La hora de cierre debe ser posterior a la hora de inicio';
+            } else {
+                horaCierre.classList.remove('border-danger');
+                horaCierre.title = '';
+            }
+        }
+    }
+    
+    horaInicio.addEventListener('change', validarHoras);
+    horaCierre.addEventListener('change', validarHoras);
+    
+    // Autocompletado inteligente
+    const razonSocialInput = document.getElementById('id_razon_social');
+    razonSocialInput.addEventListener('input', function() {
+        // Convertir a mayúsculas automáticamente
+        this.value = this.value.toUpperCase();
+    });
+    
+    // Formateo automático de nombres propios
+    const nombresInputs = ['id_presidente', 'id_secretario', 'id_escrutador', 'id_comisario'];
+    nombresInputs.forEach(id => {
+        const input = document.getElementById(id);
+        if (input) {
+            input.addEventListener('blur', function() {
+                // Capitalizar nombres propios
+                this.value = this.value.toLowerCase().replace(/\b\w/g, l => l.toUpperCase());
+            });
+        }
+    });
+    
+    // Función para limpiar formulario
+    function limpiarFormulario() {
+        const form = document.getElementById('documento-form');
+        const inputs = form.querySelectorAll('input, select, textarea');
+        
+        inputs.forEach(input => {
+            if (input.type === 'checkbox') {
+                input.checked = false;
+            } else if (input.type !== 'hidden') {
+                input.value = '';
+            }
+        });
+        
+        // Actualizar vista previa
+        actualizarVistaPrevia();
+    }
+    
+    // Agregar botón limpiar (opcional)
+    const ayudaCard = document.querySelector('.card:has(#cargar-ejemplo)');
+    if (ayudaCard) {
+        const limpiarBtn = document.createElement('button');
+        limpiarBtn.type = 'button';
+        limpiarBtn.className = 'btn btn-outline-secondary btn-sm mt-2';
+        limpiarBtn.innerHTML = '<i class="fas fa-eraser me-2"></i>Limpiar Todo';
+        limpiarBtn.addEventListener('click', limpiarFormulario);
+        
+        const cargarBtn = document.getElementById('cargar-ejemplo');
+        cargarBtn.parentNode.appendChild(limpiarBtn);
+    }
+    
+    // =====  EDITOR DINÁMICO ORDEN DEL DÍA =====
+    console.log('📍 Definiendo función initOrdenDiaEditor');
+    function initOrdenDiaEditor() {
+      console.log('🚀 Iniciando editor Orden del Día');
+      const puntosContainer = document.getElementById('puntos-container');
+      const addPuntoBtn = document.getElementById('btn-add-punto');
+      const hiddenInput = document.getElementById('{{ form.orden_dia_texto.id_for_label }}') || document.querySelector('[name="orden_dia_texto"]');
+      
+      console.log('🔍 Elementos encontrados:');
+      console.log('  - puntosContainer:', puntosContainer);
+      console.log('  - addPuntoBtn:', addPuntoBtn);
+      console.log('  - hiddenInput:', hiddenInput);
+
+      // Precarga desde instancia
+      const PRELOAD = (() => {
+        try {
+          const raw = hiddenInput && hiddenInput.value ? hiddenInput.value : '';
+          return raw ? JSON.parse(raw) : [];
+        } catch(e) { return []; }
+      })();
+
+      function el(tag, attrs = {}, children = []) {
+        const node = document.createElement(tag);
+        Object.entries(attrs).forEach(([k,v]) => {
+          if (k === 'class') node.className = v;
+          else if (k === 'dataset') Object.entries(v).forEach(([dk, dv]) => node.dataset[dk] = dv);
+          else if (k === 'text') node.textContent = v;
+          else node.setAttribute(k, v);
+        });
+        children.forEach(ch => node.appendChild(ch));
+        return node;
+      }
+
+      function buildResolucionRow(res = {}) {
+        const row = el('div', { class: 'row g-2 align-items-end mb-2 resol-row' }, [
+          el('div', { class: 'col-3' }, [
+            el('label', { class: 'form-label small', text: 'Clave (opcional)' }),
+            el('input', { class: 'form-control form-control-sm res-clave', value: res.clave || '' })
+          ]),
+          el('div', { class: 'col-8' }, [
+            el('label', { class: 'form-label small', text: 'Resolución (requerido)' }),
+            el('textarea', { class: 'form-control form-control-sm res-texto', rows: 2 }, [])
+          ]),
+          el('div', { class: 'col-1 d-grid' }, [
+            el('button', { type: 'button', class: 'btn btn-sm btn-outline-danger btn-del-res' }, [el('span', { text: '🗑️' })])
+          ])
+        ]);
+        row.querySelector('.res-texto').value = res.texto || '';
+        row.querySelector('.btn-del-res').addEventListener('click', () => row.remove());
+        return row;
+      }
+
+      function buildPuntoCard(p = {}) {
+        const card = el('div', { class: 'card mb-3 punto-card' }, [
+          el('div', { class: 'card-body' }, [
+            el('div', { class: 'row g-2 mb-2' }, [
+              el('div', { class: 'col-2' }, [
+                el('label', { class: 'form-label small', text: 'Número (entero)' }),
+                el('input', { type: 'number', min: '1', step: '1', class: 'form-control form-control-sm p-numero', value: p.numero || '' })
+              ]),
+              el('div', { class: 'col-9' }, [
+                el('label', { class: 'form-label small', text: 'Título Orden (requerido)' }),
+                el('input', { type: 'text', class: 'form-control form-control-sm p-titulo', value: p.titulo || '' })
+              ]),
+              el('div', { class: 'col-1 d-grid' }, [
+                el('label', { class: 'form-label small', text: ' ' }),
+                el('button', { type: 'button', class: 'btn btn-sm btn-outline-danger btn-del-punto' }, [el('span', { text: '🗑️' })])
+              ])
+            ]),
+            el('div', { class: 'mb-2' }, [
+              el('label', { class: 'form-label small', text: 'Descripción Orden' }),
+              el('textarea', { class: 'form-control form-control-sm p-descripcion', rows: 2 }, [])
+            ]),
+            el('div', { class: 'd-flex align-items-center justify-content-between mt-2' }, [
+              el('h6', { class: 'mb-0' , text: 'Resoluciones' }),
+              el('button', { type: 'button', class: 'btn btn-sm btn-secondary btn-add-res' }, [el('span', { text: '➕ Añadir resolución' })])
+            ]),
+            el('div', { class: 'mt-2 res-container' })
+          ])
+        ]);
+        card.querySelector('.p-descripcion').value = p.descripcion || '';
+
+        const resContainer = card.querySelector('.res-container');
+        (p.resoluciones || []).forEach(r => resContainer.appendChild(buildResolucionRow(r)));
+
+        card.querySelector('.btn-add-res').addEventListener('click', () => {
+          resContainer.appendChild(buildResolucionRow({}));
+        });
+        card.querySelector('.btn-del-punto').addEventListener('click', () => card.remove());
+
+        return card;
+      }
+
+      function addPunto(p = {}) {
+        console.log('➕ Ejecutando addPunto:', p);
+        console.log('📦 puntosContainer:', puntosContainer);
+        if (!puntosContainer) {
+          console.error('❌ puntosContainer no existe!');
+          return;
+        }
+        const card = buildPuntoCard(p);
+        console.log('🎴 Card creada:', card);
+        puntosContainer.appendChild(card);
+        console.log('✅ Card añadida al container');
+      }
+
+      function readState() {
+        const puntos = Array.from(puntosContainer.querySelectorAll('.punto-card')).map(card => {
+          const numero = parseInt(card.querySelector('.p-numero').value, 10);
+          const titulo = (card.querySelector('.p-titulo').value || '').trim();
+          const descripcion = (card.querySelector('.p-descripcion').value || '').trim();
+          const resoluciones = Array.from(card.querySelectorAll('.resol-row')).map(row => {
+            const clave = (row.querySelector('.res-clave').value || '').trim();
+            const texto = (row.querySelector('.res-texto').value || '').trim();
+            return { ...(clave ? {clave} : {}), texto };
+          }).filter(r => r.texto); // texto requerido
+          return {
+            ...(Number.isFinite(numero) && numero > 0 ? { numero } : {}),
+            ...(titulo ? { titulo } : {}),
+            ...(descripcion ? { descripcion } : {}),
+            resoluciones
+          };
+        });
+        return puntos.filter(p => p.titulo); // título requerido
+      }
+
+      // Precargar
+      (PRELOAD || []).forEach(addPunto);
+
+      // Exponer función para test directo
+      window.testAddPunto = () => {
+        console.log('🧪 Test function called');
+        addPunto({});
+      };
+
+
+      // Antes de enviar el form, serializar al hidden
+      const form = document.querySelector('#documento-form');
+      if (form) {
+        form.addEventListener('submit', (e) => {
+          const puntos = readState();
+
+          // Validación básica
+          for (const p of puntos) {
+            if (!p.titulo) {
+              alert('Cada punto debe tener título.');
+              e.preventDefault(); return false;
+            }
+            if (p.numero !== undefined && (!Number.isInteger(p.numero) || p.numero <= 0)) {
+              alert('El número de cada punto debe ser un entero positivo.');
+              e.preventDefault(); return false;
+            }
+            for (const r of (p.resoluciones || [])) {
+              if (!r.texto) {
+                alert('Cada resolución debe tener texto.');
+                e.preventDefault(); return false;
+              }
+            }
+          }
+
+          if (hiddenInput) {
+            hiddenInput.value = JSON.stringify(puntos);
+          }
+          return true;
+        });
+      }
+    }
+
+    // Inicializar inmediatamente
+    console.log('🚀 Llamando initOrdenDiaEditor desde DOMContentLoaded');
+    console.log('🔍 Función initOrdenDiaEditor existe:', typeof initOrdenDiaEditor);
+    if (typeof initOrdenDiaEditor === 'function') {
+      try {
+        initOrdenDiaEditor();
+      } catch (error) {
+        console.error('❌ Error al inicializar:', error);
+      }
+    } else {
+      console.error('❌ initOrdenDiaEditor no está definida como función');
+    }
+    
+    // También inicializar cuando se abra el accordion
+    const ordenDiaAccordion = document.getElementById('collapseOrdenDia');
+    if (ordenDiaAccordion) {
+      console.log('📂 Accordion encontrado, añadiendo listener');
+      ordenDiaAccordion.addEventListener('shown.bs.collapse', () => {
+        console.log('📂 Accordion abierto, reinicializando editor');
+        initOrdenDiaEditor();
+      });
+    } else {
+      console.log('❌ Accordion NO encontrado');
+    }
+});
+
+// Estilos CSS adicionales
+const style = document.createElement('style');
+style.textContent = `
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(-10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .form-control.border-warning {
+        border-color: #ffc107 !important;
+        box-shadow: 0 0 0 0.2rem rgba(255, 193, 7, 0.25);
+    }
+    
+    .form-control.border-danger {
+        border-color: #dc3545 !important;
+        box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25);
+    }
+    
+    #vista-previa {
+        transition: opacity 0.3s ease;
+    }
+`;
+document.head.appendChild(style);
+
+});
+
+// =====  EDITOR DINÁMICO ORDEN DEL DÍA =====
+function initOrdenDiaEditor() {
+  console.log('🚀 Iniciando editor Orden del Día');
+  const puntosContainer = document.getElementById('puntos-container');
+  const addPuntoBtn = document.getElementById('btn-add-punto');
+  const hiddenInput = document.getElementById('{{ form.orden_dia_texto.id_for_label }}') || document.querySelector('[name="orden_dia_texto"]');
+  
+  console.log('🔍 Elementos encontrados:');
+  console.log('  - puntosContainer:', puntosContainer);
+  console.log('  - addPuntoBtn:', addPuntoBtn);
+  console.log('  - hiddenInput:', hiddenInput);
+
+  if (!puntosContainer || !addPuntoBtn) {
+    console.error('❌ Elementos DOM no encontrados');
+    return;
+  }
+
+  // Precarga desde instancia
+  const PRELOAD = (() => {
+    try {
+      const raw = hiddenInput && hiddenInput.value ? hiddenInput.value : '';
+      return raw ? JSON.parse(raw) : [];
+    } catch(e) { return []; }
+  })();
+
+  function el(tag, attrs = {}, children = []) {
+    const element = document.createElement(tag);
+    Object.entries(attrs).forEach(([k, v]) => {
+      if (k === 'className') element.className = v;
+      else if (k === 'innerHTML') element.innerHTML = v;
+      else element.setAttribute(k, v);
+    });
+    children.forEach(child => {
+      if (typeof child === 'string') element.appendChild(document.createTextNode(child));
+      else element.appendChild(child);
+    });
+    return element;
+  }
+
+  function buildResolucionRow(r = {}) {
+    return el('div', { className: 'row g-2 align-items-end mb-2 resol-row' }, [
+      el('div', { className: 'col-3' }, [
+        el('label', { className: 'form-label small' }, ['Clave (opcional)']),
+        el('input', { className: 'form-control form-control-sm res-clave', value: r.clave || '' })
+      ]),
+      el('div', { className: 'col-8' }, [
+        el('label', { className: 'form-label small' }, ['Resolución (requerido)']),
+        el('textarea', { className: 'form-control form-control-sm res-texto', rows: 2 }, [r.texto || ''])
+      ]),
+      el('div', { className: 'col-1 d-grid' }, [
+        el('button', { type: 'button', className: 'btn btn-sm btn-outline-danger btn-del-res' }, [
+          el('span', {}, ['🗑️'])
+        ])
+      ])
+    ]);
+  }
+
+  function buildPuntoCard(p = {}) {
+    const resContainer = el('div', { className: 'mt-2 res-container' });
+    (p.resoluciones || []).forEach(r => resContainer.appendChild(buildResolucionRow(r)));
+
+    const card = el('div', { className: 'card mb-3 punto-card' }, [
+      el('div', { className: 'card-body' }, [
+        el('div', { className: 'row g-2 mb-2' }, [
+          el('div', { className: 'col-2' }, [
+            el('label', { className: 'form-label small' }, ['Número (entero)']),
+            el('input', { type: 'number', min: 1, step: 1, className: 'form-control form-control-sm p-numero', value: p.numero || '' })
+          ]),
+          el('div', { className: 'col-9' }, [
+            el('label', { className: 'form-label small' }, ['Título Orden (requerido)']),
+            el('input', { type: 'text', className: 'form-control form-control-sm p-titulo', value: p.titulo || '' })
+          ]),
+          el('div', { className: 'col-1 d-grid' }, [
+            el('label', { className: 'form-label small' }, [' ']),
+            el('button', { type: 'button', className: 'btn btn-sm btn-outline-danger btn-del-punto' }, [
+              el('span', {}, ['🗑️'])
+            ])
+          ])
+        ]),
+        el('div', { className: 'mb-2' }, [
+          el('label', { className: 'form-label small' }, ['Descripción Orden']),
+          el('textarea', { className: 'form-control form-control-sm p-descripcion', rows: 2 }, [p.descripcion || ''])
+        ]),
+        el('div', { className: 'd-flex align-items-center justify-content-between mt-2' }, [
+          el('h6', { className: 'mb-0' }, ['Resoluciones']),
+          el('button', { type: 'button', className: 'btn btn-sm btn-secondary btn-add-res' }, [
+            el('span', {}, ['➕ Añadir resolución'])
+          ])
+        ]),
+        resContainer
+      ])
+    ]);
+
+    card.querySelector('.btn-add-res').addEventListener('click', () => {
+      resContainer.appendChild(buildResolucionRow({}));
+    });
+    card.querySelector('.btn-del-punto').addEventListener('click', () => card.remove());
+
+    return card;
+  }
+
+  function addPunto(p = {}) {
+    console.log('➕ Ejecutando addPunto:', p);
+    const card = buildPuntoCard(p);
+    puntosContainer.appendChild(card);
+    console.log('✅ Card añadida al container');
+  }
+
+  function readState() {
+    const puntos = Array.from(puntosContainer.querySelectorAll('.punto-card')).map(card => {
+      const numero = parseInt(card.querySelector('.p-numero').value, 10);
+      const titulo = (card.querySelector('.p-titulo').value || '').trim();
+      const descripcion = (card.querySelector('.p-descripcion').value || '').trim();
+      const resoluciones = Array.from(card.querySelectorAll('.resol-row')).map(row => {
+        const clave = (row.querySelector('.res-clave').value || '').trim();
+        const texto = (row.querySelector('.res-texto').value || '').trim();
+        return {
+          ...(clave ? { clave } : {}),
+          texto
+        };
+      }).filter(r => r.texto);
+
+      return {
+        ...(numero ? { numero } : {}),
+        titulo,
+        ...(descripcion ? { descripcion } : {}),
+        resoluciones
+      };
+    });
+    return puntos.filter(p => p.titulo);
+  }
+
+  // Precargar
+  (PRELOAD || []).forEach(addPunto);
+
+  // Exponer función para test directo
+  window.testAddPunto = () => {
+    console.log('🧪 Test function called');
+    addPunto({});
+  };
+
+  // Botón añadir punto - listener directo (solo una vez)
+  const btnAddPunto = document.getElementById('btn-add-punto');
+  if (btnAddPunto && !btnAddPunto.hasAttribute('data-listener-added')) {
+    btnAddPunto.setAttribute('data-listener-added', 'true');
+    btnAddPunto.addEventListener('click', (e) => {
+      e.preventDefault();
+      addPunto({});
+    });
+  }
+
+  // Event delegation para botones dinámicos
+  puntosContainer.addEventListener('click', (e) => {
+    if (e.target.closest('.btn-del-res')) {
+      e.target.closest('.resol-row').remove();
+    }
+  });
+
+  // Antes de enviar el form, serializar al hidden
+  const form = document.querySelector('#documento-form');
+  if (form) {
+    form.addEventListener('submit', (e) => {
+      const puntos = readState();
+      if (hiddenInput) {
+        hiddenInput.value = JSON.stringify(puntos);
+      }
+    });
+  }
+}
+
+// Inicializar cuando DOM esté listo
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('🚀 Inicializando editor Orden del Día');
+    initOrdenDiaEditor();
+    
+    // También inicializar cuando se abra el accordion
+    const ordenDiaAccordion = document.getElementById('collapseOrdenDia');
+    if (ordenDiaAccordion) {
+      console.log('📂 Accordion encontrado, añadiendo listener');
+      ordenDiaAccordion.addEventListener('shown.bs.collapse', () => {
+        console.log('📂 Accordion abierto, reinicializando editor');
+        initOrdenDiaEditor();
+      });
+    }
+});
+
+// Estilos CSS adicionales
+const style = document.createElement('style');
+style.textContent = `
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(-10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .form-control.border-warning {
+        border-color: #ffc107 !important;
+        box-shadow: 0 0 0 0.2rem rgba(255, 193, 7, 0.25);
+    }
+    
+    .form-control.border-danger {
+        border-color: #dc3545 !important;
+        box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25);
+    }
+    
+    #vista-previa {
+        transition: opacity 0.3s ease;
+    }
+`;
+document.head.appendChild(style);
+</script>
+{% endblock %}

@@ -1,0 +1,919 @@
+{% extends 'base.html' %}
+
+{% block title %}Editar Acta de Asamblea - {{ object.razon_social }} - Asistente Legal{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <h1 class="mb-4">
+            <i class="fas fa-edit text-warning me-2"></i>
+            Editar Acta de Asamblea
+        </h1>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Dashboard</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'documentos:lista' %}">Documentos</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'documentos:detalle' object.pk %}">{{ object.razon_social|truncatechars:30 }}</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Editar</li>
+            </ol>
+        </nav>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-8">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="fas fa-wpforms me-2"></i>
+                    Editar Información del Acta de Asamblea
+                </h5>
+                <small class="text-muted">
+                    Creada: {{ object.creada_en|date:"d/m/Y H:i" }} | 
+                    Última actualización: {{ object.actualizada_en|date:"d/m/Y H:i" }}
+                </small>
+            </div>
+            <div class="card-body">
+                <form method="post" id="documento-form">
+                    {% csrf_token %}
+                    
+                    <!-- Información Básica -->
+                    <h6 class="text-primary mb-3"><i class="fas fa-info-circle me-2"></i>Información Básica</h6>
+                    <div class="row mb-3">
+                        <div class="col-md-8">
+                            <label for="{{ form.razon_social.id_for_label }}" class="form-label">{{ form.razon_social.label }}</label>
+                            {{ form.razon_social }}
+                            {% if form.razon_social.help_text %}
+                                <div class="form-text">{{ form.razon_social.help_text }}</div>
+                            {% endif %}
+                            {% if form.razon_social.errors %}
+                                <div class="text-danger small">{{ form.razon_social.errors }}</div>
+                            {% endif %}
+                        </div>
+                        <div class="col-md-4">
+                            <label for="{{ form.tipo_asamblea.id_for_label }}" class="form-label">{{ form.tipo_asamblea.label }}</label>
+                            {{ form.tipo_asamblea }}
+                            {% if form.tipo_asamblea.errors %}
+                                <div class="text-danger small">{{ form.tipo_asamblea.errors }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label for="{{ form.caracter.id_for_label }}" class="form-label">{{ form.caracter.label }}</label>
+                            {{ form.caracter }}
+                            <div class="form-text">Ej: General de Accionistas, Extraordinaria, etc.</div>
+                            {% if form.caracter.errors %}
+                                <div class="text-danger small">{{ form.caracter.errors }}</div>
+                            {% endif %}
+                        </div>
+                        <div class="col-md-6">
+                            <label for="{{ form.fecha.id_for_label }}" class="form-label">{{ form.fecha.label }}</label>
+                            {{ form.fecha }}
+                            {% if form.fecha.errors %}
+                                <div class="text-danger small">{{ form.fecha.errors }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-md-4">
+                            <label for="{{ form.hora_inicio.id_for_label }}" class="form-label">{{ form.hora_inicio.label }}</label>
+                            {{ form.hora_inicio }}
+                            {% if form.hora_inicio.errors %}
+                                <div class="text-danger small">{{ form.hora_inicio.errors }}</div>
+                            {% endif %}
+                        </div>
+                        <div class="col-md-4">
+                            <label for="{{ form.hora_cierre.id_for_label }}" class="form-label">{{ form.hora_cierre.label }}</label>
+                            {{ form.hora_cierre }}
+                            <div class="form-text">Opcional</div>
+                            {% if form.hora_cierre.errors %}
+                                <div class="text-danger small">{{ form.hora_cierre.errors }}</div>
+                            {% endif %}
+                        </div>
+                        <div class="col-md-4">
+                            <label for="{{ form.porcentaje_capital_presente.id_for_label }}" class="form-label">{{ form.porcentaje_capital_presente.label }}</label>
+                            {{ form.porcentaje_capital_presente }}
+                            {% if form.porcentaje_capital_presente.errors %}
+                                <div class="text-danger small">{{ form.porcentaje_capital_presente.errors }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="{{ form.lugar.id_for_label }}" class="form-label">{{ form.lugar.label }}</label>
+                        {{ form.lugar }}
+                        <div class="form-text">Dirección completa donde se celebra la asamblea</div>
+                        {% if form.lugar.errors %}
+                            <div class="text-danger small">{{ form.lugar.errors }}</div>
+                        {% endif %}
+                    </div>
+
+                    <!-- Convocatoria -->
+                    <h6 class="text-primary mb-3"><i class="fas fa-bell me-2"></i>Convocatoria</h6>
+                    <div class="row mb-3">
+                        <div class="col-md-4">
+                            <div class="form-check">
+                                {{ form.convocatoria_omitida }}
+                                <label class="form-check-label" for="{{ form.convocatoria_omitida.id_for_label }}">
+                                    {{ form.convocatoria_omitida.label }}
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-md-8">
+                            <label for="{{ form.fundamento_convocatoria.id_for_label }}" class="form-label">{{ form.fundamento_convocatoria.label }}</label>
+                            {{ form.fundamento_convocatoria }}
+                            <div class="form-text">Fundamento legal si la convocatoria fue omitida</div>
+                            {% if form.fundamento_convocatoria.errors %}
+                                <div class="text-danger small">{{ form.fundamento_convocatoria.errors }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <!-- Personas Clave -->
+                    <h6 class="text-primary mb-3"><i class="fas fa-user-tie me-2"></i>Personas Clave</h6>
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label for="{{ form.presidente.id_for_label }}" class="form-label">{{ form.presidente.label }} *</label>
+                            {{ form.presidente }}
+                            {% if form.presidente.errors %}
+                                <div class="text-danger small">{{ form.presidente.errors }}</div>
+                            {% endif %}
+                        </div>
+                        <div class="col-md-6">
+                            <label for="{{ form.secretario.id_for_label }}" class="form-label">{{ form.secretario.label }} *</label>
+                            {{ form.secretario }}
+                            {% if form.secretario.errors %}
+                                <div class="text-danger small">{{ form.secretario.errors }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label for="{{ form.escrutador.id_for_label }}" class="form-label">{{ form.escrutador.label }}</label>
+                            {{ form.escrutador }}
+                            <div class="form-text">Opcional</div>
+                            {% if form.escrutador.errors %}
+                                <div class="text-danger small">{{ form.escrutador.errors }}</div>
+                            {% endif %}
+                        </div>
+                        <div class="col-md-6">
+                            <label for="{{ form.comisario.id_for_label }}" class="form-label">{{ form.comisario.label }}</label>
+                            {{ form.comisario }}
+                            <div class="form-text">Opcional</div>
+                            {% if form.comisario.errors %}
+                                <div class="text-danger small">{{ form.comisario.errors }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <!-- Método de Votación -->
+                    <h6 class="text-primary mb-3"><i class="fas fa-vote-yea me-2"></i>Votación</h6>
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label for="{{ form.metodo_votacion_general.id_for_label }}" class="form-label">{{ form.metodo_votacion_general.label }}</label>
+                            {{ form.metodo_votacion_general }}
+                            {% if form.metodo_votacion_general.errors %}
+                                <div class="text-danger small">{{ form.metodo_votacion_general.errors }}</div>
+                            {% endif %}
+                        </div>
+                        <div class="col-md-6">
+                            <label for="{{ form.estado.id_for_label }}" class="form-label">{{ form.estado.label }}</label>
+                            {{ form.estado }}
+                            {% if form.estado.errors %}
+                                <div class="text-danger small">{{ form.estado.errors }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <!-- Información Adicional -->
+                    <h6 class="text-primary mb-3"><i class="fas fa-info me-2"></i>Información Adicional</h6>
+                    <div class="alert alert-info">
+                        <i class="fas fa-lightbulb me-2"></i>
+                        <strong>Nota:</strong> Los siguientes campos son opcionales. Puedes completarlos ahora o después.
+                    </div>
+                    
+                    <!-- Campos JSON Opcionales -->
+                    <div class="accordion" id="camposAdicionales">
+                        <!-- Asistentes -->
+                         <!--
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="headingAsistentes">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseAsistentes" aria-expanded="false">
+                                    <i class="fas fa-users me-2"></i>Asistentes
+                                </button>
+                            </h2>
+                            <div id="collapseAsistentes" class="accordion-collapse collapse" data-bs-parent="#camposAdicionales">
+                                <div class="accordion-body">
+                                    <label for="{{ form.asistentes_texto.id_for_label }}" class="form-label">{{ form.asistentes_texto.label }}</label>
+                                    {{ form.asistentes_texto }}
+                                    <div class="form-text">{{ form.asistentes_texto.help_text }}</div>
+                                </div>
+                            </div>
+                        </div>
+                        -->
+                        
+                        <!-- Orden del Día -->
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="headingOrdenDia">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOrdenDia" aria-expanded="false">
+                                    <i class="fas fa-list-ol me-2"></i>Orden del Día y Resoluciones
+                                </button>
+                            </h2>
+                            <div id="collapseOrdenDia" class="accordion-collapse collapse" data-bs-parent="#camposAdicionales">
+                                <div class="accordion-body">
+                                    <div id="orden-dia-editor" class="mb-3">
+                                      <div class="d-flex align-items-center justify-content-between">
+                                        <h6 class="mb-0">Orden del Día y Resoluciones</h6>
+                                        <button type="button" class="btn btn-sm btn-primary" id="btn-add-punto">➕ Añadir punto</button>
+                                      </div>
+
+                                      <div id="puntos-container" class="mt-3"></div>
+                                    </div>
+                                    
+                                    <label for="{{ form.orden_dia_texto.id_for_label }}" class="form-label">{{ form.orden_dia_texto.label }}</label>
+                                    {{ form.orden_dia_texto }}
+                                    <div class="form-text">{{ form.orden_dia_texto.help_text }}</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Resoluciones -->
+                         <!--
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="headingResoluciones">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseResoluciones" aria-expanded="false">
+                                    <i class="fas fa-gavel me-2"></i>Resoluciones
+                                </button>
+                            </h2>
+                            <div id="collapseResoluciones" class="accordion-collapse collapse" data-bs-parent="#camposAdicionales">
+                                <div class="accordion-body">
+                                    <label for="{{ form.resoluciones_texto.id_for_label }}" class="form-label">{{ form.resoluciones_texto.label }}</label>
+                                    {{ form.resoluciones_texto }}
+                                    <div class="form-text">{{ form.resoluciones_texto.help_text }}</div>
+                                </div>
+                            </div>
+                        </div>
+                        -->
+                        
+                        <!-- Nombramientos -->
+                        <!--
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="headingNombramientos">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseNombramientos" aria-expanded="false">
+                                    <i class="fas fa-user-plus me-2"></i>Nombramientos
+                                </button>
+                            </h2>
+                            <div id="collapseNombramientos" class="accordion-collapse collapse" data-bs-parent="#camposAdicionales">
+                                <div class="accordion-body">
+                                    <label for="{{ form.nombramientos_texto.id_for_label }}" class="form-label">{{ form.nombramientos_texto.label }}</label>
+                                    {{ form.nombramientos_texto }}
+                                    <div class="form-text">{{ form.nombramientos_texto.help_text }}</div>
+                                </div>
+                            </div>
+                        </div>
+                        -->
+                        
+                        <!-- Dividendos -->
+                         <!--
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="headingDividendos">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseDividendos" aria-expanded="false">
+                                    <i class="fas fa-dollar-sign me-2"></i>Dividendos
+                                </button>
+                            </h2>
+                            <div id="collapseDividendos" class="accordion-collapse collapse" data-bs-parent="#camposAdicionales">
+                                <div class="accordion-body">
+                                    <label for="{{ form.dividendos_texto.id_for_label }}" class="form-label">{{ form.dividendos_texto.label }}</label>
+                                    {{ form.dividendos_texto }}
+                                    <div class="form-text">{{ form.dividendos_texto.help_text }}</div>
+                                </div>
+                            </div>
+                        </div>
+                        -->
+                        
+                        <!-- Delegados -->
+                         <!--
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="headingDelegados">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseDelegados" aria-expanded="false">
+                                    <i class="fas fa-handshake me-2"></i>Delegados
+                                </button>
+                            </h2>
+                            <div id="collapseDelegados" class="accordion-collapse collapse" data-bs-parent="#camposAdicionales">
+                                <div class="accordion-body">
+                                    <label for="{{ form.delegados_texto.id_for_label }}" class="form-label">{{ form.delegados_texto.label }}</label>
+                                    {{ form.delegados_texto }}
+                                    <div class="form-text">{{ form.delegados_texto.help_text }}</div>
+                                </div>
+                            </div>
+                        </div>
+                        -->
+                        
+                        <!-- Anexos -->
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="headingAnexos">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseAnexos" aria-expanded="false">
+                                    <i class="fas fa-paperclip me-2"></i>Anexos
+                                </button>
+                            </h2>
+                            <div id="collapseAnexos" class="accordion-collapse collapse" data-bs-parent="#camposAdicionales">
+                                <div class="accordion-body">
+                                    <label for="{{ form.anexos_texto.id_for_label }}" class="form-label">{{ form.anexos_texto.label }}</label>
+                                    {{ form.anexos_texto }}
+                                    <div class="form-text">{{ form.anexos_texto.help_text }}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="d-flex justify-content-between">
+                        <a href="{% url 'documentos:detalle' object.pk %}" class="btn btn-secondary">
+                            <i class="fas fa-arrow-left me-2"></i>Cancelar
+                        </a>
+                        <div>
+                            <button type="button" class="btn btn-outline-info me-2" id="cargar-ejemplo">
+                                <i class="fas fa-magic me-1"></i>Ejemplo
+                            </button>
+                            <button type="submit" class="btn btn-warning">
+                                <i class="fas fa-save me-2"></i>Actualizar Acta
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-4">
+        <div class="card">
+            <div class="card-header">
+                <h6 class="mb-0">
+                    <i class="fas fa-eye me-2"></i>
+                    Vista Previa
+                </h6>
+            </div>
+            <div class="card-body">
+                <div id="vista-previa">
+                    <p class="text-muted text-center">
+                        <i class="fas fa-file-alt fa-2x mb-2"></i><br>
+                        La vista previa se actualizará mientras editas el formulario
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Información del Documento -->
+        <div class="card mt-3">
+            <div class="card-header">
+                <h6 class="mb-0">
+                    <i class="fas fa-info-circle me-2"></i>
+                    Información del Documento
+                </h6>
+            </div>
+            <div class="card-body">
+                <div class="small">
+                    <p><strong>Estado:</strong> 
+                        <span class="badge {{ object.get_estado_badge_class }}">
+                            {{ object.get_estado_display|upper }}
+                        </span>
+                    </p>
+                    <p><strong>Creado:</strong> {{ object.creada_en|date:"d/m/Y H:i" }}</p>
+                    <p><strong>Actualizado:</strong> {{ object.actualizada_en|date:"d/m/Y H:i" }}</p>
+                    {% if object.duracion_minutos %}
+                    <p><strong>Duración:</strong> {{ object.duracion_minutos }} minutos</p>
+                    {% endif %}
+                    
+                    <hr class="my-3">
+                    
+                    <p><strong>Acciones rápidas:</strong></p>
+                    <div class="d-grid gap-2">
+                        <a href="{% url 'documentos:detalle' object.pk %}" class="btn btn-outline-primary btn-sm">
+                            <i class="fas fa-eye me-1"></i>Ver Detalle
+                        </a>
+                        <button type="button" class="btn btn-outline-secondary btn-sm" id="limpiar-cambios">
+                            <i class="fas fa-undo me-1"></i>Deshacer Cambios
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Vista previa en tiempo real
+    const form = document.getElementById('documento-form');
+    const inputs = form.querySelectorAll('input, select, textarea');
+    const vistaPrevia = document.getElementById('vista-previa');
+    let updateTimeout;
+    let valoresOriginales = {};
+    
+    // Guardar valores originales para deshacer cambios
+    inputs.forEach(input => {
+        if (input.type === 'checkbox') {
+            valoresOriginales[input.id] = input.checked;
+        } else {
+            valoresOriginales[input.id] = input.value;
+        }
+    });
+    
+    // Cargar vista previa inicial
+    actualizarVistaPrevia();
+    
+    inputs.forEach(input => {
+        input.addEventListener('input', debounceUpdate);
+        input.addEventListener('change', debounceUpdate);
+    });
+    
+    function debounceUpdate() {
+        clearTimeout(updateTimeout);
+        updateTimeout = setTimeout(actualizarVistaPrevia, 300); // Esperar 300ms antes de actualizar
+    }
+    
+    function actualizarVistaPrevia() {
+        const formData = new FormData(form);
+        
+        vistaPrevia.style.opacity = '0.7';
+        
+        fetch('{% url "documentos:vista_previa" %}', {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+            }
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Error en la respuesta del servidor');
+            }
+            return response.text();
+        })
+        .then(html => {
+            vistaPrevia.innerHTML = html;
+            vistaPrevia.style.opacity = '1';
+            
+            // Procesar campos JSON dinámicamente
+            procesarCamposJSON();
+            
+            const documentoPreview = vistaPrevia.querySelector('.documento-preview');
+            if (documentoPreview) {
+                documentoPreview.scrollTop = 0;
+            }
+        })
+        .catch(error => {
+            console.error('Error actualizando vista previa:', error);
+            vistaPrevia.innerHTML = `
+                <div class="alert alert-warning">
+                    <i class="fas fa-exclamation-triangle me-2"></i>
+                    Error al actualizar la vista previa. Intenta de nuevo.
+                </div>
+            `;
+            vistaPrevia.style.opacity = '1';
+        });
+    }
+    
+    // Función para procesar campos JSON dinámicamente en la vista previa
+    function procesarCamposJSON() {
+        // Procesar Orden del Día
+        const ordenDiaTexto = document.getElementById('id_orden_dia_texto')?.value || '';
+        const ordenDiaPreview = document.getElementById('preview-orden-dia');
+        if (ordenDiaPreview && ordenDiaTexto.trim()) {
+            const puntos = ordenDiaTexto.split('\n').filter(p => p.trim());
+            ordenDiaPreview.innerHTML = puntos.map(punto => `<li>${punto.trim()}</li>`).join('');
+        }
+        
+        // Procesar Resoluciones
+        const resolucionesTexto = document.getElementById('id_resoluciones_texto')?.value || '';
+        const resolucionesPreview = document.getElementById('preview-resoluciones');
+        if (resolucionesPreview && resolucionesTexto.trim()) {
+            const paragrafos = resolucionesTexto.split('\n\n').filter(p => p.trim());
+            if (paragrafos.length === 0) {
+                // Si no hay párrafos, dividir por líneas
+                const lineas = resolucionesTexto.split('\n').filter(l => l.trim());
+                resolucionesPreview.innerHTML = lineas.map(linea => `<p class="mb-2">${linea.trim()}</p>`).join('');
+            } else {
+                resolucionesPreview.innerHTML = paragrafos.map(parrafo => `<p class="mb-2">${parrafo.trim().replace(/\n/g, '<br>')}</p>`).join('');
+            }
+        }
+        
+        // Procesar Nombramientos
+        const nombramientosTexto = document.getElementById('id_nombramientos_texto')?.value || '';
+        const nombramientosPreview = document.getElementById('preview-nombramientos');
+        if (nombramientosPreview && nombramientosTexto.trim()) {
+            const nombramientos = nombramientosTexto.split('\n').filter(n => n.trim());
+            nombramientosPreview.innerHTML = nombramientos.map(nombramiento => `<p class="mb-1">• ${nombramiento.trim()}</p>`).join('');
+        }
+        
+        // Procesar Delegados
+        const delegadosTexto = document.getElementById('id_delegados_texto')?.value || '';
+        const delegadosPreview = document.getElementById('preview-delegados');
+        if (delegadosPreview && delegadosTexto.trim()) {
+            const delegados = delegadosTexto.split('\n').filter(d => d.trim());
+            delegadosPreview.innerHTML = delegados.map(delegado => `<p class="mb-1">• ${delegado.trim()}</p>`).join('');
+        }
+        
+        // Procesar Asistentes (si existe el elemento)
+        const asistentesTexto = document.getElementById('id_asistentes_texto')?.value || '';
+        const asistentesPreview = document.getElementById('preview-asistentes');
+        if (asistentesPreview && asistentesTexto.trim()) {
+            const asistentes = asistentesTexto.split('\n').filter(a => a.trim());
+            asistentesPreview.innerHTML = asistentes.map(asistente => `<p class="mb-1">• ${asistente.trim()}</p>`).join('');
+        }
+    }
+
+    // Validación de porcentaje
+    const porcentajeInput = document.getElementById('id_porcentaje_capital_presente');
+    if (porcentajeInput) {
+        porcentajeInput.addEventListener('input', function() {
+            let value = parseFloat(this.value);
+            if (isNaN(value)) return;
+            if (value < 0) this.value = 0;
+            if (value > 100) this.value = 100;
+        });
+        
+        porcentajeInput.addEventListener('blur', function() {
+            const value = parseFloat(this.value);
+            if (value < 50) {
+                this.classList.add('border-warning');
+                this.title = 'Porcentaje menor al 50% - Verificar quórum legal';
+            } else {
+                this.classList.remove('border-warning');
+                this.title = '';
+            }
+        });
+    }
+
+    // Mostrar/ocultar fundamento de convocatoria
+    const convocatoriaOmitida = document.getElementById('id_convocatoria_omitida');
+    const fundamentoDiv = document.querySelector('#id_fundamento_convocatoria').closest('.col-md-8');
+    
+    function toggleFundamento() {
+        if (convocatoriaOmitida.checked) {
+            fundamentoDiv.style.display = 'block';
+            fundamentoDiv.style.animation = 'fadeIn 0.3s ease-in';
+        } else {
+            fundamentoDiv.style.display = 'none';
+            document.getElementById('id_fundamento_convocatoria').value = '';
+        }
+        debounceUpdate();
+    }
+    
+    convocatoriaOmitida.addEventListener('change', toggleFundamento);
+    toggleFundamento();
+    
+    // Validación de horas
+    const horaInicio = document.getElementById('id_hora_inicio');
+    const horaCierre = document.getElementById('id_hora_cierre');
+    
+    function validarHoras() {
+        if (horaInicio.value && horaCierre.value) {
+            const inicio = new Date('2000-01-01 ' + horaInicio.value);
+            const cierre = new Date('2000-01-01 ' + horaCierre.value);
+            
+            if (cierre <= inicio) {
+                horaCierre.classList.add('border-danger');
+                horaCierre.title = 'La hora de cierre debe ser posterior a la hora de inicio';
+            } else {
+                horaCierre.classList.remove('border-danger');
+                horaCierre.title = '';
+            }
+        }
+    }
+    
+    horaInicio.addEventListener('change', validarHoras);
+    horaCierre.addEventListener('change', validarHoras);
+    
+    // Formateo automático
+    const razonSocialInput = document.getElementById('id_razon_social');
+    razonSocialInput.addEventListener('input', function() {
+        this.value = this.value.toUpperCase();
+    });
+    
+    const nombresInputs = ['id_presidente', 'id_secretario', 'id_escrutador', 'id_comisario'];
+    nombresInputs.forEach(id => {
+        const input = document.getElementById(id);
+        if (input) {
+            input.addEventListener('blur', function() {
+                this.value = this.value.toLowerCase().replace(/\b\w/g, l => l.toUpperCase());
+            });
+        }
+    });
+    
+    // Botón Cargar Ejemplo (mismo que en crear)
+    const cargarEjemploBtn = document.getElementById('cargar-ejemplo');
+    cargarEjemploBtn.addEventListener('click', function() {
+        const datosEjemplo = {
+            razon_social: 'CONSTRUCTORA OLEA Y ASOCIADOS, S.A. DE C.V.',
+            tipo_asamblea: 'ordinaria',
+            caracter: 'General Ordinaria de Accionistas',
+            fecha: '2024-03-15',
+            hora_inicio: '10:00',
+            hora_cierre: '12:30',
+            lugar: 'Av. Insurgentes Sur 1234, Col. Del Valle, Alcaldía Benito Juárez, C.P. 03100, Ciudad de México, México',
+            porcentaje_capital_presente: '85.750',
+            convocatoria_omitida: false,
+            fundamento_convocatoria: '',
+            presidente: 'Lic. María Elena Olea Hernández',
+            secretario: 'C.P. Roberto Carlos Mendoza Ruiz',
+            escrutador: 'Lic. Ana Patricia Vázquez López',
+            comisario: 'C.P. Jorge Alberto Ramírez Sánchez',
+            metodo_votacion_general: 'economica',
+            estado: 'borrador'
+        };
+        
+        Object.keys(datosEjemplo).forEach(campo => {
+            const input = document.getElementById(`id_${campo}`);
+            if (input) {
+                if (input.type === 'checkbox') {
+                    input.checked = datosEjemplo[campo];
+                } else {
+                    input.value = datosEjemplo[campo];
+                }
+                input.dispatchEvent(new Event('change', { bubbles: true }));
+            }
+        });
+        
+        setTimeout(() => updatePreview(), 100);
+        
+        showToast('Ejemplo cargado', 'Formulario actualizado con datos de ejemplo.', 'info');
+    });
+    
+    // Botón Deshacer Cambios
+    const limpiarCambiosBtn = document.getElementById('limpiar-cambios');
+    limpiarCambiosBtn.addEventListener('click', function() {
+        Object.keys(valoresOriginales).forEach(inputId => {
+            const input = document.getElementById(inputId);
+            if (input) {
+                if (input.type === 'checkbox') {
+                    input.checked = valoresOriginales[inputId];
+                } else {
+                    input.value = valoresOriginales[inputId];
+                }
+                input.dispatchEvent(new Event('change', { bubbles: true }));
+            }
+        });
+        
+        setTimeout(() => updatePreview(), 100);
+        
+        showToast('Cambios deshechos', 'Se han restaurado los valores originales.', 'success');
+    });
+    
+    // Función helper para mostrar toasts
+    function showToast(title, message, type = 'info') {
+        const toast = document.createElement('div');
+        toast.className = 'toast show position-fixed top-0 end-0 m-3';
+        toast.style.zIndex = '9999';
+        
+        const bgClass = type === 'info' ? 'bg-info' : type === 'success' ? 'bg-success' : 'bg-warning';
+        
+        toast.innerHTML = `
+            <div class="toast-header ${bgClass} text-white">
+                <i class="fas fa-${type === 'info' ? 'info-circle' : type === 'success' ? 'check-circle' : 'exclamation-triangle'} me-2"></i>
+                <strong class="me-auto">${title}</strong>
+                <button type="button" class="btn-close btn-close-white" onclick="this.closest('.toast').remove()"></button>
+            </div>
+            <div class="toast-body">
+                ${message}
+            </div>
+        `;
+        document.body.appendChild(toast);
+        
+        setTimeout(() => {
+            if (toast.parentNode) {
+                toast.remove();
+            }
+        }, 3000);
+    }
+});
+
+// =====  EDITOR DINÁMICO ORDEN DEL DÍA =====
+let editorInitialized = false;
+
+function initOrdenDiaEditor() {
+  console.log('🚀 Iniciando editor Orden del Día');
+  const puntosContainer = document.getElementById('puntos-container');
+  const hiddenInput = document.getElementById('{{ form.orden_dia_texto.id_for_label }}') || document.querySelector('[name="orden_dia_texto"]');
+  
+  console.log('🔍 Elementos encontrados:');
+  console.log('  - puntosContainer:', puntosContainer);
+  console.log('  - hiddenInput:', hiddenInput);
+
+  if (!puntosContainer) {
+    console.error('❌ Elementos DOM no encontrados');
+    return;
+  }
+
+  // Precargar datos existentes solo la primera vez
+  let PRELOAD = [];
+  if (!editorInitialized && hiddenInput && hiddenInput.value) {
+    try {
+      PRELOAD = JSON.parse(hiddenInput.value) || [];
+      console.log('📊 Datos precargados:', PRELOAD);
+    } catch (e) {
+      console.log('No hay datos previos válidos');
+    }
+  }
+
+  function buildResolucionRow(res = {}) {
+    const row = document.createElement('div');
+    row.className = 'resol-row row mb-2 align-items-center';
+    row.appendChild(Object.assign(document.createElement('div'), {
+      className: 'col-md-2',
+      innerHTML: Object.assign(document.createElement('input'), {
+        type: 'text',
+        className: 'form-control form-control-sm res-clave',
+        placeholder: 'Núm.',
+        value: res.clave || ''
+      }).outerHTML
+    }));
+    row.appendChild(Object.assign(document.createElement('div'), {
+      className: 'col-md-8',
+      innerHTML: Object.assign(document.createElement('textarea'), {
+        className: 'form-control form-control-sm res-texto',
+        placeholder: 'Texto de la resolución...',
+        rows: 2,
+        value: res.texto || ''
+      }).outerHTML
+    }));
+    row.appendChild(Object.assign(document.createElement('div'), {
+      className: 'col-md-2 text-end',
+      innerHTML: Object.assign(document.createElement('button'), {
+        type: 'button',
+        className: 'btn btn-outline-danger btn-sm btn-del-res',
+        innerHTML: '🗑️'
+      }).outerHTML
+    }));
+    
+    // Set values after DOM elements are created
+    row.querySelector('.res-clave').value = res.clave || '';
+    row.querySelector('.res-texto').value = res.texto || '';
+    row.querySelector('.btn-del-res').addEventListener('click', () => row.remove());
+    return row;
+  }
+
+  function addPunto(p = {}) {
+    console.log('➕ Añadiendo punto:', p);
+    const card = document.createElement('div');
+    card.className = 'card mb-3 punto-card';
+    
+    const resContainer = document.createElement('div');
+    resContainer.className = 'res-container mt-3';
+    
+    card.innerHTML = `
+      <div class="card-header d-flex justify-content-between align-items-center">
+        <h6 class="mb-0">Punto del Orden del Día</h6>
+        <button type="button" class="btn btn-outline-danger btn-sm btn-del-punto">🗑️</button>
+      </div>
+      <div class="card-body">
+        <div class="row mb-3">
+          <div class="col-md-3">
+            <label class="form-label">Número (entero)</label>
+            <input type="number" class="form-control punto-numero" placeholder="1" value="${p.numero || ''}">
+          </div>
+          <div class="col-md-9">
+            <label class="form-label">Título Orden (requerido)</label>
+            <input type="text" class="form-control punto-titulo" placeholder="Título del punto" value="${p.titulo || ''}">
+          </div>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Descripción</label>
+          <textarea class="form-control punto-descripcion" rows="3" placeholder="Descripción detallada del punto...">${p.descripcion || ''}</textarea>
+        </div>
+        <div class="d-flex justify-content-between align-items-center mb-2">
+          <h6 class="mb-0">Resoluciones</h6>
+          <button type="button" class="btn btn-outline-secondary btn-sm btn-add-res">➕ Añadir Resolución</button>
+        </div>
+      </div>
+    `;
+    
+    card.appendChild(resContainer);
+    (p.resoluciones || []).forEach(r => resContainer.appendChild(buildResolucionRow(r)));
+
+    card.querySelector('.btn-add-res').addEventListener('click', () => {
+      resContainer.appendChild(buildResolucionRow({}));
+    });
+    card.querySelector('.btn-del-punto').addEventListener('click', () => card.remove());
+
+    puntosContainer.appendChild(card);
+    return card;
+  }
+
+  function readState() {
+    const puntos = [];
+    document.querySelectorAll('.punto-card').forEach(card => {
+      const numero = parseInt(card.querySelector('.punto-numero').value) || undefined;
+      const titulo = card.querySelector('.punto-titulo').value.trim();
+      const descripcion = card.querySelector('.punto-descripcion').value.trim();
+      
+      const resoluciones = [];
+      card.querySelectorAll('.resol-row').forEach(row => {
+        const resClave = row.querySelector('.res-clave').value.trim() || undefined;
+        const resTexto = row.querySelector('.res-texto').value.trim();
+        if (resTexto) {
+          resoluciones.push({ clave: resClave, texto: resTexto });
+        }
+      });
+      
+      if (titulo) {
+        puntos.push({ numero, titulo, descripcion, resoluciones });
+      }
+    });
+    return puntos.filter(p => p.titulo);
+  }
+
+  // Precargar solo la primera vez
+  if (!editorInitialized) {
+    (PRELOAD || []).forEach(addPunto);
+    editorInitialized = true;
+  }
+
+  // Botón añadir punto - listener directo (solo una vez)
+  const btnAddPunto = document.getElementById('btn-add-punto');
+  if (btnAddPunto && !btnAddPunto.hasAttribute('data-listener-added')) {
+    btnAddPunto.setAttribute('data-listener-added', 'true');
+    btnAddPunto.addEventListener('click', (e) => {
+      e.preventDefault();
+      addPunto({});
+    });
+  }
+
+  // Event delegation para botones dinámicos
+  puntosContainer.addEventListener('click', (e) => {
+    if (e.target.closest('.btn-del-res')) {
+      e.target.closest('.resol-row').remove();
+    }
+  });
+
+  // Antes de enviar el form, serializar al hidden
+  const form = document.querySelector('#documento-form');
+  if (form) {
+    form.addEventListener('submit', (e) => {
+      const puntos = readState();
+
+      // Validación básica
+      for (const p of puntos) {
+        if (!p.titulo) {
+          alert('Cada punto debe tener título.');
+          e.preventDefault(); return false;
+        }
+        if (p.numero !== undefined && (!Number.isInteger(p.numero) || p.numero <= 0)) {
+          alert(`Punto "${p.titulo}": número debe ser entero positivo.`);
+          e.preventDefault(); return false;
+        }
+      }
+
+      // Serializar
+      hiddenInput.value = JSON.stringify(puntos);
+      console.log('💾 Datos serializados:', puntos);
+    });
+  }
+}
+
+// Inicializar cuando DOM esté listo
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('🚀 Inicializando editor Orden del Día');
+    initOrdenDiaEditor();
+    
+    // También inicializar cuando se abra el accordion
+    const ordenDiaAccordion = document.getElementById('collapseOrdenDia');
+    if (ordenDiaAccordion) {
+      console.log('📂 Accordion encontrado, añadiendo listener');
+      ordenDiaAccordion.addEventListener('shown.bs.collapse', () => {
+        console.log('📂 Accordion abierto, reinicializando editor');
+        initOrdenDiaEditor();
+      });
+    }
+});
+
+// Estilos CSS adicionales (mismo que en crear)
+const style = document.createElement('style');
+style.textContent = `
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(-10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .form-control.border-warning {
+        border-color: #ffc107 !important;
+        box-shadow: 0 0 0 0.2rem rgba(255, 193, 7, 0.25);
+    }
+    
+    .form-control.border-danger {
+        border-color: #dc3545 !important;
+        box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25);
+    }
+    
+    #vista-previa {
+        transition: opacity 0.3s ease;
+    }
+`;
+document.head.appendChild(style);
+</script>
+{% endblock %}

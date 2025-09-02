@@ -1,0 +1,168 @@
+{% extends 'base.html' %}
+
+{% block title %}Lista de Convenios Modificatorios - Olea Abogados{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1>
+                <i class="fas fa-edit text-info me-2"></i>
+                Convenios Modificatorios
+            </h1>
+            <a href="{% url 'documentos:crear_convenio_modificatorio' %}" class="btn btn-primary">
+                <i class="fas fa-plus me-2"></i>Nuevo Convenio
+            </a>
+        </div>
+    </div>
+</div>
+
+{% if convenios %}
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="fas fa-list me-2"></i>
+                    Lista de Convenios ({{ convenios|length }} registros)
+                </h5>
+            </div>
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-hover mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th>ID</th>
+                                <th>Fecha</th>
+                                <th>Estudiante</th>
+                                <th>Inversionista</th>
+                                <th>Inversión Total</th>
+                                <th>Estado</th>
+                                <th class="text-center">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for convenio in convenios %}
+                            <tr>
+                                <td>
+                                    <span class="badge bg-secondary">#{{ convenio.id }}</span>
+                                </td>
+                                <td>
+                                    <i class="fas fa-calendar me-1 text-muted"></i>
+                                    {{ convenio.fecha_convenio|date:"d/m/Y" }}
+                                </td>
+                                <td>
+                                    <i class="fas fa-user-graduate me-1 text-primary"></i>
+                                    {{ convenio.estudiante_nombre|truncatechars:30 }}
+                                </td>
+                                <td>
+                                    <i class="fas fa-building me-1 text-success"></i>
+                                    {{ convenio.inversionista_razon_social|truncatechars:25 }}
+                                </td>
+                                <td>
+                                    <i class="fas fa-dollar-sign me-1 text-warning"></i>
+                                    ${{ convenio.inversion_total|floatformat:2 }}
+                                </td>
+                                <td>
+                                    <span class="badge {{ convenio.get_estado_badge_class }}">
+                                        {{ convenio.get_estado_display }}
+                                    </span>
+                                </td>
+                                <td class="text-center">
+                                    <div class="btn-group" role="group">
+                                        <a href="{% url 'documentos:detalle_convenio_modificatorio' convenio.pk %}" 
+                                           class="btn btn-sm btn-outline-info" title="Ver detalles">
+                                            <i class="fas fa-eye"></i>
+                                        </a>
+                                        <a href="{% url 'documentos:editar_convenio_modificatorio' convenio.pk %}" 
+                                           class="btn btn-sm btn-outline-primary" title="Editar">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                        <a href="{% url 'documentos:eliminar_convenio_modificatorio' convenio.pk %}" 
+                                           class="btn btn-sm btn-outline-danger" title="Eliminar">
+                                            <i class="fas fa-trash"></i>
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Paginación -->
+{% if is_paginated %}
+<div class="row mt-4">
+    <div class="col-12">
+        <nav aria-label="Paginación de convenios">
+            <ul class="pagination justify-content-center">
+                {% if page_obj.has_previous %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page=1">
+                            <i class="fas fa-angle-double-left"></i>
+                        </a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ page_obj.previous_page_number }}">
+                            <i class="fas fa-angle-left"></i>
+                        </a>
+                    </li>
+                {% endif %}
+                
+                <li class="page-item active">
+                    <span class="page-link">
+                        Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}
+                    </span>
+                </li>
+                
+                {% if page_obj.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ page_obj.next_page_number }}">
+                            <i class="fas fa-angle-right"></i>
+                        </a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">
+                            <i class="fas fa-angle-double-right"></i>
+                        </a>
+                    </li>
+                {% endif %}
+            </ul>
+        </nav>
+    </div>
+</div>
+{% endif %}
+
+{% else %}
+<!-- Estado vacío -->
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body text-center py-5">
+                <i class="fas fa-edit fa-3x text-muted mb-3"></i>
+                <h4 class="text-muted">No hay convenios modificatorios registrados</h4>
+                <p class="text-muted mb-4">
+                    Comienza creando tu primer convenio modificatorio para gestionar las modificaciones a contratos de inversión.
+                </p>
+                <a href="{% url 'documentos:crear_convenio_modificatorio' %}" class="btn btn-primary">
+                    <i class="fas fa-plus me-2"></i>Crear Primer Convenio
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+<!-- Botón de regreso -->
+<div class="row mt-4">
+    <div class="col-12">
+        <a href="{% url 'dashboard' %}" class="btn btn-secondary">
+            <i class="fas fa-arrow-left me-2"></i>Volver al Dashboard
+        </a>
+    </div>
+</div>
+{% endblock %}

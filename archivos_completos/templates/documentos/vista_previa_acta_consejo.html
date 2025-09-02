@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vista Previa - Acta de Sesión de Consejo</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            font-size: 12px;
+        }
+        .center {
+            text-align: center;
+        }
+        .bold {
+            font-weight: bold;
+        }
+        .section-title {
+            font-weight: bold;
+            text-align: center;
+            margin-top: 2em;
+            margin-bottom: 1em;
+        }
+        .agenda-title {
+             font-weight: bold;
+             margin-top: 2em;
+        }
+        .agenda-list {
+            list-style-type: upper-roman;
+            padding-left: 40px;
+        }
+        .resolution-block {
+            text-align: center;
+            font-weight: bold;
+            margin-top: 1.5em;
+            margin-bottom: 1em;
+        }
+        .resolution-text {
+            padding-left: 2em;
+        }
+        .signature-table {
+            width: 100%;
+            margin-top: 50px;
+            border-collapse: collapse;
+        }
+        .signature-table td {
+            text-align: center;
+            padding: 15px;
+            width: 50%;
+        }
+        .signature-title {
+            font-weight: bold;
+        }
+        .placeholder {
+            color: #999;
+            font-style: italic;
+        }
+        .content-box {
+            border: 1px solid #ddd;
+            padding: 10px;
+            margin: 10px 0;
+            background-color: #f9f9f9;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="center">
+        <p>SESIÓN DEL CONSEJO DE ADMINISTRACIÓN DE</p>
+        <p>{% if form_data.razon_social %}{{ form_data.razon_social|upper }}{% else %}<span class="placeholder">[RAZÓN SOCIAL]</span>{% endif %}</p>
+        <p>DEL DÍA {% if form_data.fecha %}{{ form_data.fecha|date:"j \D\E F \D\E Y"|upper }}{% else %}<span class="placeholder">[FECHA]</span>{% endif %}</p>
+    </div>
+
+    <p>En la Ciudad de México, México siendo las {% if form_data.hora_inicio %}{{ form_data.hora_inicio }}{% else %}<span class="placeholder">[HORA INICIO]</span>{% endif %} horas del día {% if form_data.fecha %}{{ form_data.fecha|date:"j \d\e F \d\e Y" }}{% else %}<span class="placeholder">[fecha]</span>{% endif %}, se reunieron {% if form_data.lugar %}{{ form_data.lugar }}{% else %}<span class="placeholder">[lugar de la sesión]</span>{% endif %}, los señores Consejeros que aparecen en la lista de asistencia que se adjunta a la presente acta como Anexo Uno, con el propósito de celebrar una sesión del Consejo de Administración de la Sociedad, a la cual fueron {% if form_data.convocatoria_realizada %}debidamente convocados según consta en la convocatoria que se adjunta a la presente como Anexo Dos{% else %}<span class="placeholder">convocados</span>{% endif %}.</p>
+
+    {% if form_data.invitados_texto %}
+    <p>Se hace constar la presencia a la sesión de los siguientes invitados:</p>
+    <div class="content-box">
+        {{ form_data.invitados_texto|linebreaksbr }}
+    </div>
+    {% endif %}
+
+    <p>De conformidad con la Cláusula Vigésima Quinta de los estatutos sociales de la Sociedad presidió la sesión {% if form_data.presidente %}{{ form_data.presidente }}{% else %}<span class="placeholder">[presidente]</span>{% endif %} quien ocupa el cargo de Presidente del Consejo de Administración y {% if form_data.secretario %}{{ form_data.secretario }}{% else %}<span class="placeholder">[secretario]</span>{% endif %}, quien funge como Secretario del propio Consejo.</p>
+
+    <p>El presidente declaró legalmente instalada la sesión en virtud de encontrarse presente {% if form_data.metodo_instalacion == 'mayoria' %}la mayoría{% elif form_data.metodo_instalacion == 'unanimidad' %}la unanimidad{% elif form_data.metodo_instalacion == 'quorum_especial' %}el quórum especial{% else %}<span class="placeholder">[método de instalación]</span>{% endif %} de los miembros del Consejo de Administración{% if form_data.porcentaje_miembros_presentes %} ({{ form_data.porcentaje_miembros_presentes }}% de los miembros){% endif %}, de conformidad con lo establecido en la Cláusula Vigésima Octava de los estatutos sociales de la Sociedad.</p>
+
+    {% if form_data.asistentes_texto %}
+    <p><strong>LISTA DE ASISTENCIA</strong></p>
+    <div class="content-box">
+        {{ form_data.asistentes_texto|linebreaksbr }}
+    </div>
+    {% endif %}
+
+    <p>A solicitud del Presidente a continuación, el Secretario dio lectura al siguiente:</p>
+
+    <p class="section-title">ORDEN DEL DÍA</p>
+
+    {% if form_data.orden_dia_texto %}
+    <div class="content-box">
+        {{ form_data.orden_dia_texto|linebreaksbr }}
+    </div>
+    {% else %}
+    <ol class="agenda-list">
+        <li><span class="placeholder">[Punto 1 del orden del día]</span></li>
+        <li><span class="placeholder">[Punto 2 del orden del día]</span></li>
+        <li><span class="placeholder">[Punto 3 del orden del día]</span></li>
+    </ol>
+    {% endif %}
+
+    <p>Los señores consejeros después de escuchar el orden del día antes transcrito procedieron a discutir ampliamente todos y cada uno de los asuntos contenidos en el mismo, desahogándose de la siguiente manera:</p>
+
+    {% if form_data.orden_dia_texto %}
+        <p class="agenda-title">DESARROLLO DE LOS PUNTOS</p>
+        <p><span class="placeholder">[Desarrollo y discusión de los puntos del orden del día]</span></p>
+        
+        {% if form_data.resoluciones_texto %}
+            <div class="resolution-block">RESOLUCIONES</div>
+            <div class="content-box">
+                {{ form_data.resoluciones_texto|linebreaksbr }}
+            </div>
+        {% endif %}
+    {% else %}
+        <p class="agenda-title">I. <span class="placeholder">[Primer punto del orden del día]</span></p>
+        <p><span class="placeholder">[Desarrollo y discusión del primer punto]</span></p>
+        <div class="resolution-block">RESOLUCIÓN</div>
+        <p class="resolution-text"><strong>Única.</strong> "<span class="placeholder">[Resolución del primer punto]</span>"</p>
+    {% endif %}
+
+    {% if form_data.delegados_texto %}
+    <p class="agenda-title">DESIGNACIÓN DE DELEGADOS</p>
+    <p>Con relación a la designación de delegados que ejecuten las resoluciones del Consejo de Administración tomadas en la presente sesión, se propuso que para el cumplimiento a los acuerdos tomados por el Consejo de Administración en la presente sesión, se designe como delegados especiales a:</p>
+    <div class="content-box">
+        {{ form_data.delegados_texto|linebreaksbr }}
+    </div>
+    <div class="resolution-block">RESOLUCIÓN</div>
+    <p class="resolution-text"><strong>Única.</strong> "Se designa como delegados especiales del Consejo de Administración a los señores mencionados para que indistintamente cualquiera de ellos, en nombre y representación del Consejo de Administración den seguimiento y cumplimiento a las resoluciones adoptadas por el mismo."</p>
+    {% endif %}
+
+    <p>No habiendo otro asunto que tratar, se suspendió la reunión por el tiempo necesario para la redacción de la presente acta, la cual una vez leída por el Secretario fue aprobada por unanimidad de los consejeros presentes, con lo cual se dio por terminada la presente sesión a las {% if form_data.hora_cierre %}{{ form_data.hora_cierre }}{% else %}<span class="placeholder">[HORA CIERRE]</span>{% endif %} horas y se autorizó para ser firmada por el Presidente y el Secretario en funciones.</p>
+
+    {% if form_data.anexos_texto %}
+    <p><strong>ANEXOS:</strong></p>
+    <div class="content-box">
+        {{ form_data.anexos_texto|linebreaksbr }}
+    </div>
+    {% endif %}
+
+    <table class="signature-table">
+        <tbody>
+            <tr>
+                <td class="signature-title">PRESIDENTE</td>
+                <td class="signature-title">SECRETARIO</td>
+            </tr>
+            <tr>
+                <td><br><br>_________________________<br>{% if form_data.presidente %}{{ form_data.presidente }}{% else %}<span class="placeholder">[Presidente]</span>{% endif %}</td>
+                <td><br><br>_________________________<br>{% if form_data.secretario %}{{ form_data.secretario }}{% else %}<span class="placeholder">[Secretario]</span>{% endif %}</td>
+            </tr>
+        </tbody>
+    </table>
+
+</body>
+</html>

@@ -1,0 +1,206 @@
+{% extends 'base.html' %}
+
+{% block title %}Eliminar Pagaré - Olea Abogados{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <h1 class="mb-4">
+            <i class="fas fa-trash text-danger me-2"></i>
+            Eliminar Pagaré
+        </h1>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card border-danger">
+            <div class="card-header bg-danger text-white">
+                <h5 class="mb-0">
+                    <i class="fas fa-exclamation-triangle me-2"></i>
+                    Confirmación de Eliminación
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="alert alert-warning">
+                    <i class="fas fa-exclamation-triangle me-2"></i>
+                    <strong>¡Atención!</strong> Esta acción no se puede deshacer. El pagaré será eliminado permanentemente.
+                </div>
+
+                <p class="mb-4">¿Está seguro de que desea eliminar el siguiente pagaré?</p>
+
+                <!-- Información del Pagaré a Eliminar -->
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-header">
+                                <h6 class="mb-0">
+                                    <i class="fas fa-info-circle me-2"></i>
+                                    Información General
+                                </h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="row mb-2">
+                                    <div class="col-sm-5"><strong>ID:</strong></div>
+                                    <div class="col-sm-7">#{{ pagare.id }}</div>
+                                </div>
+                                <div class="row mb-2">
+                                    <div class="col-sm-5"><strong>Fecha de Emisión:</strong></div>
+                                    <div class="col-sm-7">{{ pagare.fecha_emision|date:"d/m/Y" }}</div>
+                                </div>
+                                <div class="row mb-2">
+                                    <div class="col-sm-5"><strong>Lugar de Emisión:</strong></div>
+                                    <div class="col-sm-7">{{ pagare.lugar_emision }}</div>
+                                </div>
+                                <div class="row mb-2">
+                                    <div class="col-sm-5"><strong>Estado:</strong></div>
+                                    <div class="col-sm-7">
+                                        {% if pagare.estado == 'borrador' %}
+                                            <span class="badge bg-secondary">Borrador</span>
+                                        {% elif pagare.estado == 'emitido' %}
+                                            <span class="badge bg-primary">Emitido</span>
+                                        {% elif pagare.estado == 'firmado' %}
+                                            <span class="badge bg-success">Firmado</span>
+                                        {% elif pagare.estado == 'pagado' %}
+                                            <span class="badge bg-info">Pagado</span>
+                                        {% elif pagare.estado == 'vencido' %}
+                                            <span class="badge bg-danger">Vencido</span>
+                                        {% else %}
+                                            <span class="badge bg-secondary">{{ pagare.estado|capfirst }}</span>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-header">
+                                <h6 class="mb-0">
+                                    <i class="fas fa-users me-2"></i>
+                                    Partes Involucradas
+                                </h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="row mb-2">
+                                    <div class="col-sm-4"><strong>Acreedor:</strong></div>
+                                    <div class="col-sm-8">{{ pagare.acreedor_nombre|truncatechars:30 }}</div>
+                                </div>
+                                <div class="row mb-2">
+                                    <div class="col-sm-4"><strong>Deudor:</strong></div>
+                                    <div class="col-sm-8">{{ pagare.deudor_nombre }}</div>
+                                </div>
+                                {% if pagare.aval_nombre %}
+                                <div class="row mb-2">
+                                    <div class="col-sm-4"><strong>Aval:</strong></div>
+                                    <div class="col-sm-8">{{ pagare.aval_nombre }}</div>
+                                </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row mt-3">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h6 class="mb-0">
+                                    <i class="fas fa-calculator me-2"></i>
+                                    Información Financiera
+                                </h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="row mb-2">
+                                            <div class="col-sm-6"><strong>Monto Principal:</strong></div>
+                                            <div class="col-sm-6">
+                                                <span class="text-success fw-bold">
+                                                    ${{ pagare.monto_numeric|floatformat:2 }}
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="row mb-2">
+                                            <div class="col-sm-6"><strong>Tasa de Interés:</strong></div>
+                                            <div class="col-sm-6">{{ pagare.tasa_interes_anual }}%</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="row mb-2">
+                                            <div class="col-sm-6"><strong>Vencimiento:</strong></div>
+                                            <div class="col-sm-6">{{ pagare.fecha_vencimiento|date:"d/m/Y" }}</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Formulario de Confirmación -->
+                <form method="post" class="mt-4" id="deleteForm">
+                    {% csrf_token %}
+                </form>
+                
+                <div class="d-flex justify-content-between mt-4">
+                    <div>
+                        <a href="{% url 'documentos:detalle_pagare' pagare.pk %}" class="btn btn-outline-secondary">
+                            <i class="fas fa-arrow-left me-1"></i>Volver al Detalle
+                        </a>
+                        <a href="{% url 'documentos:lista_pagares' %}" class="btn btn-outline-primary ms-2">
+                            <i class="fas fa-list me-1"></i>Volver a la Lista
+                        </a>
+                    </div>
+                    <div>
+                        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal">
+                            <i class="fas fa-trash me-1"></i>Eliminar Pagaré
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal de Confirmación -->
+<div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-danger text-white">
+                <h5 class="modal-title" id="confirmDeleteModalLabel">
+                    <i class="fas fa-exclamation-triangle me-2"></i>
+                    Confirmar Eliminación
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p><strong>¿Está completamente seguro de que desea eliminar este pagaré?</strong></p>
+                <p class="text-muted">Esta acción es irreversible y eliminará permanentemente:</p>
+                <ul class="text-muted">
+                    <li>Toda la información del pagaré</li>
+                    <li>Los datos de las partes involucradas</li>
+                    <li>Los términos financieros</li>
+                    <li>El historial de auditoría</li>
+                </ul>
+                <div class="alert alert-danger">
+                    <i class="fas fa-exclamation-triangle me-2"></i>
+                    <strong>Pagaré:</strong> {{ pagare.deudor_nombre }} - ${{ pagare.monto_numeric|floatformat:2 }}
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    <i class="fas fa-times me-1"></i>Cancelar
+                </button>
+                <button type="button" class="btn btn-danger" onclick="document.getElementById('deleteForm').submit();">
+                    <i class="fas fa-trash me-1"></i>Sí, Eliminar Definitivamente
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

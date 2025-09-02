@@ -1,0 +1,221 @@
+{% extends 'base.html' %}
+
+{% block title %}Detalle del Convenio Modificatorio - Olea Abogados{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1>
+                <i class="fas fa-edit text-info me-2"></i>
+                Convenio Modificatorio #{{ convenio.id }}
+            </h1>
+            <span class="badge {{ convenio.get_estado_badge_class }} fs-6">
+                {{ convenio.get_estado_display }}
+            </span>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="fas fa-info-circle me-2"></i>
+                    Información General
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <p><strong><i class="fas fa-calendar me-2 text-primary"></i>Fecha del Convenio:</strong><br>
+                        {{ convenio.fecha_convenio|date:"d/m/Y" }}</p>
+                    </div>
+                    <div class="col-md-6">
+                        <p><strong><i class="fas fa-map-marker-alt me-2 text-danger"></i>Lugar:</strong><br>
+                        {{ convenio.lugar_convenio }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="fas fa-building me-2"></i>
+                    Inversionista (F101)
+                </h5>
+            </div>
+            <div class="card-body">
+                <p><strong>Razón Social:</strong><br>{{ convenio.inversionista_razon_social }}</p>
+                <p><strong>Representante:</strong><br>{{ convenio.inversionista_representante }}</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="fas fa-file-contract me-2"></i>
+                    Contrato Original
+                </h5>
+            </div>
+            <div class="card-body">
+                <p><strong>Fecha del Contrato Original:</strong><br>
+                {{ convenio.contrato_original_fecha|date:"d/m/Y" }}</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="fas fa-user-graduate me-2"></i>
+                    Información del Estudiante
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <p><strong>Nombre:</strong><br>{{ convenio.estudiante_nombre }}</p>
+                        <p><strong>Estado Civil:</strong><br>{{ convenio.estudiante_estado_civil }}</p>
+                        <p><strong>Nacionalidad:</strong><br>{{ convenio.estudiante_nacionalidad }}</p>
+                    </div>
+                    <div class="col-md-6">
+                        <p><strong>Ocupación:</strong><br>{{ convenio.estudiante_ocupacion }}</p>
+                        <p><strong>RFC:</strong><br>{{ convenio.estudiante_rfc }}</p>
+                        <p><strong>CURP:</strong><br>{{ convenio.estudiante_curp }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="fas fa-calculator me-2"></i>
+                    Adeudo Anterior
+                </h5>
+            </div>
+            <div class="card-body">
+                <p><strong>Monto:</strong><br>
+                ${{ convenio.adeudo_principal_anterior|floatformat:2 }}</p>
+                <p><strong>En texto:</strong><br>
+                {{ convenio.adeudo_principal_anterior_texto }}</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="fas fa-chart-line me-2"></i>
+                    Aumento de Inversión
+                </h5>
+            </div>
+            <div class="card-body">
+                <p><strong>Monto del Aumento:</strong><br>
+                ${{ convenio.aumento_monto|floatformat:2 }}</p>
+                <p><strong>En texto:</strong><br>
+                {{ convenio.aumento_monto_texto }}</p>
+                <p><strong>Inversión Total:</strong><br>
+                ${{ convenio.inversion_total|floatformat:2 }}</p>
+                <p><strong>En texto:</strong><br>
+                {{ convenio.inversion_total_texto }}</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="fas fa-users me-2"></i>
+                    Obligados Solidarios
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h6 class="text-primary">Obligado 1</h6>
+                        <p><strong>Nombre:</strong><br>{{ convenio.luis_nombre }}</p>
+                        <p><strong>RFC:</strong><br>{{ convenio.luis_rfc }}</p>
+                        <p><strong>CURP:</strong><br>{{ convenio.luis_curp }}</p>
+                    </div>
+                    <div class="col-md-6">
+                        <h6 class="text-primary">Obligado 2</h6>
+                        <p><strong>Nombre:</strong><br>{{ convenio.lizette_nombre }}</p>
+                        {% if convenio.lizette_rfc %}
+                        <p><strong>RFC:</strong><br>{{ convenio.lizette_rfc }}</p>
+                        {% endif %}
+                        {% if convenio.lizette_curp %}
+                        <p><strong>CURP:</strong><br>{{ convenio.lizette_curp }}</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="fas fa-clock me-2"></i>
+                    Información de Auditoría
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <p><strong>Fecha de Creación:</strong><br>
+                        {{ convenio.fecha_creacion|date:"d/m/Y H:i" }}</p>
+                    </div>
+                    <div class="col-md-6">
+                        <p><strong>Última Actualización:</strong><br>
+                        {{ convenio.fecha_actualizacion|date:"d/m/Y H:i" }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Botones de acción -->
+<div class="row mt-4">
+    <div class="col-12">
+        <div class="d-flex justify-content-between">
+            <a href="{% url 'documentos:lista_convenio_modificatorio' %}" class="btn btn-secondary">
+                <i class="fas fa-arrow-left me-2"></i>Volver a la Lista
+            </a>
+            <div class="btn-group">
+                <a href="{% url 'documentos:editar_convenio_modificatorio' convenio.pk %}" class="btn btn-warning text-white">
+                    <i class="fas fa-edit me-2"></i>Editar
+                </a>
+                <a href="{% url 'documentos:descargar_docx_convenio_modificatorio' convenio.pk %}" class="btn btn-primary">
+                    <i class="fas fa-file-word me-2"></i>Descargar DOCX
+                </a>
+                <a href="{% url 'documentos:eliminar_convenio_modificatorio' convenio.pk %}" class="btn btn-outline-danger">
+                    <i class="fas fa-trash me-2"></i>Eliminar
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

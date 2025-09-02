@@ -1,0 +1,289 @@
+{% extends 'base.html' %}
+
+{% block title %}Detalle de Estatutos Sociales{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2><i class="fas fa-building text-success me-2"></i>Detalle de Estatutos Sociales</h2>
+                <div class="btn-group">
+                    <a href="{% url 'documentos:lista_estatutos_sociedad' %}" class="btn btn-outline-secondary me-2">
+                        <i class="fas fa-list"></i> Lista
+                    </a>
+                    <a href="{% url 'documentos:editar_estatutos_sociedad' estatutos.pk %}" class="btn btn-warning">
+                        <i class="fas fa-edit"></i> Editar
+                    </a>
+                    <a href="{% url 'documentos:descargar_docx_estatutos_sociedad' estatutos.pk %}" class="btn btn-primary">
+                        <i class="fas fa-download"></i> Descargar DOCX
+                    </a>
+                    <a href="{% url 'documentos:eliminar_estatutos_sociedad' estatutos.pk %}" class="btn btn-outline-danger">
+                        <i class="fas fa-trash"></i> Eliminar
+                    </a>
+                </div>
+            </div>
+
+            <!-- Información General -->
+            <div class="card shadow mb-4">
+                <div class="card-header bg-success text-white">
+                    <h5 class="mb-0"><i class="fas fa-info-circle me-2"></i>Información General</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <h4>{{ estatutos.denominacion }} {{ estatutos.forma_legal }}</h4>
+                            <p class="text-muted mb-2">
+                                <i class="fas fa-map-marker-alt me-1"></i>
+                                {{ estatutos.domicilio }}
+                            </p>
+                            <p class="text-muted mb-2">
+                                <i class="fas fa-flag me-1"></i>
+                                Nacionalidad: {{ estatutos.nacionalidad|title }}
+                            </p>
+                        </div>
+                        <div class="col-md-4 text-end">
+                            <span class="badge {{ estatutos.get_estado_badge_class }} fs-6">
+                                {{ estatutos.get_estado_display }}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <!-- Objeto Social y Duración -->
+                <div class="col-md-6 mb-4">
+                    <div class="card shadow h-100">
+                        <div class="card-header bg-success text-white">
+                            <h6 class="mb-0"><i class="fas fa-bullseye me-2"></i>Objeto Social y Duración</h6>
+                        </div>
+                        <div class="card-body">
+                            <h6>Objeto Social:</h6>
+                            <div class="mb-3">
+                                {% if estatutos.objeto_social %}
+                                    <pre class="small text-muted">{{ estatutos.objeto_social }}</pre>
+                                {% else %}
+                                    <span class="text-muted">No especificado</span>
+                                {% endif %}
+                            </div>
+                            <div class="row">
+                                <div class="col-6">
+                                    <strong>Duración:</strong><br>
+                                    {% if estatutos.duracion_indefinida %}
+                                        <span class="badge bg-success">Indefinida</span>
+                                    {% else %}
+                                        <span class="badge bg-warning">Definida</span>
+                                    {% endif %}
+                                </div>
+                                <div class="col-6">
+                                    <strong>Convenio Extranjeros:</strong><br>
+                                    {% if estatutos.convenio_admision_extranjeros %}
+                                        <span class="badge bg-success">Sí</span>
+                                    {% else %}
+                                        <span class="badge bg-secondary">No</span>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Capital Social -->
+                <div class="col-md-6 mb-4">
+                    <div class="card shadow h-100">
+                        <div class="card-header bg-success text-white">
+                            <h6 class="mb-0"><i class="fas fa-coins me-2"></i>Capital Social</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="row mb-3">
+                                <div class="col-6">
+                                    <strong>Capital Fijo:</strong><br>
+                                    <span class="text-primary fs-5">${{ estatutos.capital_fijo_monto|floatformat:2 }}</span>
+                                </div>
+                                <div class="col-6">
+                                    <strong>Acciones Serie A:</strong><br>
+                                    <span class="text-info fs-5">{{ estatutos.acciones_serie_a|floatformat:0 }}</span>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <strong>En texto:</strong><br>
+                                <span class="text-muted">{{ estatutos.capital_fijo_texto }}</span>
+                            </div>
+                            <div>
+                                <strong>Capital Variable:</strong>
+                                {% if estatutos.capital_variable_ilimitado %}
+                                    <span class="badge bg-success">Ilimitado</span>
+                                {% else %}
+                                    <span class="badge bg-warning">Limitado</span>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Clases de Acciones -->
+                <div class="col-md-12 mb-4">
+                    <div class="card shadow">
+                        <div class="card-header bg-success text-white">
+                            <h6 class="mb-0"><i class="fas fa-certificate me-2"></i>Clases de Acciones</h6>
+                        </div>
+                        <div class="card-body">
+                            {% if estatutos.clase_acciones %}
+                                <pre class="small text-muted">{{ estatutos.clase_acciones }}</pre>
+                            {% else %}
+                                <span class="text-muted">No especificado</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Libros y Transmisión -->
+                <div class="col-md-6 mb-4">
+                    <div class="card shadow h-100">
+                        <div class="card-header bg-success text-white">
+                            <h6 class="mb-0"><i class="fas fa-book me-2"></i>Libros y Transmisión</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="mb-3">
+                                <strong>Libro de Registro:</strong><br>
+                                <span class="text-muted">{{ estatutos.libro_registro_acciones }}</span>
+                            </div>
+                            <div class="mb-3">
+                                <strong>Derecho de Preferencia:</strong>
+                                {% if estatutos.derecho_preferencia %}
+                                    <span class="badge bg-success">Sí</span>
+                                {% else %}
+                                    <span class="badge bg-secondary">No</span>
+                                {% endif %}
+                            </div>
+                            <div>
+                                <strong>Procedimiento de Transmisión:</strong><br>
+                                {% if estatutos.procedimiento_transmision %}
+                                    <small class="text-muted">{{ estatutos.procedimiento_transmision|truncatewords:20 }}</small>
+                                {% else %}
+                                    <span class="text-muted">No especificado</span>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Asambleas -->
+                <div class="col-md-6 mb-4">
+                    <div class="card shadow h-100">
+                        <div class="card-header bg-success text-white">
+                            <h6 class="mb-0"><i class="fas fa-users me-2"></i>Asambleas de Accionistas</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="row mb-3">
+                                <div class="col-12">
+                                    <strong>Periodicidad:</strong><br>
+                                    <span class="badge bg-info">{{ estatutos.periodicidad_asamblea }}</span>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-6">
+                                    <strong>Quórum Ordinaria:</strong><br>
+                                    <span class="text-primary">{{ estatutos.quorum_ordinaria }}%</span>
+                                </div>
+                                <div class="col-6">
+                                    <strong>Quórum Extraordinaria:</strong><br>
+                                    <span class="text-warning">{{ estatutos.quorum_extraordinaria }}%</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Administración y Vigilancia -->
+                <div class="col-md-6 mb-4">
+                    <div class="card shadow h-100">
+                        <div class="card-header bg-success text-white">
+                            <h6 class="mb-0"><i class="fas fa-user-tie me-2"></i>Administración y Vigilancia</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="row mb-3">
+                                <div class="col-6">
+                                    <strong>Consejeros:</strong><br>
+                                    <span class="text-primary fs-5">{{ estatutos.num_consejeros }}</span>
+                                </div>
+                                <div class="col-6">
+                                    <strong>Suplentes:</strong><br>
+                                    {% if estatutos.suplentes_permitidos %}
+                                        <span class="badge bg-success">Permitidos</span>
+                                    {% else %}
+                                        <span class="badge bg-secondary">No</span>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-6">
+                                    <strong>Comisarios:</strong><br>
+                                    <span class="text-info fs-5">{{ estatutos.num_comisarios }}</span>
+                                </div>
+                                <div class="col-6">
+                                    <strong>Comisarios Suplentes:</strong><br>
+                                    {% if estatutos.comisarios_suplentes %}
+                                        <span class="badge bg-success">Sí</span>
+                                    {% else %}
+                                        <span class="badge bg-secondary">No</span>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Ejercicio Social -->
+                <div class="col-md-6 mb-4">
+                    <div class="card shadow h-100">
+                        <div class="card-header bg-success text-white">
+                            <h6 class="mb-0"><i class="fas fa-calendar-alt me-2"></i>Ejercicio Social y Utilidades</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="row mb-3">
+                                <div class="col-6">
+                                    <strong>Inicio:</strong><br>
+                                    <span class="text-primary">{{ estatutos.ejercicio_inicio }}</span>
+                                </div>
+                                <div class="col-6">
+                                    <strong>Fin:</strong><br>
+                                    <span class="text-primary">{{ estatutos.ejercicio_fin }}</span>
+                                </div>
+                            </div>
+                            <div>
+                                <strong>Reserva Legal:</strong><br>
+                                <span class="text-warning fs-5">{{ estatutos.reserva_legal_pct }}%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Información de Auditoría -->
+            <div class="card shadow">
+                <div class="card-header bg-light">
+                    <h6 class="mb-0 text-muted"><i class="fas fa-clock me-2"></i>Información de Auditoría</h6>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <strong>Creado:</strong><br>
+                            <span class="text-muted">{{ estatutos.fecha_creacion|date:"d/m/Y H:i" }}</span>
+                        </div>
+                        <div class="col-md-4">
+                            <strong>Última Actualización:</strong><br>
+                            <span class="text-muted">{{ estatutos.fecha_actualizacion|date:"d/m/Y H:i" }}</span>
+                        </div>
+                        <div class="col-md-4">
+                            <strong>Usuario:</strong><br>
+                            <span class="text-muted">{{ estatutos.usuario.get_full_name|default:estatutos.usuario.username }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

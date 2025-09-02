@@ -1,0 +1,311 @@
+{% load static %}
+
+<div class="documento-preview p-4" style="background: white; border: 1px solid #ddd; font-family: 'Times New Roman', serif; font-size: 12px; line-height: 1.6; min-height: 600px;">
+    <!-- Encabezado -->
+    <div class="text-center mb-4">
+        <h4 class="fw-bold text-uppercase mb-3" style="font-size: 16px;">
+            ACTA DE ASAMBLEA <span id="preview-tipo-asamblea">{{ form_data.tipo_asamblea|default:"[TIPO DE ASAMBLEA]" }}</span>
+        </h4>
+        <h5 class="fw-bold mb-3" style="font-size: 14px;">
+            <span id="preview-razon-social">{{ form_data.razon_social|default:"[RAZÓN SOCIAL DE LA EMPRESA]" }}</span>
+        </h5>
+        {% if form_data.caracter %}
+        <p class="mb-2">
+            <strong>Carácter:</strong> <span id="preview-caracter">{{ form_data.caracter }}</span>
+        </p>
+        {% endif %}
+    </div>
+
+    <!-- Información de la Asamblea -->
+    <div class="mb-4">
+        <p class="mb-2">
+            <strong>Fecha:</strong> 
+            <span id="preview-fecha">
+                {% if form_data.fecha %}
+                    {{ form_data.fecha|date:"d de F de Y" }}
+                {% else %}
+                    [FECHA DE LA ASAMBLEA]
+                {% endif %}
+            </span>
+        </p>
+        
+        <p class="mb-2">
+            <strong>Hora de Inicio:</strong> 
+            <span id="preview-hora-inicio">
+                {% if form_data.hora_inicio %}
+                    {{ form_data.hora_inicio|time:"H:i" }} hrs.
+                {% else %}
+                    [HORA DE INICIO]
+                {% endif %}
+            </span>
+            {% if form_data.hora_cierre %}
+            | <strong>Hora de Cierre:</strong> 
+            <span id="preview-hora-cierre">{{ form_data.hora_cierre|time:"H:i" }} hrs.</span>
+            {% endif %}
+        </p>
+        
+        <p class="mb-2">
+            <strong>Lugar:</strong> 
+            <span id="preview-lugar">{{ form_data.lugar|default:"[LUGAR DE LA ASAMBLEA]" }}</span>
+        </p>
+    </div>
+
+    <!-- Convocatoria -->
+    <div class="mb-4">
+        <h6 class="fw-bold text-uppercase mb-2" style="font-size: 13px;">CONVOCATORIA</h6>
+        {% if form_data.convocatoria_omitida == 'on' %}
+        <p class="mb-2">
+            La presente asamblea se celebra <strong>sin previa convocatoria</strong>, 
+            {% if form_data.fundamento_convocatoria %}
+            con fundamento en: <span id="preview-fundamento">{{ form_data.fundamento_convocatoria }}</span>
+            {% else %}
+            [FUNDAMENTO LEGAL]
+            {% endif %}
+        </p>
+        {% else %}
+        <p class="mb-2">
+            La presente asamblea se celebra <strong>con previa convocatoria</strong> conforme a los estatutos sociales y disposiciones legales aplicables.
+        </p>
+        {% endif %}
+    </div>
+
+    <!-- Asistencia -->
+    <div class="mb-4">
+        <h6 class="fw-bold text-uppercase mb-2" style="font-size: 13px;">ASISTENCIA</h6>
+        <p class="mb-2">
+            Se encuentra presente el 
+            <strong><span id="preview-porcentaje">{{ form_data.porcentaje_capital_presente|default:"[%]" }}%</span></strong> 
+            del capital social, por lo que existe el quórum legal necesario para la celebración de la asamblea.
+        </p>
+    </div>
+
+    <!-- Mesa Directiva -->
+    <div class="mb-4">
+        <h6 class="fw-bold text-uppercase mb-2" style="font-size: 13px;">MESA DIRECTIVA</h6>
+        <p class="mb-2">
+            <strong>Presidente:</strong> 
+            <span id="preview-presidente">{{ form_data.presidente|default:"[NOMBRE DEL PRESIDENTE]" }}</span>
+        </p>
+        <p class="mb-2">
+            <strong>Secretario:</strong> 
+            <span id="preview-secretario">{{ form_data.secretario|default:"[NOMBRE DEL SECRETARIO]" }}</span>
+        </p>
+        {% if form_data.escrutador %}
+        <p class="mb-2">
+            <strong>Escrutador:</strong> 
+            <span id="preview-escrutador">{{ form_data.escrutador }}</span>
+        </p>
+        {% endif %}
+        {% if form_data.comisario %}
+        <p class="mb-2">
+            <strong>Comisario:</strong> 
+            <span id="preview-comisario">{{ form_data.comisario }}</span>
+        </p>
+        {% endif %}
+    </div>
+
+    <!-- Método de Votación -->
+    <div class="mb-4">
+        <h6 class="fw-bold text-uppercase mb-2" style="font-size: 13px;">MÉTODO DE VOTACIÓN</h6>
+        <p class="mb-2">
+            Se acuerda que las votaciones se realizarán de manera 
+            <strong><span id="preview-metodo-votacion">
+                {% if form_data.metodo_votacion_general == 'economica' %}
+                    económica
+                {% elif form_data.metodo_votacion_general == 'nominal' %}
+                    nominal
+                {% elif form_data.metodo_votacion_general == 'por_accion' %}
+                    por acción
+                {% else %}
+                    [MÉTODO DE VOTACIÓN]
+                {% endif %}
+            </span></strong>.
+        </p>
+    </div>
+
+    <!-- Orden del Día -->
+    <div class="mb-4">
+        <h6 class="fw-bold text-uppercase mb-2" style="font-size: 13px;">ORDEN DEL DÍA</h6>
+        {% if form_data.orden_dia_texto %}
+        <ol class="mb-2" id="preview-orden-dia">
+            <!-- Se llenará dinámicamente -->
+        </ol>
+        {% else %}
+        <ol class="mb-2">
+            <li>Designación de la Mesa Directiva</li>
+            <li>Verificación del quórum legal</li>
+            <li>Lectura y aprobación del orden del día</li>
+            <li>Informe del Consejo de Administración</li>
+            <li>Presentación y aprobación de estados financieros</li>
+            <li>Aplicación de resultados</li>
+            <li>Nombramiento de administradores</li>
+            <li>Designación de comisarios</li>
+            <li>Asuntos varios</li>
+        </ol>
+        {% endif %}
+    </div>
+
+    <!-- Resoluciones -->
+    <div class="mb-4">
+        <h6 class="fw-bold text-uppercase mb-2" style="font-size: 13px;">RESOLUCIONES</h6>
+        {% if form_data.resoluciones_texto %}
+        <div id="preview-resoluciones">
+            <!-- Se llenará dinámicamente -->
+        </div>
+        {% else %}
+        <p class="mb-2">
+            En el desarrollo de la asamblea se adoptaron las resoluciones correspondientes a cada punto del orden del día.
+        </p>
+        <p class="text-muted small">
+            <em>Nota: Las resoluciones específicas se completarán cuando se edite el acta.</em>
+        </p>
+        {% endif %}
+    </div>
+
+    <!-- Nombramientos -->
+    {% if form_data.nombramientos_texto %}
+    <div class="mb-4">
+        <h6 class="fw-bold text-uppercase mb-2" style="font-size: 13px;">NOMBRAMIENTOS</h6>
+        <div id="preview-nombramientos">
+            <!-- Se llenará dinámicamente -->
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Dividendos -->
+    {% if form_data.dividendos_texto %}
+    <div class="mb-4">
+        <h6 class="fw-bold text-uppercase mb-2" style="font-size: 13px;">DIVIDENDOS</h6>
+        <div id="preview-dividendos">
+            <p class="mb-2">{{ form_data.dividendos_texto|linebreaksbr }}</p>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Delegados -->
+    {% if form_data.delegados_texto %}
+    <div class="mb-4">
+        <h6 class="fw-bold text-uppercase mb-2" style="font-size: 13px;">DELEGADOS</h6>
+        <div id="preview-delegados">
+            <!-- Se llenará dinámicamente -->
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Anexos -->
+    {% if form_data.anexos_texto %}
+    <div class="mb-4">
+        <h6 class="fw-bold text-uppercase mb-2" style="font-size: 13px;">ANEXOS</h6>
+        <div id="preview-anexos">
+            <p class="mb-2">{{ form_data.anexos_texto|linebreaksbr }}</p>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Cierre -->
+    <div class="mb-4">
+        <h6 class="fw-bold text-uppercase mb-2" style="font-size: 13px;">CIERRE</h6>
+        <p class="mb-2">
+            No habiendo más asuntos que tratar, se da por terminada la asamblea 
+            {% if form_data.hora_cierre %}
+            a las <span id="preview-hora-cierre-final">{{ form_data.hora_cierre|time:"H:i" }}</span> hrs.
+            {% else %}
+            a las [HORA DE CIERRE] hrs.
+            {% endif %}
+            del mismo día, firmando la presente acta los que en ella intervinieron.
+        </p>
+    </div>
+
+    <!-- Firmas -->
+    <div class="mt-5 pt-4">
+        <div class="row">
+            <div class="col-6 text-center">
+                <div style="border-top: 1px solid #000; margin-top: 60px; padding-top: 10px;">
+                    <strong><span id="preview-firma-presidente">{{ form_data.presidente|default:"[PRESIDENTE]" }}</span></strong><br>
+                    <small>PRESIDENTE</small>
+                </div>
+            </div>
+            <div class="col-6 text-center">
+                <div style="border-top: 1px solid #000; margin-top: 60px; padding-top: 10px;">
+                    <strong><span id="preview-firma-secretario">{{ form_data.secretario|default:"[SECRETARIO]" }}</span></strong><br>
+                    <small>SECRETARIO</small>
+                </div>
+            </div>
+        </div>
+        
+        {% if form_data.escrutador or form_data.comisario %}
+        <div class="row mt-4">
+            {% if form_data.escrutador %}
+            <div class="col-6 text-center">
+                <div style="border-top: 1px solid #000; margin-top: 60px; padding-top: 10px;">
+                    <strong><span id="preview-firma-escrutador">{{ form_data.escrutador }}</span></strong><br>
+                    <small>ESCRUTADOR</small>
+                </div>
+            </div>
+            {% endif %}
+            {% if form_data.comisario %}
+            <div class="col-6 text-center">
+                <div style="border-top: 1px solid #000; margin-top: 60px; padding-top: 10px;">
+                    <strong><span id="preview-firma-comisario">{{ form_data.comisario }}</span></strong><br>
+                    <small>COMISARIO</small>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+        {% endif %}
+    </div>
+
+    <!-- Estado del documento -->
+    <div class="mt-4 pt-3 border-top">
+        <div class="d-flex justify-content-between align-items-center">
+            <small class="text-muted">
+                Estado: 
+                <span class="badge 
+                    {% if form_data.estado == 'borrador' %}bg-secondary
+                    {% elif form_data.estado == 'aprobada' %}bg-success
+                    {% elif form_data.estado == 'firmada' %}bg-primary
+                    {% else %}bg-secondary{% endif %}">
+                    {% if form_data.estado == 'borrador' %}BORRADOR
+                    {% elif form_data.estado == 'aprobada' %}APROBADA
+                    {% elif form_data.estado == 'firmada' %}FIRMADA
+                    {% else %}BORRADOR{% endif %}
+                </span>
+            </small>
+            <small class="text-muted">
+                Generado: {{ "now"|date:"d/m/Y H:i" }}
+            </small>
+        </div>
+    </div>
+</div>
+
+<style>
+.documento-preview {
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    max-height: 80vh;
+    overflow-y: auto;
+}
+
+.documento-preview h4, .documento-preview h5, .documento-preview h6 {
+    color: #2c3e50;
+}
+
+.documento-preview p {
+    text-align: justify;
+    margin-bottom: 0.75rem;
+}
+
+.documento-preview .badge {
+    font-size: 0.7em;
+}
+
+@media print {
+    .documento-preview {
+        box-shadow: none;
+        border: none;
+        border-radius: 0;
+        max-height: none;
+        overflow: visible;
+    }
+}
+</style>

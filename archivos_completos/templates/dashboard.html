@@ -1,0 +1,439 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard - Olea Abogados{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <h1 class="mb-4">
+            <i class="fas fa-tachometer-alt text-primary me-2"></i>
+            Dashboard
+        </h1>
+    </div>
+</div>
+
+<!-- Estadísticas Generales -->
+<div class="row mb-4">
+    <div class="col-md-6 mb-3">
+        <div class="stats-card fade-in">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <h5 class="mb-1" style="color: white;">Total Documentos</h5>
+                    <h2 class="mb-0 fw-bold" style="color: white;">{{ total_documentos }}</h2>
+                    <small class="opacity-75" style="color: white;">Documentos registrados</small>
+                </div>
+                <div class="align-self-center">
+                    <i class="fas fa-file-contract fa-3x opacity-75"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6 mb-3">
+        <div class="stats-card success fade-in">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <h5 class="mb-1" style="color: white;">Documentos Recientes</h5>
+                    <h2 class="mb-0 fw-bold" style="color: white;">{{ documentos_recientes|length }}</h2>
+                    <small class="opacity-75" style="color: white;">Últimas modificaciones</small>
+                </div>
+                <div class="align-self-center">
+                    <i class="fas fa-clock fa-3x opacity-75"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Tipos de Documentos Legales -->
+<div class="row mb-4">
+    <div class="col-12">
+        <h4 class="mb-3"><i class="fas fa-folder-open me-2"></i>Tipos de Documentos Legales</h4>
+    </div>
+</div>
+
+<div class="row mb-4">
+    <!-- Actas de Asambleas -->
+    <div class="col-lg-3 col-md-4 col-sm-6 mb-3">
+        <div class="document-type-card fade-in" data-type="actas-asambleas">
+            <div class="card-icon">
+                <i class="fas fa-users"></i>
+            </div>
+            <div class="card-content">
+                <h6 class="card-title">Actas de Asambleas</h6>
+                <div class="card-counter">
+                    <span class="counter-number">{{ total_actas_asamblea }}</span>
+                    <small class="counter-label">documentos</small>
+                </div>
+            </div>
+            <div class="card-action">
+                <a href="{% url 'documentos:crear' %}" class="btn btn-sm btn-outline-primary">
+                    <i class="fas fa-plus me-1"></i>Crear
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Actas Sesiones de Consejo -->
+    <div class="col-lg-3 col-md-4 col-sm-6 mb-3">
+        <div class="document-type-card fade-in" data-type="actas-consejo">
+            <div class="card-icon">
+                <i class="fas fa-users-cog"></i>
+            </div>
+            <div class="card-content">
+                <h6 class="card-title">Actas Sesiones de Consejo</h6>
+                <div class="card-counter">
+                    <span class="counter-number">{{ total_actas_consejo }}</span>
+                    <small class="counter-label">documentos</small>
+                </div>
+            </div>
+            <div class="card-action">
+                <a href="{% url 'documentos:crear_consejo' %}" class="btn btn-sm btn-outline-primary">
+                    <i class="fas fa-plus me-1"></i>Crear
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Contratos de Crédito -->
+    <div class="col-lg-3 col-md-4 col-sm-6 mb-3">
+        <div class="document-type-card fade-in" data-type="contratos-credito">
+            <div class="card-icon">
+                <i class="fas fa-credit-card"></i>
+            </div>
+            <div class="card-content">
+                <h6 class="card-title">Contratos de Crédito</h6>
+                <div class="card-counter">
+                    <span class="counter-number">{{ total_contratos_credito }}</span>
+                    <small class="counter-label">documentos</small>
+                </div>
+            </div>
+            <div class="card-action">
+                <a href="{% url 'documentos:crear_contrato_credito' %}" class="btn btn-sm btn-outline-primary">
+                    <i class="fas fa-plus me-1"></i>Crear
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Contratos de Prenda Sobre Acciones -->
+    <div class="col-lg-3 col-md-4 col-sm-6 mb-3">
+        <div class="document-type-card fade-in" data-type="contratos-prenda">
+            <div class="card-icon">
+                <i class="fas fa-chart-line"></i>
+            </div>
+            <div class="card-content">
+                <h6 class="card-title">Contratos de Prenda Sobre Acciones</h6>
+                <div class="card-counter">
+                    <span class="counter-number">{{ total_contratos_prenda }}</span>
+                    <small class="counter-label">documentos</small>
+                </div>
+            </div>
+            <div class="card-action">
+                <a href="{% url 'documentos:crear_contrato_prenda' %}" class="btn btn-sm btn-outline-primary">
+                    <i class="fas fa-plus me-1"></i>Crear
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Convenios Modificatorios -->
+    <div class="col-lg-3 col-md-4 col-sm-6 mb-3">
+        <div class="document-type-card fade-in" data-type="convenios-modificatorios">
+            <div class="card-icon">
+                <i class="fas fa-edit"></i>
+            </div>
+            <div class="card-content">
+                <h6 class="card-title">Convenios Modificatorios</h6>
+                <div class="card-counter">
+                    <span class="counter-number">{{ total_convenios_modificatorios }}</span>
+                    <small class="counter-label">documentos</small>
+                </div>
+            </div>
+            <div class="card-action">
+                <a href="{% url 'documentos:crear_convenio_modificatorio' %}" class="btn btn-sm btn-outline-primary">
+                    <i class="fas fa-plus me-1"></i>Crear
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Estatutos Sociales -->
+    <div class="col-lg-3 col-md-4 col-sm-6 mb-3">
+        <div class="document-type-card fade-in" data-type="estatutos-sociales">
+            <div class="card-icon">
+                <i class="fas fa-building"></i>
+            </div>
+            <div class="card-content">
+                <h6 class="card-title">Estatutos Sociales</h6>
+                <div class="card-counter">
+                    <span class="counter-number">{{ total_estatutos_sociedad }}</span>
+                    <small class="counter-label">documentos</small>
+                </div>
+            </div>
+            <div class="card-action">
+                <a href="{% url 'documentos:crear_estatutos_sociedad' %}" class="btn btn-sm btn-outline-primary">
+                    <i class="fas fa-plus me-1"></i>Crear
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pagarés -->
+    <div class="col-lg-3 col-md-4 col-sm-6 mb-3">
+        <div class="document-type-card fade-in" data-type="pagares">
+            <div class="card-icon">
+                <i class="fas fa-money-check"></i>
+            </div>
+            <div class="card-content">
+                <h6 class="card-title">Pagarés</h6>
+                <div class="card-counter">
+                    <span class="counter-number">{{ total_pagares }}</span>
+                    <small class="counter-label">documentos</small>
+                </div>
+            </div>
+            <div class="card-action">
+                <a href="{% url 'documentos:crear_pagare' %}" class="btn btn-sm btn-outline-primary">
+                    <i class="fas fa-plus me-1"></i>Crear
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Botón Ver Todos -->
+    <div class="col-lg-3 col-md-4 col-sm-6 mb-3">
+        <div class="document-type-card all-documents fade-in">
+            <div class="card-icon">
+                <i class="fas fa-list"></i>
+            </div>
+            <div class="card-content">
+                <h6 class="card-title">Ver Todos los Documentos</h6>
+                <div class="card-counter">
+                    <span class="counter-number">{{ total_documentos }}</span>
+                    <small class="counter-label">total</small>
+                </div>
+            </div>
+            <div class="card-action">
+                <a href="{% url 'documentos:lista' %}" class="btn btn-sm btn-primary">
+                    <i class="fas fa-eye me-1"></i>Ver Lista
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="fas fa-history me-2"></i>
+                    Documentos Recientes
+                </h5>
+            </div>
+            <div class="card-body">
+                {% if documentos_recientes %}
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Sociedad</th>
+                                    <th>Tipo de Documento</th>
+                                    <th>Fecha</th>
+                                    <th>Última Modificación</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for documento in documentos_recientes %}
+                                <tr>
+                                    <td>{{ documento.razon_social }}</td>
+                                    <td>
+                                        {% if documento.tipo_documento_class == 'asamblea' %}
+                                            <span class="badge bg-primary">
+                                                <i class="fas fa-users me-1"></i>{{ documento.tipo_documento }}
+                                            </span>
+                                        {% elif documento.tipo_documento_class == 'consejo' %}
+                                            <span class="badge bg-success">
+                                                <i class="fas fa-users-cog me-1"></i>{{ documento.tipo_documento }}
+                                            </span>
+                                        {% else %}
+                                            <span class="badge bg-secondary">
+                                                {{ documento.tipo_documento|default:"Documento" }}
+                                            </span>
+                                        {% endif %}
+                                    </td>
+                                    <td>{{ documento.fecha|date:"d/m/Y" }}</td>
+                                    <td>{{ documento.actualizada_en|date:"d/m/Y H:i" }}</td>
+                                    <td>
+                                        {% if documento.tipo_documento_class == 'asamblea' %}
+                                            <a href="{% url 'documentos:detalle' documento.pk %}" class="btn btn-sm btn-outline-primary">
+                                                <i class="fas fa-eye"></i>
+                                            </a>
+                                            <a href="{% url 'documentos:editar' documento.pk %}" class="btn btn-sm btn-outline-warning">
+                                                <i class="fas fa-edit"></i>
+                                            </a>
+                                        {% elif documento.tipo_documento_class == 'consejo' %}
+                                            <a href="{% url 'documentos:detalle_consejo' documento.pk %}" class="btn btn-sm btn-outline-primary">
+                                                <i class="fas fa-eye"></i>
+                                            </a>
+                                            <a href="{% url 'documentos:editar_consejo' documento.pk %}" class="btn btn-sm btn-outline-warning">
+                                                <i class="fas fa-edit"></i>
+                                            </a>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="text-center mt-3">
+                        <a href="{% url 'documentos:lista' %}" class="btn btn-primary">
+                            <i class="fas fa-list me-2"></i>Ver Todos los Documentos
+                        </a>
+                    </div>
+                {% else %}
+                    <div class="text-center py-4">
+                        <i class="fas fa-file-alt fa-3x text-muted mb-3"></i>
+                        <h5 class="text-muted">No tienes documentos aún</h5>
+                        <p class="text-muted">Comienza creando tu primer documento legal</p>
+                        <a href="{% url 'documentos:crear' %}" class="btn btn-primary">
+                            <i class="fas fa-plus me-2"></i>Crear Primer Documento
+                        </a>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Sección de Herramientas Útiles -->
+<div class="row mt-4">
+    <div class="col-12">
+        <h4 class="mb-3">
+            <i class="fas fa-tools text-primary me-2"></i>
+            Herramientas Útiles
+        </h4>
+    </div>
+</div>
+
+<div class="row">
+    <!-- Convertidor DOCX a HTML -->
+    <div class="col-lg-4 col-md-6 mb-3">
+        <div class="card h-100 border-primary">
+            <div class="card-body text-center">
+                <div class="mb-3">
+                    <i class="fas fa-file-word fa-3x text-primary"></i>
+                </div>
+                <h5 class="card-title">Convertidor DOCX a HTML</h5>
+                <p class="card-text text-muted">
+                    Convierte archivos .docx a HTML para previsualizar cómo se verán los documentos.
+                </p>
+                <a href="{% url 'documentos:docx_converter' %}" class="btn btn-primary">
+                    <i class="fas fa-magic me-2"></i>Abrir Convertidor
+                </a>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Espacio para futuras herramientas -->
+    <div class="col-lg-4 col-md-6 mb-3">
+        <div class="card h-100 border-secondary">
+            <div class="card-body text-center">
+                <div class="mb-3">
+                    <i class="fas fa-cogs fa-3x text-secondary"></i>
+                </div>
+                <h5 class="card-title text-muted">Más herramientas</h5>
+                <p class="card-text text-muted">
+                    Próximamente agregaremos más herramientas útiles para la gestión de documentos.
+                </p>
+                <button class="btn btn-secondary" disabled>
+                    <i class="fas fa-clock me-2"></i>Próximamente
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-lg-4 col-md-6 mb-3">
+        <div class="card h-100 border-info">
+            <div class="card-body text-center">
+                <div class="mb-3">
+                    <i class="fas fa-question-circle fa-3x text-info"></i>
+                </div>
+                <h5 class="card-title">Ayuda y Soporte</h5>
+                <p class="card-text text-muted">
+                    ¿Necesitas ayuda? Consulta nuestra documentación o contáctanos.
+                </p>
+                <button class="btn btn-info">
+                    <i class="fas fa-life-ring me-2"></i>Obtener Ayuda
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Funcionalidad de clic para las tarjetas de tipos de documento
+    const documentCards = document.querySelectorAll('.document-type-card');
+    
+    documentCards.forEach(card => {
+        card.addEventListener('click', function(e) {
+            // No redirigir si se hace clic en el botón de acción
+            if (e.target.closest('.card-action')) {
+                return;
+            }
+            
+            const cardType = this.getAttribute('data-type');
+            
+            switch(cardType) {
+                case 'actas-asambleas':
+                    window.location.href = '{% url "documentos:lista" %}';
+                    break;
+                case 'actas-consejo':
+                    window.location.href = '{% url "documentos:lista_consejo" %}';
+                    break;
+                case 'contratos-credito':
+                    window.location.href = '{% url "documentos:lista_contrato_credito" %}';
+                    break;
+                case 'contratos-prenda':
+                    window.location.href = '{% url "documentos:lista_contrato_prenda" %}';
+                    break;
+                case 'convenios-modificatorios':
+                    window.location.href = '{% url "documentos:lista_convenio_modificatorio" %}';
+                    break;
+                case 'estatutos-sociales':
+                    window.location.href = '{% url "documentos:lista_estatutos_sociedad" %}';
+                    break;
+                case 'pagares':
+                    window.location.href = '{% url "documentos:lista_pagares" %}';
+                    break;
+                default:
+                    // Para otros tipos de documentos que aún no están implementados
+                    console.log('Funcionalidad pendiente para:', cardType);
+                    break;
+            }
+        });
+        
+        // Agregar cursor pointer para indicar que es clickeable
+        card.style.cursor = 'pointer';
+    });
+    
+    // Animación de hover para las tarjetas
+    documentCards.forEach(card => {
+        card.addEventListener('mouseenter', function() {
+            this.style.transform = 'translateY(-2px)';
+            this.style.boxShadow = '0 4px 8px rgba(0,0,0,0.1)';
+            this.style.transition = 'all 0.2s ease';
+        });
+        
+        card.addEventListener('mouseleave', function() {
+            this.style.transform = 'translateY(0)';
+            this.style.boxShadow = 'none';
+            this.style.transition = 'all 0.2s ease';
+        });
+    });
+});
+</script>
+{% endblock %}

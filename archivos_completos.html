@@ -1,0 +1,2536 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Asistente Legal - Archivos del Proyecto Django</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/file-saver@2.0.5/dist/FileSaver.min.js"></script>
+</head>
+<body class="bg-gray-100 min-h-screen">
+    <div class="container mx-auto px-4 py-8">
+        <div class="bg-white rounded-lg shadow-lg p-6 mb-8">
+            <h1 class="text-3xl font-bold text-gray-800 mb-4">
+                <i class="fas fa-gavel text-blue-500 mr-3"></i>
+                Asistente Legal - Proyecto Django Completo
+            </h1>
+            <p class="text-gray-600 mb-6">Todos los archivos necesarios para instalar y ejecutar la aplicación localmente</p>
+            
+            <div class="flex flex-wrap gap-4 mb-6">
+                <button onclick="downloadAll()" class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold">
+                    <i class="fas fa-download mr-2"></i>Descargar Todo (.zip)
+                </button>
+                <button onclick="toggleAll()" class="bg-gray-500 hover:bg-gray-600 text-white px-6 py-3 rounded-lg font-semibold">
+                    <i class="fas fa-eye mr-2"></i>Mostrar/Ocultar Todo
+                </button>
+            </div>
+        </div>
+
+        <!-- Instrucciones de Instalación -->
+        <div class="bg-white rounded-lg shadow-lg p-6 mb-8">
+            <h2 class="text-2xl font-bold text-gray-800 mb-4">
+                <i class="fas fa-rocket text-green-500 mr-3"></i>
+                Instrucciones de Instalación
+            </h2>
+            <div class="bg-gray-50 p-4 rounded-lg">
+                <ol class="list-decimal list-inside space-y-2 text-gray-700">
+                    <li>Descargar todos los archivos y extraer el ZIP</li>
+                    <li>Crear entorno virtual: <code class="bg-gray-200 px-2 py-1 rounded">python -m venv venv</code></li>
+                    <li>Activar entorno: <code class="bg-gray-200 px-2 py-1 rounded">source venv/bin/activate</code></li>
+                    <li>Instalar dependencias: <code class="bg-gray-200 px-2 py-1 rounded">pip install -r requirements.txt</code></li>
+                    <li>Crear migraciones: <code class="bg-gray-200 px-2 py-1 rounded">python manage.py makemigrations</code></li>
+                    <li>Aplicar migraciones: <code class="bg-gray-200 px-2 py-1 rounded">python manage.py migrate</code></li>
+                    <li>Crear superusuario: <code class="bg-gray-200 px-2 py-1 rounded">python manage.py createsuperuser</code></li>
+                    <li>Ejecutar servidor: <code class="bg-gray-200 px-2 py-1 rounded">python manage.py runserver</code></li>
+                </ol>
+            </div>
+        </div>
+
+        <!-- Archivos del Proyecto -->
+        <div class="space-y-6">
+            <!-- manage.py -->
+            <div class="bg-white rounded-lg shadow-lg">
+                <div class="p-4 border-b border-gray-200 flex justify-between items-center">
+                    <h3 class="text-lg font-semibold text-gray-800">
+                        <i class="fas fa-file-code text-blue-500 mr-2"></i>
+                        manage.py
+                    </h3>
+                    <div class="space-x-2">
+                        <button onclick="downloadFile('manage.py', managePyContent)" class="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded text-sm">
+                            <i class="fas fa-download mr-1"></i>Descargar
+                        </button>
+                        <button onclick="toggleContent('manage-py')" class="bg-gray-500 hover:bg-gray-600 text-white px-3 py-1 rounded text-sm">
+                            <i class="fas fa-eye mr-1"></i>Ver
+                        </button>
+                    </div>
+                </div>
+                <div id="manage-py" class="hidden p-4">
+                    <pre class="bg-gray-50 p-4 rounded-lg overflow-x-auto text-sm"><code>#!/usr/bin/env python
+import os
+import sys
+
+if __name__ == '__main__':
+    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'asistente_legal.settings')
+    try:
+        from django.core.management import execute_from_command_line
+    except ImportError as exc:
+        raise ImportError(
+            "Couldn't import Django. Are you sure it's installed and "
+            "available on your PYTHONPATH environment variable? Did you "
+            "forget to activate a virtual environment?"
+        ) from exc
+    execute_from_command_line(sys.argv)</code></pre>
+                </div>
+            </div>
+
+            <!-- requirements.txt -->
+            <div class="bg-white rounded-lg shadow-lg">
+                <div class="p-4 border-b border-gray-200 flex justify-between items-center">
+                    <h3 class="text-lg font-semibold text-gray-800">
+                        <i class="fas fa-file-alt text-green-500 mr-2"></i>
+                        requirements.txt
+                    </h3>
+                    <div class="space-x-2">
+                        <button onclick="downloadFile('requirements.txt', requirementsContent)" class="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded text-sm">
+                            <i class="fas fa-download mr-1"></i>Descargar
+                        </button>
+                        <button onclick="toggleContent('requirements')" class="bg-gray-500 hover:bg-gray-600 text-white px-3 py-1 rounded text-sm">
+                            <i class="fas fa-eye mr-1"></i>Ver
+                        </button>
+                    </div>
+                </div>
+                <div id="requirements" class="hidden p-4">
+                    <pre class="bg-gray-50 p-4 rounded-lg overflow-x-auto text-sm"><code>Django>=4.2.0
+Pillow>=10.0.0
+python-dateutil>=2.8.2</code></pre>
+                </div>
+            </div>
+
+            <!-- settings.py -->
+            <div class="bg-white rounded-lg shadow-lg">
+                <div class="p-4 border-b border-gray-200 flex justify-between items-center">
+                    <h3 class="text-lg font-semibold text-gray-800">
+                        <i class="fas fa-cog text-purple-500 mr-2"></i>
+                        asistente_legal/settings.py
+                    </h3>
+                    <div class="space-x-2">
+                        <button onclick="downloadFile('settings.py', settingsContent)" class="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded text-sm">
+                            <i class="fas fa-download mr-1"></i>Descargar
+                        </button>
+                        <button onclick="toggleContent('settings')" class="bg-gray-500 hover:bg-gray-600 text-white px-3 py-1 rounded text-sm">
+                            <i class="fas fa-eye mr-1"></i>Ver
+                        </button>
+                    </div>
+                </div>
+                <div id="settings" class="hidden p-4">
+                    <pre class="bg-gray-50 p-4 rounded-lg overflow-x-auto text-sm"><code>import os
+from pathlib import Path
+
+BASE_DIR = Path(__file__).resolve().parent.parent
+
+SECRET_KEY = 'django-insecure-tu-secret-key-aqui-cambiar-en-produccion'
+
+DEBUG = True
+
+ALLOWED_HOSTS = []
+
+INSTALLED_APPS = [
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+    'documentos',
+]
+
+MIDDLEWARE = [
+    'django.middleware.security.SecurityMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.common.CommonMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.contrib.messages.middleware.MessageMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+]
+
+ROOT_URLCONF = 'asistente_legal.urls'
+
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [BASE_DIR / 'templates'],
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                'django.template.context_processors.debug',
+                'django.template.context_processors.request',
+                'django.contrib.auth.context_processors.auth',
+                'django.contrib.messages.context_processors.messages',
+            ],
+        },
+    },
+]
+
+WSGI_APPLICATION = 'asistente_legal.wsgi.application'
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
+}
+
+AUTH_PASSWORD_VALIDATORS = [
+    {
+        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+    },
+    {
+        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+    },
+    {
+        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+    },
+    {
+        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+    },
+]
+
+LANGUAGE_CODE = 'es-es'
+TIME_ZONE = 'America/Mexico_City'
+USE_I18N = True
+USE_TZ = True
+
+STATIC_URL = '/static/'
+STATICFILES_DIRS = [BASE_DIR / 'static']
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
+
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+LOGIN_URL = '/login/'
+LOGIN_REDIRECT_URL = '/dashboard/'
+LOGOUT_REDIRECT_URL = '/login/'</code></pre>
+                </div>
+            </div>
+
+            <!-- urls.py principal -->
+            <div class="bg-white rounded-lg shadow-lg">
+                <div class="p-4 border-b border-gray-200 flex justify-between items-center">
+                    <h3 class="text-lg font-semibold text-gray-800">
+                        <i class="fas fa-route text-orange-500 mr-2"></i>
+                        asistente_legal/urls.py
+                    </h3>
+                    <div class="space-x-2">
+                        <button onclick="downloadFile('urls.py', mainUrlsContent)" class="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded text-sm">
+                            <i class="fas fa-download mr-1"></i>Descargar
+                        </button>
+                        <button onclick="toggleContent('main-urls')" class="bg-gray-500 hover:bg-gray-600 text-white px-3 py-1 rounded text-sm">
+                            <i class="fas fa-eye mr-1"></i>Ver
+                        </button>
+                    </div>
+                </div>
+                <div id="main-urls" class="hidden p-4">
+                    <pre class="bg-gray-50 p-4 rounded-lg overflow-x-auto text-sm"><code>from django.contrib import admin
+from django.urls import path, include
+from django.conf import settings
+from django.conf.urls.static import static
+from django.contrib.auth import views as auth_views
+from documentos.views import DashboardView, RegisterView
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('', DashboardView.as_view(), name='home'),
+    path('dashboard/', DashboardView.as_view(), name='dashboard'),
+    path('documentos/', include('documentos.urls')),
+    path('login/', auth_views.LoginView.as_view(template_name='registration/login.html'), name='login'),
+    path('logout/', auth_views.LogoutView.as_view(), name='logout'),
+    path('register/', RegisterView.as_view(), name='register'),
+]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)</code></pre>
+                </div>
+            </div>
+
+            <!-- wsgi.py -->
+            <div class="bg-white rounded-lg shadow-lg">
+                <div class="p-4 border-b border-gray-200 flex justify-between items-center">
+                    <h3 class="text-lg font-semibold text-gray-800">
+                        <i class="fas fa-server text-red-500 mr-2"></i>
+                        asistente_legal/wsgi.py
+                    </h3>
+                    <div class="space-x-2">
+                        <button onclick="downloadFile('wsgi.py', wsgiContent)" class="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded text-sm">
+                            <i class="fas fa-download mr-1"></i>Descargar
+                        </button>
+                        <button onclick="toggleContent('wsgi')" class="bg-gray-500 hover:bg-gray-600 text-white px-3 py-1 rounded text-sm">
+                            <i class="fas fa-eye mr-1"></i>Ver
+                        </button>
+                    </div>
+                </div>
+                <div id="wsgi" class="hidden p-4">
+                    <pre class="bg-gray-50 p-4 rounded-lg overflow-x-auto text-sm"><code>import os
+from django.core.wsgi import get_wsgi_application
+
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'asistente_legal.settings')
+application = get_wsgi_application()</code></pre>
+                </div>
+            </div>
+
+            <!-- models.py -->
+            <div class="bg-white rounded-lg shadow-lg">
+                <div class="p-4 border-b border-gray-200 flex justify-between items-center">
+                    <h3 class="text-lg font-semibold text-gray-800">
+                        <i class="fas fa-database text-indigo-500 mr-2"></i>
+                        documentos/models.py
+                    </h3>
+                    <div class="space-x-2">
+                        <button onclick="downloadFile('models.py', modelsContent)" class="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded text-sm">
+                            <i class="fas fa-download mr-1"></i>Descargar
+                        </button>
+                        <button onclick="toggleContent('models')" class="bg-gray-500 hover:bg-gray-600 text-white px-3 py-1 rounded text-sm">
+                            <i class="fas fa-eye mr-1"></i>Ver
+                        </button>
+                    </div>
+                </div>
+                <div id="models" class="hidden p-4">
+                    <pre class="bg-gray-50 p-4 rounded-lg overflow-x-auto text-sm"><code>from django.db import models
+from django.contrib.auth.models import User
+
+class TipoDocumento(models.Model):
+    nombre = models.CharField(max_length=100)
+    descripcion = models.TextField(blank=True)
+    activo = models.BooleanField(default=True)
+    
+    def __str__(self):
+        return self.nombre
+    
+    class Meta:
+        verbose_name = 'Tipo de Documento'
+        verbose_name_plural = 'Tipos de Documentos'
+
+class ActaAsamblea(models.Model):
+    TIPOS_ASAMBLEA = [
+        ('ordinaria', 'Asamblea General Ordinaria'),
+        ('extraordinaria', 'Asamblea General Extraordinaria'),
+        ('especial', 'Asamblea Especial'),
+    ]
+    
+    # Información básica
+    usuario = models.ForeignKey(User, on_delete=models.CASCADE)
+    nombre_sociedad = models.CharField(max_length=200, verbose_name='Nombre de la Sociedad')
+    tipo_asamblea = models.CharField(max_length=20, choices=TIPOS_ASAMBLEA, default='ordinaria')
+    fecha_asamblea = models.DateField(verbose_name='Fecha de la Asamblea')
+    hora_inicio = models.TimeField(verbose_name='Hora de Inicio')
+    domicilio = models.TextField(verbose_name='Domicilio Social')
+    
+    # Personas clave
+    presidente = models.CharField(max_length=200, verbose_name='Presidente')
+    secretario = models.CharField(max_length=200, verbose_name='Secretario')
+    escrutador = models.CharField(max_length=200, verbose_name='Escrutador')
+    comisario = models.CharField(max_length=200, verbose_name='Comisario')
+    
+    # Información financiera
+    periodo_financiero = models.CharField(max_length=100, verbose_name='Período Financiero')
+    cierre_ejercicio = models.CharField(max_length=100, verbose_name='Cierre del Ejercicio')
+    honorarios_aprobados = models.CharField(max_length=200, verbose_name='Honorarios Aprobados')
+    
+    # Otros
+    delegados_designados = models.TextField(verbose_name='Delegados Designados', blank=True)
+    hora_finalizacion = models.TimeField(verbose_name='Hora de Finalización')
+    
+    # Anexos
+    tiene_anexos = models.BooleanField(default=False, verbose_name='¿Tiene Anexos?')
+    descripcion_anexos = models.TextField(blank=True, verbose_name='Descripción de Anexos')
+    
+    # Información adicional del documento real
+    utilidades_ejercicio = models.CharField(max_length=100, blank=True, verbose_name='Utilidades del Ejercicio')
+    dividendos_aprobados = models.CharField(max_length=100, blank=True, verbose_name='Dividendos Aprobados')
+    reserva_legal = models.CharField(max_length=100, blank=True, verbose_name='Reserva Legal')
+    
+    # Consejo de Administración
+    presidente_consejo = models.CharField(max_length=200, blank=True, verbose_name='Presidente del Consejo')
+    secretario_consejo = models.CharField(max_length=200, blank=True, verbose_name='Secretario del Consejo')
+    vocal_consejo = models.CharField(max_length=200, blank=True, verbose_name='Vocal del Consejo')
+    
+    # Comité de Auditoría
+    presidente_auditoria = models.CharField(max_length=200, blank=True, verbose_name='Presidente Comité Auditoría')
+    secretario_auditoria = models.CharField(max_length=200, blank=True, verbose_name='Secretario Comité Auditoría')
+    vocal_auditoria = models.CharField(max_length=200, blank=True, verbose_name='Vocal Comité Auditoría')
+    
+    # Metadatos
+    fecha_creacion = models.DateTimeField(auto_now_add=True)
+    fecha_modificacion = models.DateTimeField(auto_now=True)
+    
+    def __str__(self):
+        return f"Acta {self.nombre_sociedad} - {self.fecha_asamblea}"
+    
+    class Meta:
+        verbose_name = 'Acta de Asamblea'
+        verbose_name_plural = 'Actas de Asambleas'
+        ordering = ['-fecha_asamblea']</code></pre>
+                </div>
+            </div>
+
+            <!-- forms.py -->
+            <div class="bg-white rounded-lg shadow-lg">
+                <div class="p-4 border-b border-gray-200 flex justify-between items-center">
+                    <h3 class="text-lg font-semibold text-gray-800">
+                        <i class="fas fa-wpforms text-yellow-500 mr-2"></i>
+                        documentos/forms.py
+                    </h3>
+                    <div class="space-x-2">
+                        <button onclick="downloadFile('forms.py', formsContent)" class="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded text-sm">
+                            <i class="fas fa-download mr-1"></i>Descargar
+                        </button>
+                        <button onclick="toggleContent('forms')" class="bg-gray-500 hover:bg-gray-600 text-white px-3 py-1 rounded text-sm">
+                            <i class="fas fa-eye mr-1"></i>Ver
+                        </button>
+                    </div>
+                </div>
+                <div id="forms" class="hidden p-4">
+                    <pre class="bg-gray-50 p-4 rounded-lg overflow-x-auto text-sm"><code>from django import forms
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User
+from .models import ActaAsamblea
+
+class RegistroForm(UserCreationForm):
+    email = forms.EmailField(required=True)
+    first_name = forms.CharField(max_length=30, required=True, label='Nombre')
+    last_name = forms.CharField(max_length=30, required=True, label='Apellidos')
+    
+    class Meta:
+        model = User
+        fields = ('username', 'first_name', 'last_name', 'email', 'password1', 'password2')
+
+class ActaAsambleaForm(forms.ModelForm):
+    class Meta:
+        model = ActaAsamblea
+        exclude = ['usuario', 'fecha_creacion', 'fecha_modificacion']
+        widgets = {
+            'fecha_asamblea': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
+            'hora_inicio': forms.TimeInput(attrs={'type': 'time', 'class': 'form-control'}),
+            'hora_finalizacion': forms.TimeInput(attrs={'type': 'time', 'class': 'form-control'}),
+            'domicilio': forms.Textarea(attrs={'rows': 3, 'class': 'form-control'}),
+            'delegados_designados': forms.Textarea(attrs={'rows': 3, 'class': 'form-control'}),
+            'descripcion_anexos': forms.Textarea(attrs={'rows': 3, 'class': 'form-control'}),
+            'tiene_anexos': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
+            'tipo_asamblea': forms.Select(attrs={'class': 'form-control'}),
+        }
+        
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field_name, field in self.fields.items():
+            if field_name != 'tiene_anexos':
+                field.widget.attrs.update({'class': 'form-control'})
+            field.widget.attrs.update({'id': f'id_{field_name}'})</code></pre>
+                </div>
+            </div>
+
+            <!-- views.py -->
+            <div class="bg-white rounded-lg shadow-lg">
+                <div class="p-4 border-b border-gray-200 flex justify-between items-center">
+                    <h3 class="text-lg font-semibold text-gray-800">
+                        <i class="fas fa-eye text-teal-500 mr-2"></i>
+                        documentos/views.py
+                    </h3>
+                    <div class="space-x-2">
+                        <button onclick="downloadFile('views.py', viewsContent)" class="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded text-sm">
+                            <i class="fas fa-download mr-1"></i>Descargar
+                        </button>
+                        <button onclick="toggleContent('views')" class="bg-gray-500 hover:bg-gray-600 text-white px-3 py-1 rounded text-sm">
+                            <i class="fas fa-eye mr-1"></i>Ver
+                        </button>
+                    </div>
+                </div>
+                <div id="views" class="hidden p-4">
+                    <pre class="bg-gray-50 p-4 rounded-lg overflow-x-auto text-sm"><code>from django.shortcuts import render, get_object_or_404, redirect
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views.generic import ListView, CreateView, UpdateView, DeleteView, DetailView, TemplateView
+from django.urls import reverse_lazy
+from django.contrib import messages
+from django.http import JsonResponse
+from .models import ActaAsamblea
+from .forms import ActaAsambleaForm, RegistroForm
+
+class DashboardView(LoginRequiredMixin, TemplateView):
+    template_name = 'dashboard.html'
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['total_documentos'] = ActaAsamblea.objects.filter(usuario=self.request.user).count()
+        context['documentos_recientes'] = ActaAsamblea.objects.filter(
+            usuario=self.request.user
+        ).order_by('-fecha_modificacion')[:5]
+        return context
+
+class RegisterView(CreateView):
+    form_class = RegistroForm
+    template_name = 'registration/register.html'
+    success_url = reverse_lazy('login')
+    
+    def form_valid(self, form):
+        messages.success(self.request, 'Usuario creado exitosamente. Ahora puedes iniciar sesión.')
+        return super().form_valid(form)
+
+class ActaListView(LoginRequiredMixin, ListView):
+    model = ActaAsamblea
+    template_name = 'documentos/lista.html'
+    context_object_name = 'documentos'
+    paginate_by = 10
+    
+    def get_queryset(self):
+        return ActaAsamblea.objects.filter(usuario=self.request.user).order_by('-fecha_modificacion')
+
+class ActaCreateView(LoginRequiredMixin, CreateView):
+    model = ActaAsamblea
+    form_class = ActaAsambleaForm
+    template_name = 'documentos/crear.html'
+    success_url = reverse_lazy('documentos:lista')
+    
+    def form_valid(self, form):
+        form.instance.usuario = self.request.user
+        messages.success(self.request, 'Documento creado exitosamente.')
+        return super().form_valid(form)
+
+class ActaUpdateView(LoginRequiredMixin, UpdateView):
+    model = ActaAsamblea
+    form_class = ActaAsambleaForm
+    template_name = 'documentos/editar.html'
+    success_url = reverse_lazy('documentos:lista')
+    
+    def get_queryset(self):
+        return ActaAsamblea.objects.filter(usuario=self.request.user)
+    
+    def form_valid(self, form):
+        messages.success(self.request, 'Documento actualizado exitosamente.')
+        return super().form_valid(form)
+
+class ActaDetailView(LoginRequiredMixin, DetailView):
+    model = ActaAsamblea
+    template_name = 'documentos/detalle.html'
+    context_object_name = 'documento'
+    
+    def get_queryset(self):
+        return ActaAsamblea.objects.filter(usuario=self.request.user)
+
+class ActaDeleteView(LoginRequiredMixin, DeleteView):
+    model = ActaAsamblea
+    template_name = 'documentos/confirmar_eliminar.html'
+    success_url = reverse_lazy('documentos:lista')
+    
+    def get_queryset(self):
+        return ActaAsamblea.objects.filter(usuario=self.request.user)
+    
+    def delete(self, request, *args, **kwargs):
+        messages.success(self.request, 'Documento eliminado exitosamente.')
+        return super().delete(request, *args, **kwargs)
+
+@login_required
+def vista_previa_ajax(request):
+    """Vista para actualizar la vista previa en tiempo real"""
+    if request.method == 'POST':
+        form_data = request.POST
+        context = {
+            'form_data': form_data,
+        }
+        return render(request, 'documentos/vista_previa_partial.html', context)
+    return JsonResponse({'error': 'Método no permitido'})</code></pre>
+                </div>
+            </div>
+
+            <!-- admin.py -->
+            <div class="bg-white rounded-lg shadow-lg">
+                <div class="p-4 border-b border-gray-200 flex justify-between items-center">
+                    <h3 class="text-lg font-semibold text-gray-800">
+                        <i class="fas fa-user-shield text-red-500 mr-2"></i>
+                        documentos/admin.py
+                    </h3>
+                    <div class="space-x-2">
+                        <button onclick="downloadFile('admin.py', adminContent)" class="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded text-sm">
+                            <i class="fas fa-download mr-1"></i>Descargar
+                        </button>
+                        <button onclick="toggleContent('admin')" class="bg-gray-500 hover:bg-gray-600 text-white px-3 py-1 rounded text-sm">
+                            <i class="fas fa-eye mr-1"></i>Ver
+                        </button>
+                    </div>
+                </div>
+                <div id="admin" class="hidden p-4">
+                    <pre class="bg-gray-50 p-4 rounded-lg overflow-x-auto text-sm"><code>from django.contrib import admin
+from .models import ActaAsamblea, TipoDocumento
+
+@admin.register(TipoDocumento)
+class TipoDocumentoAdmin(admin.ModelAdmin):
+    list_display = ['nombre', 'activo']
+    list_filter = ['activo']
+    search_fields = ['nombre']
+
+@admin.register(ActaAsamblea)
+class ActaAsambleaAdmin(admin.ModelAdmin):
+    list_display = ['nombre_sociedad', 'tipo_asamblea', 'fecha_asamblea', 'usuario', 'fecha_creacion']
+    list_filter = ['tipo_asamblea', 'fecha_asamblea', 'fecha_creacion']
+    search_fields = ['nombre_sociedad', 'presidente', 'secretario']
+    date_hierarchy = 'fecha_asamblea'
+    
+    fieldsets = (
+        ('Información Básica', {
+            'fields': ('usuario', 'nombre_sociedad', 'tipo_asamblea', 'fecha_asamblea', 'hora_inicio', 'domicilio')
+        }),
+        ('Personas Clave', {
+            'fields': ('presidente', 'secretario', 'escrutador', 'comisario')
+        }),
+        ('Información Financiera', {
+            'fields': ('periodo_financiero', 'cierre_ejercicio', 'honorarios_aprobados', 'utilidades_ejercicio', 'dividendos_aprobados', 'reserva_legal')
+        }),
+        ('Consejo de Administración', {
+            'fields': ('presidente_consejo', 'secretario_consejo', 'vocal_consejo'),
+            'classes': ('collapse',)
+        }),
+        ('Comité de Auditoría', {
+            'fields': ('presidente_auditoria', 'secretario_auditoria', 'vocal_auditoria'),
+            'classes': ('collapse',)
+        }),
+        ('Otros', {
+            'fields': ('delegados_designados', 'hora_finalizacion', 'tiene_anexos', 'descripcion_anexos')
+        }),
+    )</code></pre>
+                </div>
+            </div>
+
+            <!-- documentos/urls.py -->
+            <div class="bg-white rounded-lg shadow-lg">
+                <div class="p-4 border-b border-gray-200 flex justify-between items-center">
+                    <h3 class="text-lg font-semibold text-gray-800">
+                        <i class="fas fa-route text-orange-500 mr-2"></i>
+                        documentos/urls.py
+                    </h3>
+                    <div class="space-x-2">
+                        <button onclick="downloadFile('documentos_urls.py', docUrlsContent)" class="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded text-sm">
+                            <i class="fas fa-download mr-1"></i>Descargar
+                        </button>
+                        <button onclick="toggleContent('doc-urls')" class="bg-gray-500 hover:bg-gray-600 text-white px-3 py-1 rounded text-sm">
+                            <i class="fas fa-eye mr-1"></i>Ver
+                        </button>
+                    </div>
+                </div>
+                <div id="doc-urls" class="hidden p-4">
+                    <pre class="bg-gray-50 p-4 rounded-lg overflow-x-auto text-sm"><code>from django.urls import path
+from . import views
+
+app_name = 'documentos'
+
+urlpatterns = [
+    path('', views.ActaListView.as_view(), name='lista'),
+    path('crear/', views.ActaCreateView.as_view(), name='crear'),
+    path('<int:pk>/', views.ActaDetailView.as_view(), name='detalle'),
+    path('<int:pk>/editar/', views.ActaUpdateView.as_view(), name='editar'),
+    path('<int:pk>/eliminar/', views.ActaDeleteView.as_view(), name='eliminar'),
+    path('vista-previa/', views.vista_previa_ajax, name='vista_previa'),
+]</code></pre>
+                </div>
+            </div>
+
+            <!-- README.md -->
+            <div class="bg-white rounded-lg shadow-lg">
+                <div class="p-4 border-b border-gray-200 flex justify-between items-center">
+                    <h3 class="text-lg font-semibold text-gray-800">
+                        <i class="fas fa-readme text-blue-500 mr-2"></i>
+                        README.md
+                    </h3>
+                    <div class="space-x-2">
+                        <button onclick="downloadFile('README.md', readmeContent)" class="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded text-sm">
+                            <i class="fas fa-download mr-1"></i>Descargar
+                        </button>
+                        <button onclick="toggleContent('readme')" class="bg-gray-500 hover:bg-gray-600 text-white px-3 py-1 rounded text-sm">
+                            <i class="fas fa-eye mr-1"></i>Ver
+                        </button>
+                    </div>
+                </div>
+                <div id="readme" class="hidden p-4">
+                    <pre class="bg-gray-50 p-4 rounded-lg overflow-x-auto text-sm"><code># Asistente Legal - Aplicación Django
+
+## Descripción
+Aplicación web para la generación de documentos legales con vista previa en tiempo real. Especializada en Actas de Asambleas Generales con formato legal mexicano profesional.
+
+## Características
+- 🔐 Sistema de autenticación completo
+- 📄 Generación de Actas de Asambleas
+- ⚡ Vista previa en tiempo real
+- 💾 Gestión CRUD completa
+- 🏛️ Panel de administración Django
+- 📱 Interfaz responsive
+
+## Instalación
+
+### Prerrequisitos
+- Python 3.8+
+- pip
+
+### Pasos de instalación
+
+1. **Clonar/Extraer el proyecto**
+```bash
+cd asistente_legal
+```
+
+2. **Crear entorno virtual**
+```bash
+python -m venv venv
+source venv/bin/activate  # En Windows: venv\Scripts\activate
+```
+
+3. **Instalar dependencias**
+```bash
+pip install -r requirements.txt
+```
+
+4. **Configurar la base de datos**
+```bash
+python manage.py makemigrations
+python manage.py migrate
+```
+
+5. **Crear superusuario**
+```bash
+python manage.py createsuperuser
+```
+
+6. **Ejecutar el servidor**
+```bash
+python manage.py runserver
+```
+
+## Uso
+
+### Acceso a la aplicación
+- **Aplicación principal**: http://127.0.0.1:8000/
+- **Panel de administración**: http://127.0.0.1:8000/admin/
+
+### Funcionalidades principales
+1. **Registro e inicio de sesión** de usuarios
+2. **Dashboard** personalizado con estadísticas
+3. **Crear documentos** con vista previa en tiempo real
+4. **Editar y eliminar** documentos existentes
+5. **Gestión de anexos** condicional
+
+## Estructura del Proyecto
+
+```
+asistente_legal/
+├── manage.py
+├── requirements.txt
+├── asistente_legal/
+│   ├── __init__.py
+│   ├── settings.py
+│   ├── urls.py
+│   └── wsgi.py
+├── documentos/
+│   ├── __init__.py
+│   ├── admin.py
+│   ├── apps.py
+│   ├── forms.py
+│   ├── models.py
+│   ├── tests.py
+│   ├── views.py
+│   └── urls.py
+├── templates/
+│   ├── base.html
+│   ├── dashboard.html
+│   ├── registration/
+│   └── documentos/
+├── static/
+│   ├── css/
+│   └── js/
+└── media/
+```
+
+## Tecnologías Utilizadas
+- **Backend**: Django 4.2+
+- **Frontend**: HTML5, CSS3, JavaScript, Bootstrap 5
+- **Base de datos**: SQLite (desarrollo)
+- **Autenticación**: Django Auth
+
+## Personalización
+
+### Añadir nuevos tipos de documentos
+1. Crear nuevo modelo en `documentos/models.py`
+2. Crear formulario en `documentos/forms.py`
+3. Añadir vistas en `documentos/views.py`
+4. Crear templates correspondientes
+5. Actualizar URLs
+
+### Modificar plantillas de documentos
+Editar los templates en `templates/documentos/` para cambiar el formato de salida.
+
+## Seguridad
+- Protección CSRF habilitada
+- Autenticación requerida para todas las funciones
+- Separación de datos por usuario
+- Validación de formularios
+
+## Soporte
+Para soporte técnico o consultas, contactar al desarrollador del proyecto.
+
+## Licencia
+Proyecto desarrollado para uso interno/educativo.</code></pre>
+                </div>
+            </div>
+
+            <!-- __init__.py files -->
+            <div class="bg-white rounded-lg shadow-lg">
+                <div class="p-4 border-b border-gray-200 flex justify-between items-center">
+                    <h3 class="text-lg font-semibold text-gray-800">
+                        <i class="fas fa-file text-gray-500 mr-2"></i>
+                        Archivos __init__.py
+                    </h3>
+                    <div class="space-x-2">
+                        <button onclick="downloadFile('__init__.py', initContent)" class="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded text-sm">
+                            <i class="fas fa-download mr-1"></i>Descargar
+                        </button>
+                        <button onclick="toggleContent('init-files')" class="bg-gray-500 hover:bg-gray-600 text-white px-3 py-1 rounded text-sm">
+                            <i class="fas fa-eye mr-1"></i>Ver
+                        </button>
+                    </div>
+                </div>
+                <div id="init-files" class="hidden p-4">
+                    <pre class="bg-gray-50 p-4 rounded-lg overflow-x-auto text-sm"><code># Archivo vacío requerido por Python para reconocer directorios como paquetes
+# Se necesita en:
+# - asistente_legal/__init__.py
+# - documentos/__init__.py</code></pre>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Sección de Templates -->
+        <div class="bg-white rounded-lg shadow-lg p-6 mt-8">
+            <h2 class="text-2xl font-bold text-gray-800 mb-6">
+                <i class="fas fa-file-code text-green-500 mr-3"></i>
+                Templates HTML
+            </h2>
+            
+            <div class="space-y-4">
+                <!-- base.html -->
+                <div class="border rounded-lg">
+                    <div class="p-4 border-b border-gray-200 flex justify-between items-center">
+                        <h4 class="font-semibold">templates/base.html</h4>
+                        <div class="space-x-2">
+                            <button onclick="downloadFile('base.html', baseHtmlContent)" class="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded text-sm">
+                                <i class="fas fa-download mr-1"></i>Descargar
+                            </button>
+                            <button onclick="toggleContent('base-html')" class="bg-gray-500 hover:bg-gray-600 text-white px-3 py-1 rounded text-sm">
+                                <i class="fas fa-eye mr-1"></i>Ver
+                            </button>
+                        </div>
+                    </div>
+                    <div id="base-html" class="hidden p-4">
+                        <pre class="bg-gray-50 p-4 rounded-lg overflow-x-auto text-sm"><code><!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Asistente Legal{% endblock %}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/main.css' %}">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container">
+            <a class="navbar-brand" href="{% url 'dashboard' %}">
+                <i class="fas fa-gavel me-2"></i>Asistente Legal
+            </a>
+            
+            {% if user.is_authenticated %}
+            <div class="navbar-nav ms-auto">
+                <div class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown">
+                        <i class="fas fa-user me-1"></i>{{ user.first_name|default:user.username }}
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="{% url 'dashboard' %}">
+                            <i class="fas fa-tachometer-alt me-2"></i>Dashboard
+                        </a></li>
+                        <li><a class="dropdown-item" href="{% url 'documentos:lista' %}">
+                            <i class="fas fa-file-alt me-2"></i>Mis Documentos
+                        </a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="{% url 'logout' %}">
+                            <i class="fas fa-sign-out-alt me-2"></i>Cerrar Sesión
+                        </a></li>
+                    </ul>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </nav>
+
+    <main class="container-fluid py-4">
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{% static 'js/main.js' %}"></script>
+    {% block extra_js %}{% endblock %}
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon='{"rayId":"95fbc0b7be5e2ca6","serverTiming":{"name":{"cfExtPri":true,"cfEdge":true,"cfOrigin":true,"cfL4":true,"cfSpeedBrain":true,"cfCacheStatus":true}},"version":"2025.6.2","token":"4edd5f8ec12a48cfa682ab8261b80a79"}' crossorigin="anonymous"></script>
+</body>
+</html></code></pre>
+                    </div>
+                </div>
+
+                <!-- dashboard.html -->
+                <div class="border rounded-lg">
+                    <div class="p-4 border-b border-gray-200 flex justify-between items-center">
+                        <h4 class="font-semibold">templates/dashboard.html</h4>
+                        <div class="space-x-2">
+                            <button onclick="downloadFile('dashboard.html', dashboardHtmlContent)" class="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded text-sm">
+                                <i class="fas fa-download mr-1"></i>Descargar
+                            </button>
+                            <button onclick="toggleContent('dashboard-html')" class="bg-gray-500 hover:bg-gray-600 text-white px-3 py-1 rounded text-sm">
+                                <i class="fas fa-eye mr-1"></i>Ver
+                            </button>
+                        </div>
+                    </div>
+                    <div id="dashboard-html" class="hidden p-4">
+                        <pre class="bg-gray-50 p-4 rounded-lg overflow-x-auto text-sm"><code>{% extends 'base.html' %}
+
+{% block title %}Dashboard - Asistente Legal{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1><i class="fas fa-tachometer-alt text-primary me-2"></i>Dashboard</h1>
+            <a href="{% url 'documentos:crear' %}" class="btn btn-success">
+                <i class="fas fa-plus me-2"></i>Nuevo Documento
+            </a>
+        </div>
+    </div>
+</div>
+
+<div class="row mb-4">
+    <div class="col-md-4">
+        <div class="card bg-primary text-white">
+            <div class="card-body">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <h4>{{ total_documentos }}</h4>
+                        <p class="mb-0">Total Documentos</p>
+                    </div>
+                    <div class="align-self-center">
+                        <i class="fas fa-file-alt fa-2x"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-4">
+        <div class="card bg-success text-white">
+            <div class="card-body">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <h4>{{ documentos_recientes|length }}</h4>
+                        <p class="mb-0">Recientes</p>
+                    </div>
+                    <div class="align-self-center">
+                        <i class="fas fa-clock fa-2x"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-4">
+        <div class="card bg-info text-white">
+            <div class="card-body">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <h4>Actas</h4>
+                        <p class="mb-0">Tipo Principal</p>
+                    </div>
+                    <div class="align-self-center">
+                        <i class="fas fa-gavel fa-2x"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h5><i class="fas fa-file-alt me-2"></i>Documentos Recientes</h5>
+            </div>
+            <div class="card-body">
+                {% if documentos_recientes %}
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Sociedad</th>
+                                    <th>Tipo</th>
+                                    <th>Fecha</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for documento in documentos_recientes %}
+                                <tr>
+                                    <td>{{ documento.nombre_sociedad }}</td>
+                                    <td>
+                                        <span class="badge bg-primary">{{ documento.get_tipo_asamblea_display }}</span>
+                                    </td>
+                                    <td>{{ documento.fecha_asamblea|date:"d/m/Y" }}</td>
+                                    <td>
+                                        <a href="{% url 'documentos:detalle' documento.pk %}" class="btn btn-sm btn-outline-primary">
+                                            <i class="fas fa-eye"></i>
+                                        </a>
+                                        <a href="{% url 'documentos:editar' documento.pk %}" class="btn btn-sm btn-outline-warning">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="text-center mt-3">
+                        <a href="{% url 'documentos:lista' %}" class="btn btn-primary">
+                            Ver Todos los Documentos
+                        </a>
+                    </div>
+                {% else %}
+                    <div class="text-center py-4">
+                        <i class="fas fa-file-alt fa-3x text-muted mb-3"></i>
+                        <h5 class="text-muted">No tienes documentos aún</h5>
+                        <p class="text-muted">Crea tu primer documento para comenzar.</p>
+                        <a href="{% url 'documentos:crear' %}" class="btn btn-success">
+                            <i class="fas fa-plus me-2"></i>Crear Primer Documento
+                        </a>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header">
+                <h5><i class="fas fa-info-circle me-2"></i>Acciones Rápidas</h5>
+            </div>
+            <div class="card-body">
+                <div class="d-grid gap-2">
+                    <a href="{% url 'documentos:crear' %}" class="btn btn-success">
+                        <i class="fas fa-plus me-2"></i>Nuevo Documento
+                    </a>
+                    <a href="{% url 'documentos:lista' %}" class="btn btn-primary">
+                        <i class="fas fa-list me-2"></i>Ver Todos
+                    </a>
+                    {% if user.is_staff %}
+                    <a href="/admin/" class="btn btn-secondary" target="_blank">
+                        <i class="fas fa-cog me-2"></i>Administración
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        
+        <div class="card mt-3">
+            <div class="card-header">
+                <h5><i class="fas fa-lightbulb me-2"></i>Consejos</h5>
+            </div>
+            <div class="card-body">
+                <ul class="list-unstyled">
+                    <li class="mb-2">
+                        <i class="fas fa-check text-success me-2"></i>
+                        La vista previa se actualiza en tiempo real
+                    </li>
+                    <li class="mb-2">
+                        <i class="fas fa-check text-success me-2"></i>
+                        Todos tus documentos se guardan automáticamente
+                    </li>
+                    <li class="mb-2">
+                        <i class="fas fa-check text-success me-2"></i>
+                        Puedes agregar anexos de forma opcional
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}</code></pre>
+                    </div>
+                </div>
+
+                <!-- login.html -->
+                <div class="border rounded-lg">
+                    <div class="p-4 border-b border-gray-200 flex justify-between items-center">
+                        <h4 class="font-semibold">templates/registration/login.html</h4>
+                        <div class="space-x-2">
+                            <button onclick="downloadFile('login.html', loginHtmlContent)" class="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded text-sm">
+                                <i class="fas fa-download mr-1"></i>Descargar
+                            </button>
+                            <button onclick="toggleContent('login-html')" class="bg-gray-500 hover:bg-gray-600 text-white px-3 py-1 rounded text-sm">
+                                <i class="fas fa-eye mr-1"></i>Ver
+                            </button>
+                        </div>
+                    </div>
+                    <div id="login-html" class="hidden p-4">
+                        <pre class="bg-gray-50 p-4 rounded-lg overflow-x-auto text-sm"><code><!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iniciar Sesión - Asistente Legal</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+    <div class="container">
+        <div class="row justify-content-center align-items-center min-vh-100">
+            <div class="col-md-6 col-lg-4">
+                <div class="card shadow">
+                    <div class="card-body p-5">
+                        <div class="text-center mb-4">
+                            <i class="fas fa-gavel fa-3x text-primary mb-3"></i>
+                            <h2 class="card-title">Asistente Legal</h2>
+                            <p class="text-muted">Inicia sesión para continuar</p>
+                        </div>
+
+                        {% if messages %}
+                            {% for message in messages %}
+                                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                                    {{ message }}
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+
+                        <form method="post">
+                            {% csrf_token %}
+                            <div class="mb-3">
+                                <label for="{{ form.username.id_for_label }}" class="form-label">
+                                    <i class="fas fa-user me-2"></i>Usuario
+                                </label>
+                                {{ form.username }}
+                                {% if form.username.errors %}
+                                    <div class="text-danger small">{{ form.username.errors }}</div>
+                                {% endif %}
+                            </div>
+
+                            <div class="mb-4">
+                                <label for="{{ form.password.id_for_label }}" class="form-label">
+                                    <i class="fas fa-lock me-2"></i>Contraseña
+                                </label>
+                                {{ form.password }}
+                                {% if form.password.errors %}
+                                    <div class="text-danger small">{{ form.password.errors }}</div>
+                                {% endif %}
+                            </div>
+
+                            <div class="d-grid">
+                                <button type="submit" class="btn btn-primary btn-lg">
+                                    <i class="fas fa-sign-in-alt me-2"></i>Iniciar Sesión
+                                </button>
+                            </div>
+                        </form>
+
+                        <div class="text-center mt-4">
+                            <p class="text-muted">¿No tienes cuenta?</p>
+                            <a href="{% url 'register' %}" class="btn btn-outline-primary">
+                                <i class="fas fa-user-plus me-2"></i>Registrarse
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Auto-focus en el primer campo
+        document.addEventListener('DOMContentLoaded', function() {
+            const firstInput = document.querySelector('input[type="text"], input[type="email"]');
+            if (firstInput) {
+                firstInput.focus();
+            }
+        });
+
+        // Aplicar clases de Bootstrap a los campos del formulario
+        document.querySelectorAll('input').forEach(function(input) {
+            input.classList.add('form-control');
+        });
+    </script>
+</body>
+</html></code></pre>
+                    </div>
+                </div>
+
+                <!-- register.html -->
+                <div class="border rounded-lg">
+                    <div class="p-4 border-b border-gray-200 flex justify-between items-center">
+                        <h4 class="font-semibold">templates/registration/register.html</h4>
+                        <div class="space-x-2">
+                            <button onclick="downloadFile('register.html', registerHtmlContent)" class="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded text-sm">
+                                <i class="fas fa-download mr-1"></i>Descargar
+                            </button>
+                            <button onclick="toggleContent('register-html')" class="bg-gray-500 hover:bg-gray-600 text-white px-3 py-1 rounded text-sm">
+                                <i class="fas fa-eye mr-1"></i>Ver
+                            </button>
+                        </div>
+                    </div>
+                    <div id="register-html" class="hidden p-4">
+                        <pre class="bg-gray-50 p-4 rounded-lg overflow-x-auto text-sm"><code><!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro - Asistente Legal</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+    <div class="container">
+        <div class="row justify-content-center align-items-center min-vh-100">
+            <div class="col-md-8 col-lg-6">
+                <div class="card shadow">
+                    <div class="card-body p-5">
+                        <div class="text-center mb-4">
+                            <i class="fas fa-gavel fa-3x text-primary mb-3"></i>
+                            <h2 class="card-title">Crear Cuenta</h2>
+                            <p class="text-muted">Regístrate para usar el Asistente Legal</p>
+                        </div>
+
+                        <form method="post">
+                            {% csrf_token %}
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="{{ form.first_name.id_for_label }}" class="form-label">
+                                        <i class="fas fa-user me-2"></i>Nombre
+                                    </label>
+                                    {{ form.first_name }}
+                                    {% if form.first_name.errors %}
+                                        <div class="text-danger small">{{ form.first_name.errors }}</div>
+                                    {% endif %}
+                                </div>
+
+                                <div class="col-md-6 mb-3">
+                                    <label for="{{ form.last_name.id_for_label }}" class="form-label">
+                                        <i class="fas fa-user me-2"></i>Apellidos
+                                    </label>
+                                    {{ form.last_name }}
+                                    {% if form.last_name.errors %}
+                                        <div class="text-danger small">{{ form.last_name.errors }}</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="{{ form.username.id_for_label }}" class="form-label">
+                                    <i class="fas fa-at me-2"></i>Nombre de Usuario
+                                </label>
+                                {{ form.username }}
+                                {% if form.username.errors %}
+                                    <div class="text-danger small">{{ form.username.errors }}</div>
+                                {% endif %}
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="{{ form.email.id_for_label }}" class="form-label">
+                                    <i class="fas fa-envelope me-2"></i>Correo Electrónico
+                                </label>
+                                {{ form.email }}
+                                {% if form.email.errors %}
+                                    <div class="text-danger small">{{ form.email.errors }}</div>
+                                {% endif %}
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="{{ form.password1.id_for_label }}" class="form-label">
+                                        <i class="fas fa-lock me-2"></i>Contraseña
+                                    </label>
+                                    {{ form.password1 }}
+                                    {% if form.password1.errors %}
+                                        <div class="text-danger small">{{ form.password1.errors }}</div>
+                                    {% endif %}
+                                </div>
+
+                                <div class="col-md-6 mb-3">
+                                    <label for="{{ form.password2.id_for_label }}" class="form-label">
+                                        <i class="fas fa-lock me-2"></i>Confirmar Contraseña
+                                    </label>
+                                    {{ form.password2 }}
+                                    {% if form.password2.errors %}
+                                        <div class="text-danger small">{{ form.password2.errors }}</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+
+                            <div class="d-grid">
+                                <button type="submit" class="btn btn-success btn-lg">
+                                    <i class="fas fa-user-plus me-2"></i>Crear Cuenta
+                                </button>
+                            </div>
+                        </form>
+
+                        <div class="text-center mt-4">
+                            <p class="text-muted">¿Ya tienes cuenta?</p>
+                            <a href="{% url 'login' %}" class="btn btn-outline-primary">
+                                <i class="fas fa-sign-in-alt me-2"></i>Iniciar Sesión
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Aplicar clases de Bootstrap a los campos del formulario
+        document.querySelectorAll('input').forEach(function(input) {
+            input.classList.add('form-control');
+        });
+    </script>
+</body>
+</html></code></pre>
+                    </div>
+                </div>
+
+                <!-- crear.html -->
+                <div class="border rounded-lg">
+                    <div class="p-4 border-b border-gray-200 flex justify-between items-center">
+                        <h4 class="font-semibold">templates/documentos/crear.html</h4>
+                        <div class="space-x-2">
+                            <button onclick="downloadFile('crear.html', crearHtmlContent)" class="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded text-sm">
+                                <i class="fas fa-download mr-1"></i>Descargar
+                            </button>
+                            <button onclick="toggleContent('crear-html')" class="bg-gray-500 hover:bg-gray-600 text-white px-3 py-1 rounded text-sm">
+                                <i class="fas fa-eye mr-1"></i>Ver
+                            </button>
+                        </div>
+                    </div>
+                    <div id="crear-html" class="hidden p-4">
+                        <pre class="bg-gray-50 p-4 rounded-lg overflow-x-auto text-sm"><code>{% extends 'base.html' %}
+
+{% block title %}Crear Documento - Asistente Legal{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1><i class="fas fa-plus text-success me-2"></i>Crear Acta de Asamblea</h1>
+            <a href="{% url 'documentos:lista' %}" class="btn btn-secondary">
+                <i class="fas fa-arrow-left me-2"></i>Volver
+            </a>
+        </div>
+    </div>
+</div>
+
+<div class="row" style="height: calc(100vh - 200px);">
+    <!-- Panel Izquierdo - Formulario -->
+    <div class="col-md-6 pe-2">
+        <div class="card h-100">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0"><i class="fas fa-edit me-2"></i>Datos del Documento</h5>
+            </div>
+            <div class="card-body overflow-auto">
+                <form method="post" id="documento-form">
+                    {% csrf_token %}
+                    
+                    <!-- Información Básica -->
+                    <div class="section-header mb-3">
+                        <h6 class="text-primary border-bottom pb-2">
+                            <i class="fas fa-info-circle me-2"></i>Información Básica
+                        </h6>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-12 mb-3">
+                            <label for="{{ form.nombre_sociedad.id_for_label }}" class="form-label">{{ form.nombre_sociedad.label }}</label>
+                            {{ form.nombre_sociedad }}
+                        </div>
+                        
+                        <div class="col-md-6 mb-3">
+                            <label for="{{ form.tipo_asamblea.id_for_label }}" class="form-label">{{ form.tipo_asamblea.label }}</label>
+                            {{ form.tipo_asamblea }}
+                        </div>
+                        
+                        <div class="col-md-6 mb-3">
+                            <label for="{{ form.fecha_asamblea.id_for_label }}" class="form-label">{{ form.fecha_asamblea.label }}</label>
+                            {{ form.fecha_asamblea }}
+                        </div>
+                        
+                        <div class="col-md-6 mb-3">
+                            <label for="{{ form.hora_inicio.id_for_label }}" class="form-label">{{ form.hora_inicio.label }}</label>
+                            {{ form.hora_inicio }}
+                        </div>
+                        
+                        <div class="col-md-6 mb-3">
+                            <label for="{{ form.hora_finalizacion.id_for_label }}" class="form-label">{{ form.hora_finalizacion.label }}</label>
+                            {{ form.hora_finalizacion }}
+                        </div>
+                        
+                        <div class="col-12 mb-3">
+                            <label for="{{ form.domicilio.id_for_label }}" class="form-label">{{ form.domicilio.label }}</label>
+                            {{ form.domicilio }}
+                        </div>
+                    </div>
+
+                    <!-- Personas Clave -->
+                    <div class="section-header mb-3">
+                        <h6 class="text-primary border-bottom pb-2">
+                            <i class="fas fa-users me-2"></i>Personas Clave
+                        </h6>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="{{ form.presidente.id_for_label }}" class="form-label">{{ form.presidente.label }}</label>
+                            {{ form.presidente }}
+                        </div>
+                        
+                        <div class="col-md-6 mb-3">
+                            <label for="{{ form.secretario.id_for_label }}" class="form-label">{{ form.secretario.label }}</label>
+                            {{ form.secretario }}
+                        </div>
+                        
+                        <div class="col-md-6 mb-3">
+                            <label for="{{ form.escrutador.id_for_label }}" class="form-label">{{ form.escrutador.label }}</label>
+                            {{ form.escrutador }}
+                        </div>
+                        
+                        <div class="col-md-6 mb-3">
+                            <label for="{{ form.comisario.id_for_label }}" class="form-label">{{ form.comisario.label }}</label>
+                            {{ form.comisario }}
+                        </div>
+                    </div>
+
+                    <!-- Información Financiera -->
+                    <div class="section-header mb-3">
+                        <h6 class="text-primary border-bottom pb-2">
+                            <i class="fas fa-calculator me-2"></i>Información Financiera
+                        </h6>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="{{ form.periodo_financiero.id_for_label }}" class="form-label">{{ form.periodo_financiero.label }}</label>
+                            {{ form.periodo_financiero }}
+                        </div>
+                        
+                        <div class="col-md-6 mb-3">
+                            <label for="{{ form.cierre_ejercicio.id_for_label }}" class="form-label">{{ form.cierre_ejercicio.label }}</label>
+                            {{ form.cierre_ejercicio }}
+                        </div>
+                        
+                        <div class="col-12 mb-3">
+                            <label for="{{ form.honorarios_aprobados.id_for_label }}" class="form-label">{{ form.honorarios_aprobados.label }}</label>
+                            {{ form.honorarios_aprobados }}
+                        </div>
+                        
+                        <div class="col-md-6 mb-3">
+                            <label for="{{ form.utilidades_ejercicio.id_for_label }}" class="form-label">{{ form.utilidades_ejercicio.label }}</label>
+                            {{ form.utilidades_ejercicio }}
+                        </div>
+                        
+                        <div class="col-md-6 mb-3">
+                            <label for="{{ form.dividendos_aprobados.id_for_label }}" class="form-label">{{ form.dividendos_aprobados.label }}</label>
+                            {{ form.dividendos_aprobados }}
+                        </div>
+                        
+                        <div class="col-12 mb-3">
+                            <label for="{{ form.reserva_legal.id_for_label }}" class="form-label">{{ form.reserva_legal.label }}</label>
+                            {{ form.reserva_legal }}
+                        </div>
+                    </div>
+
+                    <!-- Otros Datos -->
+                    <div class="section-header mb-3">
+                        <h6 class="text-primary border-bottom pb-2">
+                            <i class="fas fa-cog me-2"></i>Otros Datos
+                        </h6>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-12 mb-3">
+                            <label for="{{ form.delegados_designados.id_for_label }}" class="form-label">{{ form.delegados_designados.label }}</label>
+                            {{ form.delegados_designados }}
+                        </div>
+                        
+                        <div class="col-12 mb-3">
+                            <div class="form-check">
+                                {{ form.tiene_anexos }}
+                                <label class="form-check-label" for="{{ form.tiene_anexos.id_for_label }}">
+                                    {{ form.tiene_anexos.label }}
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div class="col-12 mb-3" id="anexos-section" style="display: none;">
+                            <label for="{{ form.descripcion_anexos.id_for_label }}" class="form-label">{{ form.descripcion_anexos.label }}</label>
+                            {{ form.descripcion_anexos }}
+                        </div>
+                    </div>
+
+                    <div class="d-grid gap-2 mt-4">
+                        <button type="submit" class="btn btn-success btn-lg">
+                            <i class="fas fa-save me-2"></i>Guardar Documento
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Panel Derecho - Vista Previa -->
+    <div class="col-md-6 ps-2">
+        <div class="card h-100">
+            <div class="card-header bg-info text-white">
+                <h5 class="mb-0"><i class="fas fa-eye me-2"></i>Vista Previa del Documento</h5>
+            </div>
+            <div class="card-body overflow-auto" id="vista-previa">
+                <div class="documento-preview">
+                    <div class="text-center mb-4">
+                        <h4 class="fw-bold">ASAMBLEA GENERAL ORDINARIA DE ACCIONISTAS DE</h4>
+                        <h4 class="fw-bold text-uppercase" id="preview-nombre-sociedad">[NOMBRE DE LA SOCIEDAD]</h4>
+                        <p class="mt-3">De fecha <span id="preview-fecha">[FECHA]</span></p>
+                    </div>
+                    
+                    <div class="documento-contenido" style="font-size: 14px; line-height: 1.6;">
+                        <p>Siendo las <span id="preview-hora-inicio">[HORA]</span> horas del <span id="preview-fecha-texto">[FECHA]</span>, se reunieron en el domicilio social de <span id="preview-nombre-sociedad-texto" class="text-uppercase">[NOMBRE DE LA SOCIEDAD]</span> ubicado en <span id="preview-domicilio">[DOMICILIO]</span>, las personas cuyos nombres aparecen en la lista de asistencia, para celebrar una <span id="preview-tipo-asamblea">Asamblea General Ordinaria</span> de Accionistas.</p>
+                        
+                        <p><strong>INSTALACIÓN DE LA ASAMBLEA:</strong></p>
+                        <p>Previo al inicio de la Asamblea, se designaron los siguientes cargos:</p>
+                        <ul>
+                            <li><strong>Presidente:</strong> <span id="preview-presidente">[PRESIDENTE]</span></li>
+                            <li><strong>Secretario y Escrutador:</strong> <span id="preview-secretario">[SECRETARIO]</span></li>
+                            <li><strong>Comisario:</strong> <span id="preview-comisario">[COMISARIO]</span></li>
+                        </ul>
+                        
+                        <p><strong>ORDEN DEL DÍA:</strong></p>
+                        <p><strong>I.</strong> Presentación, discusión y en su caso, aprobación de los informes que rinde el Consejo de Administración correspondientes al período <span id="preview-periodo">[PERÍODO]</span>.</p>
+                        
+                        <p><strong>II.</strong> Presentación, discusión y en su caso, aprobación del informe que rinde el Comisario correspondiente al ejercicio <span id="preview-cierre">[EJERCICIO]</span>.</p>
+                        
+                        <p><strong>III.</strong> Presentación, discusión y en su caso, aprobación de los Estados Financieros correspondientes al ejercicio terminado el <span id="preview-cierre-fecha">[FECHA CIERRE]</span>.</p>
+                        
+                        <p><strong>IV.</strong> Resolución sobre la aplicación de utilidades correspondientes al ejercicio terminado el <span id="preview-cierre-aplicacion">[FECHA CIERRE]</span>.</p>
+                        
+                        <p><strong>V.</strong> Ratificación de los nombramientos de los miembros del Consejo de Administración y del Comité de Auditoría y Finanzas.</p>
+                        
+                        <p><strong>VI.</strong> Determinación de los emolumentos correspondientes a los miembros del Consejo de Administración, del Comité de Auditoría y Finanzas y del Comisario: <span id="preview-honorarios">[HONORARIOS]</span>.</p>
+                        
+                        <p><strong>VII.</strong> Nombramiento de delegados especiales: <span id="preview-delegados">[DELEGADOS]</span>.</p>
+                        
+                        <div class="mt-4" id="anexos-preview" style="display: none;">
+                            <p><strong>ANEXOS:</strong></p>
+                            <p id="preview-descripcion-anexos">[DESCRIPCIÓN DE ANEXOS]</p>
+                        </div>
+                        
+                        <div class="mt-4">
+                            <p>No habiendo más asuntos que tratar, se suspendió la Asamblea siendo las <span id="preview-hora-fin">[HORA FIN]</span> horas del día de su fecha.</p>
+                        </div>
+                        
+                        <div class="firmas mt-5">
+                            <div class="row text-center">
+                                <div class="col-6">
+                                    <div class="mt-4">
+                                        <div class="border-top border-dark" style="width: 200px; margin: 0 auto;"></div>
+                                        <p class="mt-2 mb-0"><strong>PRESIDENTE</strong></p>
+                                        <p class="small" id="preview-firma-presidente">[PRESIDENTE]</p>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="mt-4">
+                                        <div class="border-top border-dark" style="width: 200px; margin: 0 auto;"></div>
+                                        <p class="mt-2 mb-0"><strong>COMISARIO</strong></p>
+                                        <p class="small" id="preview-firma-comisario">[COMISARIO]</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row text-center mt-4">
+                                <div class="col-12">
+                                    <div class="mt-4">
+                                        <div class="border-top border-dark" style="width: 200px; margin: 0 auto;"></div>
+                                        <p class="mt-2 mb-0"><strong>SECRETARIO Y ESCRUTADOR</strong></p>
+                                        <p class="small" id="preview-firma-secretario">[SECRETARIO]</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Manejar el checkbox de anexos
+    const tieneAnexosCheckbox = document.getElementById('{{ form.tiene_anexos.id_for_label }}');
+    const anexosSection = document.getElementById('anexos-section');
+    const anexosPreview = document.getElementById('anexos-preview');
+    
+    if (tieneAnexosCheckbox) {
+        tieneAnexosCheckbox.addEventListener('change', function() {
+            if (this.checked) {
+                anexosSection.style.display = 'block';
+                anexosPreview.style.display = 'block';
+            } else {
+                anexosSection.style.display = 'none';
+                anexosPreview.style.display = 'none';
+            }
+        });
+    }
+
+    // Función para actualizar la vista previa
+    function updatePreview() {
+        // Obtener valores de los campos
+        const nombreSociedad = document.getElementById('{{ form.nombre_sociedad.id_for_label }}').value || '[NOMBRE DE LA SOCIEDAD]';
+        const tipoAsamblea = document.getElementById('{{ form.tipo_asamblea.id_for_label }}').selectedOptions[0]?.text || 'Asamblea General Ordinaria';
+        const fechaAsamblea = document.getElementById('{{ form.fecha_asamblea.id_for_label }}').value;
+        const horaInicio = document.getElementById('{{ form.hora_inicio.id_for_label }}').value || '[HORA]';
+        const horaFin = document.getElementById('{{ form.hora_finalizacion.id_for_label }}').value || '[HORA FIN]';
+        const domicilio = document.getElementById('{{ form.domicilio.id_for_label }}').value || '[DOMICILIO]';
+        const presidente = document.getElementById('{{ form.presidente.id_for_label }}').value || '[PRESIDENTE]';
+        const secretario = document.getElementById('{{ form.secretario.id_for_label }}').value || '[SECRETARIO]';
+        const comisario = document.getElementById('{{ form.comisario.id_for_label }}').value || '[COMISARIO]';
+        const periodo = document.getElementById('{{ form.periodo_financiero.id_for_label }}').value || '[PERÍODO]';
+        const cierreEjercicio = document.getElementById('{{ form.cierre_ejercicio.id_for_label }}').value || '[EJERCICIO]';
+        const honorarios = document.getElementById('{{ form.honorarios_aprobados.id_for_label }}').value || '[HONORARIOS]';
+        const delegados = document.getElementById('{{ form.delegados_designados.id_for_label }}').value || '[DELEGADOS]';
+        const descripcionAnexos = document.getElementById('{{ form.descripcion_anexos.id_for_label }}').value || '[DESCRIPCIÓN DE ANEXOS]';
+
+        // Formatear fecha
+        let fechaTexto = '[FECHA]';
+        if (fechaAsamblea) {
+            const fecha = new Date(fechaAsamblea);
+            const opciones = { year: 'numeric', month: 'long', day: 'numeric' };
+            fechaTexto = fecha.toLocaleDateString('es-ES', opciones);
+        }
+
+        // Actualizar elementos de la vista previa
+        document.getElementById('preview-nombre-sociedad').textContent = nombreSociedad.toUpperCase();
+        document.getElementById('preview-nombre-sociedad-texto').textContent = nombreSociedad.toUpperCase();
+        document.getElementById('preview-fecha').textContent = fechaTexto;
+        document.getElementById('preview-fecha-texto').textContent = fechaTexto;
+        document.getElementById('preview-tipo-asamblea').textContent = tipoAsamblea;
+        document.getElementById('preview-hora-inicio').textContent = horaInicio;
+        document.getElementById('preview-hora-fin').textContent = horaFin;
+        document.getElementById('preview-domicilio').textContent = domicilio;
+        document.getElementById('preview-presidente').textContent = presidente;
+        document.getElementById('preview-secretario').textContent = secretario;
+        document.getElementById('preview-comisario').textContent = comisario;
+        document.getElementById('preview-periodo').textContent = periodo;
+        document.getElementById('preview-cierre').textContent = cierreEjercicio;
+        document.getElementById('preview-cierre-fecha').textContent = cierreEjercicio;
+        document.getElementById('preview-cierre-aplicacion').textContent = cierreEjercicio;
+        document.getElementById('preview-honorarios').textContent = honorarios;
+        document.getElementById('preview-delegados').textContent = delegados;
+        document.getElementById('preview-descripcion-anexos').textContent = descripcionAnexos;
+        
+        // Firmas
+        document.getElementById('preview-firma-presidente').textContent = presidente;
+        document.getElementById('preview-firma-secretario').textContent = secretario;
+        document.getElementById('preview-firma-comisario').textContent = comisario;
+    }
+
+    // Agregar event listeners a todos los campos del formulario
+    const campos = document.querySelectorAll('#documento-form input, #documento-form select, #documento-form textarea');
+    campos.forEach(campo => {
+        campo.addEventListener('input', updatePreview);
+        campo.addEventListener('change', updatePreview);
+    });
+
+    // Actualizar vista previa inicial
+    updatePreview();
+});
+</script>
+{% endblock %}</code></pre>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Archivos CSS y JS -->
+        <div class="bg-white rounded-lg shadow-lg p-6 mt-8">
+            <h2 class="text-2xl font-bold text-gray-800 mb-6">
+                <i class="fas fa-palette text-purple-500 mr-3"></i>
+                Archivos CSS y JavaScript
+            </h2>
+            
+            <div class="space-y-4">
+                <!-- main.css -->
+                <div class="border rounded-lg">
+                    <div class="p-4 border-b border-gray-200 flex justify-between items-center">
+                        <h4 class="font-semibold">static/css/main.css</h4>
+                        <div class="space-x-2">
+                            <button onclick="downloadFile('main.css', cssContent)" class="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded text-sm">
+                                <i class="fas fa-download mr-1"></i>Descargar
+                            </button>
+                            <button onclick="toggleContent('main-css')" class="bg-gray-500 hover:bg-gray-600 text-white px-3 py-1 rounded text-sm">
+                                <i class="fas fa-eye mr-1"></i>Ver
+                            </button>
+                        </div>
+                    </div>
+                    <div id="main-css" class="hidden p-4">
+                        <pre class="bg-gray-50 p-4 rounded-lg overflow-x-auto text-sm"><code>/* Estilos personalizados para Asistente Legal */
+
+/* Estilos generales */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f8f9fa;
+}
+
+/* Navbar personalizado */
+.navbar-brand {
+    font-weight: bold;
+    font-size: 1.5rem;
+}
+
+/* Cards */
+.card {
+    border: none;
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+    transition: box-shadow 0.15s ease-in-out;
+}
+
+.card:hover {
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+}
+
+.card-header {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+    font-weight: 600;
+}
+
+/* Formularios */
+.form-control:focus {
+    border-color: #0d6efd;
+    box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+}
+
+.form-label {
+    font-weight: 600;
+    color: #495057;
+    margin-bottom: 0.5rem;
+}
+
+/* Secciones del formulario */
+.section-header h6 {
+    font-weight: bold;
+    margin-bottom: 1rem;
+}
+
+/* Vista previa del documento */
+.documento-preview {
+    background: white;
+    padding: 2rem;
+    border-radius: 0.375rem;
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+    min-height: 100%;
+}
+
+.documento-contenido {
+    text-align: justify;
+    line-height: 1.8;
+}
+
+.documento-contenido p {
+    margin-bottom: 1rem;
+}
+
+.documento-contenido ul {
+    margin-bottom: 1rem;
+    padding-left: 2rem;
+}
+
+.documento-contenido li {
+    margin-bottom: 0.5rem;
+}
+
+/* Firmas */
+.firmas {
+    margin-top: 3rem;
+    page-break-inside: avoid;
+}
+
+.firma-linea {
+    border-top: 2px solid #000;
+    width: 200px;
+    margin: 2rem auto 0.5rem auto;
+}
+
+/* Botones */
+.btn {
+    font-weight: 600;
+    transition: all 0.15s ease-in-out;
+}
+
+.btn-primary {
+    background-color: #0d6efd;
+    border-color: #0d6efd;
+}
+
+.btn-primary:hover {
+    background-color: #0b5ed7;
+    border-color: #0a58ca;
+}
+
+.btn-success {
+    background-color: #198754;
+    border-color: #198754;
+}
+
+.btn-success:hover {
+    background-color: #157347;
+    border-color: #146c43;
+}
+
+/* Alertas */
+.alert {
+    border: none;
+    border-radius: 0.5rem;
+}
+
+/* Tablas */
+.table {
+    margin-bottom: 0;
+}
+
+.table-hover tbody tr:hover {
+    background-color: rgba(0, 0, 0, 0.075);
+}
+
+/* Badges */
+.badge {
+    font-weight: 600;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .documento-preview {
+        padding: 1rem;
+        font-size: 0.9rem;
+    }
+    
+    .card-body {
+        padding: 1rem;
+    }
+    
+    .firmas .col-6,
+    .firmas .col-12 {
+        margin-bottom: 2rem;
+    }
+}
+
+/* Scrollbar personalizado */
+.overflow-auto::-webkit-scrollbar {
+    width: 8px;
+}
+
+.overflow-auto::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+}
+
+.overflow-auto::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 4px;
+}
+
+.overflow-auto::-webkit-scrollbar-thumb:hover {
+    background: #a8a8a8;
+}
+
+/* Animaciones */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.card {
+    animation: fadeIn 0.5s ease-out;
+}
+
+/* Print styles */
+ {
+    .navbar,
+    .btn,
+    .card-header,
+    #documento-form {
+        display: none !important;
+    }
+    
+    .documento-preview {
+        box-shadow: none;
+        padding: 0;
+        margin: 0;
+    }
+    
+    .card {
+        border: none;
+        box-shadow: none;
+    }
+    
+    body {
+        background: white;
+    }
+}</code></pre>
+                    </div>
+                </div>
+
+                <!-- main.js -->
+                <div class="border rounded-lg">
+                    <div class="p-4 border-b border-gray-200 flex justify-between items-center">
+                        <h4 class="font-semibold">static/js/main.js</h4>
+                        <div class="space-x-2">
+                            <button onclick="downloadFile('main.js', jsContent)" class="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded text-sm">
+                                <i class="fas fa-download mr-1"></i>Descargar
+                            </button>
+                            <button onclick="toggleContent('main-js')" class="bg-gray-500 hover:bg-gray-600 text-white px-3 py-1 rounded text-sm">
+                                <i class="fas fa-eye mr-1"></i>Ver
+                            </button>
+                        </div>
+                    </div>
+                    <div id="main-js" class="hidden p-4">
+                        <pre class="bg-gray-50 p-4 rounded-lg overflow-x-auto text-sm"><code>// JavaScript para Asistente Legal
+
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('Asistente Legal - Sistema cargado correctamente');
+    
+    // Inicializar funcionalidades
+    initializeFormHandlers();
+    initializePreviewUpdates();
+    initializeTooltips();
+    initializeConfirmations();
+});
+
+// Manejadores de formularios
+function initializeFormHandlers() {
+    // Auto-guardar formularios (draft)
+    const forms = document.querySelectorAll('form');
+    forms.forEach(form => {
+        const inputs = form.querySelectorAll('input, textarea, select');
+        inputs.forEach(input => {
+            input.addEventListener('change', function() {
+                saveFormDraft(form.id, input.name, input.value);
+            });
+        });
+    });
+    
+    // Cargar drafts guardados
+    loadFormDrafts();
+}
+
+// Sistema de auto-guardado (draft)
+function saveFormDraft(formId, fieldName, value) {
+    if (!formId) return;
+    
+    try {
+        const drafts = JSON.parse(localStorage.getItem('form_drafts') || '{}');
+        if (!drafts[formId]) drafts[formId] = {};
+        drafts[formId][fieldName] = value;
+        localStorage.setItem('form_drafts', JSON.stringify(drafts));
+    } catch (e) {
+        console.warn('No se pudo guardar el draft:', e);
+    }
+}
+
+function loadFormDrafts() {
+    try {
+        const drafts = JSON.parse(localStorage.getItem('form_drafts') || '{}');
+        
+        Object.keys(drafts).forEach(formId => {
+            const form = document.getElementById(formId);
+            if (!form) return;
+            
+            Object.keys(drafts[formId]).forEach(fieldName => {
+                const field = form.querySelector(`[name="${fieldName}"]`);
+                if (field && !field.value) {
+                    field.value = drafts[formId][fieldName];
+                    
+                    // Disparar evento change para actualizar vista previa
+                    field.dispatchEvent(new Event('change'));
+                }
+            });
+        });
+    } catch (e) {
+        console.warn('No se pudieron cargar los drafts:', e);
+    }
+}
+
+// Actualizaciones de vista previa en tiempo real
+function initializePreviewUpdates() {
+    const previewElements = document.querySelectorAll('[data-preview-target]');
+    
+    previewElements.forEach(element => {
+        element.addEventListener('input', function() {
+            updatePreviewElement(this);
+        });
+        
+        element.addEventListener('change', function() {
+            updatePreviewElement(this);
+        });
+    });
+}
+
+function updatePreviewElement(sourceElement) {
+    const targetId = sourceElement.getAttribute('data-preview-target');
+    const targetElement = document.getElementById(targetId);
+    
+    if (targetElement) {
+        let value = sourceElement.value;
+        
+        // Formateo especial para diferentes tipos de campos
+        if (sourceElement.type === 'date') {
+            value = formatDate(value);
+        } else if (sourceElement.type === 'time') {
+            value = formatTime(value);
+        }
+        
+        targetElement.textContent = value || '[PENDIENTE]';
+    }
+}
+
+// Formateo de fechas
+function formatDate(dateString) {
+    if (!dateString) return '[FECHA]';
+    
+    try {
+        const date = new Date(dateString);
+        const options = { 
+            year: 'numeric', 
+            month: 'long', 
+            day: 'numeric' 
+        };
+        return date.toLocaleDateString('es-ES', options);
+    } catch (e) {
+        return dateString;
+    }
+}
+
+// Formateo de horas
+function formatTime(timeString) {
+    if (!timeString) return '[HORA]';
+    return timeString;
+}
+
+// Tooltips de Bootstrap
+function initializeTooltips() {
+    const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+    tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl);
+    });
+}
+
+// Confirmaciones para acciones destructivas
+function initializeConfirmations() {
+    const deleteButtons = document.querySelectorAll('.btn-danger, [data-action="delete"]');
+    
+    deleteButtons.forEach(button => {
+        button.addEventListener('click', function(e) {
+            const message = this.getAttribute('data-confirm-message') || 
+                           '¿Estás seguro de que deseas eliminar este elemento?';
+            
+            if (!confirm(message)) {
+                e.preventDefault();
+                return false;
+            }
+        });
+    });
+}
+
+// Utilidades para manejo de formularios
+function resetForm(formId) {
+    const form = document.getElementById(formId);
+    if (form) {
+        form.reset();
+        
+        // Limpiar vista previa
+        const previewElements = document.querySelectorAll('[id^="preview-"]');
+        previewElements.forEach(element => {
+            element.textContent = element.textContent.replace(/\[.*?\]/g, '') + '[PENDIENTE]';
+        });
+        
+        // Limpiar drafts
+        try {
+            const drafts = JSON.parse(localStorage.getItem('form_drafts') || '{}');
+            delete drafts[formId];
+            localStorage.setItem('form_drafts', JSON.stringify(drafts));
+        } catch (e) {
+            console.warn('No se pudo limpiar el draft:', e);
+        }
+    }
+}
+
+// Función para imprimir documentos
+function printDocument() {
+    // Ocultar elementos innecesarios para impresión
+    const elementsToHide = document.querySelectorAll('.btn, .navbar, .card-header');
+    elementsToHide.forEach(el => el.style.display = 'none');
+    
+    // Imprimir
+    window.print();
+    
+    // Restaurar elementos después de la impresión
+    setTimeout(() => {
+        elementsToHide.forEach(el => el.style.display = '');
+    }, 1000);
+}
+
+// Función para exportar como PDF (requiere librerías adicionales)
+function exportToPDF() {
+    alert('Funcionalidad de exportación a PDF - Requiere implementación adicional con librerías como jsPDF o similares.');
+}
+
+// Validación de formularios
+function validateForm(formId) {
+    const form = document.getElementById(formId);
+    if (!form) return false;
+    
+    let isValid = true;
+    const requiredFields = form.querySelectorAll('[required]');
+    
+    requiredFields.forEach(field => {
+        if (!field.value.trim()) {
+            field.classList.add('is-invalid');
+            isValid = false;
+            
+            // Crear mensaje de error si no existe
+            let errorDiv = field.parentNode.querySelector('.invalid-feedback');
+            if (!errorDiv) {
+                errorDiv = document.createElement('div');
+                errorDiv.className = 'invalid-feedback';
+                errorDiv.textContent = 'Este campo es obligatorio';
+                field.parentNode.appendChild(errorDiv);
+            }
+        } else {
+            field.classList.remove('is-invalid');
+            const errorDiv = field.parentNode.querySelector('.invalid-feedback');
+            if (errorDiv) {
+                errorDiv.remove();
+            }
+        }
+    });
+    
+    return isValid;
+}
+
+// Auto-save mejorado con indicador visual
+function showAutoSaveIndicator() {
+    let indicator = document.getElementById('autosave-indicator');
+    
+    if (!indicator) {
+        indicator = document.createElement('div');
+        indicator.id = 'autosave-indicator';
+        indicator.className = 'position-fixed top-0 end-0 m-3 alert alert-success alert-dismissible fade';
+        indicator.innerHTML = '<i class="fas fa-check me-2"></i>Guardado automáticamente';
+        document.body.appendChild(indicator);
+    }
+    
+    indicator.classList.add('show');
+    
+    setTimeout(() => {
+        indicator.classList.remove('show');
+    }, 2000);
+}
+
+// Funciones de utilidad exportadas globalmente
+window.AsistenteLegal = {
+    resetForm,
+    printDocument,
+    exportToPDF,
+    validateForm,
+    showAutoSaveIndicator,
+    formatDate,
+    formatTime
+};</code></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Botón final para descargar todo -->
+        <div class="bg-white rounded-lg shadow-lg p-6 mt-8">
+            <div class="text-center">
+                <h3 class="text-xl font-bold text-gray-800 mb-4">¿Listo para descargar?</h3>
+                <p class="text-gray-600 mb-6">Haz clic en el botón para descargar todos los archivos en un archivo ZIP</p>
+                
+                <div class="space-x-4">
+                    <button onclick="downloadAll()" class="bg-blue-500 hover:bg-blue-600 text-white px-8 py-4 rounded-lg font-bold text-lg">
+                        <i class="fas fa-download mr-3"></i>Descargar Proyecto Completo (.zip)
+                    </button>
+                    
+                    <button onclick="copyInstallCommands()" class="bg-green-500 hover:bg-green-600 text-white px-6 py-4 rounded-lg font-semibold">
+                        <i class="fas fa-copy mr-2"></i>Copiar Comandos de Instalación
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Contenido de todos los archivos
+        const managePyContent = `#!/usr/bin/env python
+import os
+import sys
+
+if __name__ == '__main__':
+    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'asistente_legal.settings')
+    try:
+        from django.core.management import execute_from_command_line
+    except ImportError as exc:
+        raise ImportError(
+            "Couldn't import Django. Are you sure it's installed and "
+            "available on your PYTHONPATH environment variable? Did you "
+            "forget to activate a virtual environment?"
+        ) from exc
+    execute_from_command_line(sys.argv)`;
+
+        const requirementsContent = `Django>=4.2.0
+Pillow>=10.0.0
+python-dateutil>=2.8.2`;
+
+        const settingsContent = `import os
+from pathlib import Path
+
+BASE_DIR = Path(__file__).resolve().parent.parent
+
+SECRET_KEY = 'django-insecure-tu-secret-key-aqui-cambiar-en-produccion'
+
+DEBUG = True
+
+ALLOWED_HOSTS = []
+
+INSTALLED_APPS = [
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+    'documentos',
+]
+
+MIDDLEWARE = [
+    'django.middleware.security.SecurityMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.common.CommonMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.contrib.messages.middleware.MessageMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+]
+
+ROOT_URLCONF = 'asistente_legal.urls'
+
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [BASE_DIR / 'templates'],
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                'django.template.context_processors.debug',
+                'django.template.context_processors.request',
+                'django.contrib.auth.context_processors.auth',
+                'django.contrib.messages.context_processors.messages',
+            ],
+        },
+    },
+]
+
+WSGI_APPLICATION = 'asistente_legal.wsgi.application'
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
+}
+
+AUTH_PASSWORD_VALIDATORS = [
+    {
+        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+    },
+    {
+        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+    },
+    {
+        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+    },
+    {
+        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+    },
+]
+
+LANGUAGE_CODE = 'es-es'
+TIME_ZONE = 'America/Mexico_City'
+USE_I18N = True
+USE_TZ = True
+
+STATIC_URL = '/static/'
+STATICFILES_DIRS = [BASE_DIR / 'static']
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
+
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+LOGIN_URL = '/login/'
+LOGIN_REDIRECT_URL = '/dashboard/'
+LOGOUT_REDIRECT_URL = '/login/'`;
+
+        const mainUrlsContent = `from django.contrib import admin
+from django.urls import path, include
+from django.conf import settings
+from django.conf.urls.static import static
+from django.contrib.auth import views as auth_views
+from documentos.views import DashboardView, RegisterView
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('', DashboardView.as_view(), name='home'),
+    path('dashboard/', DashboardView.as_view(), name='dashboard'),
+    path('documentos/', include('documentos.urls')),
+    path('login/', auth_views.LoginView.as_view(template_name='registration/login.html'), name='login'),
+    path('logout/', auth_views.LogoutView.as_view(), name='logout'),
+    path('register/', RegisterView.as_view(), name='register'),
+]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)`;
+
+        const wsgiContent = `import os
+from django.core.wsgi import get_wsgi_application
+
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'asistente_legal.settings')
+application = get_wsgi_application()`;
+
+        const modelsContent = `from django.db import models
+from django.contrib.auth.models import User
+
+class TipoDocumento(models.Model):
+    nombre = models.CharField(max_length=100)
+    descripcion = models.TextField(blank=True)
+    activo = models.BooleanField(default=True)
+    
+    def __str__(self):
+        return self.nombre
+    
+    class Meta:
+        verbose_name = 'Tipo de Documento'
+        verbose_name_plural = 'Tipos de Documentos'
+
+class ActaAsamblea(models.Model):
+    TIPOS_ASAMBLEA = [
+        ('ordinaria', 'Asamblea General Ordinaria'),
+        ('extraordinaria', 'Asamblea General Extraordinaria'),
+        ('especial', 'Asamblea Especial'),
+    ]
+    
+    # Información básica
+    usuario = models.ForeignKey(User, on_delete=models.CASCADE)
+    nombre_sociedad = models.CharField(max_length=200, verbose_name='Nombre de la Sociedad')
+    tipo_asamblea = models.CharField(max_length=20, choices=TIPOS_ASAMBLEA, default='ordinaria')
+    fecha_asamblea = models.DateField(verbose_name='Fecha de la Asamblea')
+    hora_inicio = models.TimeField(verbose_name='Hora de Inicio')
+    domicilio = models.TextField(verbose_name='Domicilio Social')
+    
+    # Personas clave
+    presidente = models.CharField(max_length=200, verbose_name='Presidente')
+    secretario = models.CharField(max_length=200, verbose_name='Secretario')
+    escrutador = models.CharField(max_length=200, verbose_name='Escrutador')
+    comisario = models.CharField(max_length=200, verbose_name='Comisario')
+    
+    # Información financiera
+    periodo_financiero = models.CharField(max_length=100, verbose_name='Período Financiero')
+    cierre_ejercicio = models.CharField(max_length=100, verbose_name='Cierre del Ejercicio')
+    honorarios_aprobados = models.CharField(max_length=200, verbose_name='Honorarios Aprobados')
+    
+    # Otros
+    delegados_designados = models.TextField(verbose_name='Delegados Designados', blank=True)
+    hora_finalizacion = models.TimeField(verbose_name='Hora de Finalización')
+    
+    # Anexos
+    tiene_anexos = models.BooleanField(default=False, verbose_name='¿Tiene Anexos?')
+    descripcion_anexos = models.TextField(blank=True, verbose_name='Descripción de Anexos')
+    
+    # Información adicional del documento real
+    utilidades_ejercicio = models.CharField(max_length=100, blank=True, verbose_name='Utilidades del Ejercicio')
+    dividendos_aprobados = models.CharField(max_length=100, blank=True, verbose_name='Dividendos Aprobados')
+    reserva_legal = models.CharField(max_length=100, blank=True, verbose_name='Reserva Legal')
+    
+    # Consejo de Administración
+    presidente_consejo = models.CharField(max_length=200, blank=True, verbose_name='Presidente del Consejo')
+    secretario_consejo = models.CharField(max_length=200, blank=True, verbose_name='Secretario del Consejo')
+    vocal_consejo = models.CharField(max_length=200, blank=True, verbose_name='Vocal del Consejo')
+    
+    # Comité de Auditoría
+    presidente_auditoria = models.CharField(max_length=200, blank=True, verbose_name='Presidente Comité Auditoría')
+    secretario_auditoria = models.CharField(max_length=200, blank=True, verbose_name='Secretario Comité Auditoría')
+    vocal_auditoria = models.CharField(max_length=200, blank=True, verbose_name='Vocal Comité Auditoría')
+    
+    # Metadatos
+    fecha_creacion = models.DateTimeField(auto_now_add=True)
+    fecha_modificacion = models.DateTimeField(auto_now=True)
+    
+    def __str__(self):
+        return f"Acta {self.nombre_sociedad} - {self.fecha_asamblea}"
+    
+    class Meta:
+        verbose_name = 'Acta de Asamblea'
+        verbose_name_plural = 'Actas de Asambleas'
+        ordering = ['-fecha_asamblea']`;
+
+        const formsContent = `from django import forms
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User
+from .models import ActaAsamblea
+
+class RegistroForm(UserCreationForm):
+    email = forms.EmailField(required=True)
+    first_name = forms.CharField(max_length=30, required=True, label='Nombre')
+    last_name = forms.CharField(max_length=30, required=True, label='Apellidos')
+    
+    class Meta:
+        model = User
+        fields = ('username', 'first_name', 'last_name', 'email', 'password1', 'password2')
+
+class ActaAsambleaForm(forms.ModelForm):
+    class Meta:
+        model = ActaAsamblea
+        exclude = ['usuario', 'fecha_creacion', 'fecha_modificacion']
+        widgets = {
+            'fecha_asamblea': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
+            'hora_inicio': forms.TimeInput(attrs={'type': 'time', 'class': 'form-control'}),
+            'hora_finalizacion': forms.TimeInput(attrs={'type': 'time', 'class': 'form-control'}),
+            'domicilio': forms.Textarea(attrs={'rows': 3, 'class': 'form-control'}),
+            'delegados_designados': forms.Textarea(attrs={'rows': 3, 'class': 'form-control'}),
+            'descripcion_anexos': forms.Textarea(attrs={'rows': 3, 'class': 'form-control'}),
+            'tiene_anexos': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
+            'tipo_asamblea': forms.Select(attrs={'class': 'form-control'}),
+        }
+        
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field_name, field in self.fields.items():
+            if field_name != 'tiene_anexos':
+                field.widget.attrs.update({'class': 'form-control'})
+            field.widget.attrs.update({'id': f'id_{field_name}'})`;
+
+        const viewsContent = `from django.shortcuts import render, get_object_or_404, redirect
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views.generic import ListView, CreateView, UpdateView, DeleteView, DetailView, TemplateView
+from django.urls import reverse_lazy
+from django.contrib import messages
+from django.http import JsonResponse
+from .models import ActaAsamblea
+from .forms import ActaAsambleaForm, RegistroForm
+
+class DashboardView(LoginRequiredMixin, TemplateView):
+    template_name = 'dashboard.html'
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['total_documentos'] = ActaAsamblea.objects.filter(usuario=self.request.user).count()
+        context['documentos_recientes'] = ActaAsamblea.objects.filter(
+            usuario=self.request.user
+        ).order_by('-fecha_modificacion')[:5]
+        return context
+
+class RegisterView(CreateView):
+    form_class = RegistroForm
+    template_name = 'registration/register.html'
+    success_url = reverse_lazy('login')
+    
+    def form_valid(self, form):
+        messages.success(self.request, 'Usuario creado exitosamente. Ahora puedes iniciar sesión.')
+        return super().form_valid(form)
+
+class ActaListView(LoginRequiredMixin, ListView):
+    model = ActaAsamblea
+    template_name = 'documentos/lista.html'
+    context_object_name = 'documentos'
+    paginate_by = 10
+    
+    def get_queryset(self):
+        return ActaAsamblea.objects.filter(usuario=self.request.user).order_by('-fecha_modificacion')
+
+class ActaCreateView(LoginRequiredMixin, CreateView):
+    model = ActaAsamblea
+    form_class = ActaAsambleaForm
+    template_name = 'documentos/crear.html'
+    success_url = reverse_lazy('documentos:lista')
+    
+    def form_valid(self, form):
+        form.instance.usuario = self.request.user
+        messages.success(self.request, 'Documento creado exitosamente.')
+        return super().form_valid(form)
+
+class ActaUpdateView(LoginRequiredMixin, UpdateView):
+    model = ActaAsamblea
+    form_class = ActaAsambleaForm
+    template_name = 'documentos/editar.html'
+    success_url = reverse_lazy('documentos:lista')
+    
+    def get_queryset(self):
+        return ActaAsamblea.objects.filter(usuario=self.request.user)
+    
+    def form_valid(self, form):
+        messages.success(self.request, 'Documento actualizado exitosamente.')
+        return super().form_valid(form)
+
+class ActaDetailView(LoginRequiredMixin, DetailView):
+    model = ActaAsamblea
+    template_name = 'documentos/detalle.html'
+    context_object_name = 'documento'
+    
+    def get_queryset(self):
+        return ActaAsamblea.objects.filter(usuario=self.request.user)
+
+class ActaDeleteView(LoginRequiredMixin, DeleteView):
+    model = ActaAsamblea
+    template_name = 'documentos/confirmar_eliminar.html'
+    success_url = reverse_lazy('
+    <script id="html_badge_script1">
+        window.__genspark_remove_badge_link = "https://www.genspark.ai/api/html_badge/" +
+            "remove_badge?token=To%2FBnjzloZ3UfQdcSaYfDjrV2KsEodnkOVKf9o6EZrWdOlBxF7swtrsFRHRZ%2Bpd3yVBYIueE4%2FxDwjzOKCGeHV1t5uab9UCo2hK2y0tSuq3zFzZZClQwYZjkdft7IkQVjTA3cvsbENOEFBUXTzWOz9x2YubTvHoo%2BVzIGsoOnRghYQOv1003j04YuQ5BLSe1dgG1eS52%2Bvy%2BYecpB70JVgOOHYRVW8KCjEzK7OUcX%2F1LawLS5pU7gHlrWlCT4FMpg5HMvcLSg%2BWYK5HMIez0SGSGdG9oAJH2av59oR9DgnQgycvhaECUOY%2FA5DJ4xvYSqtGqG%2FVXElGhK%2FJanaW6ZwvSbzLoBZwLXJ2ILLAP%2B4AfHUov4rWRQUIldx5nXba89VrX%2BOs%2BpqQ5Qg8y67dMps%2BWC%2Fer2C1hVraAvD9mG4CsEt9jPhHr%2BF4JoOwO5ibCfoL3KGZ%2B50PZICEvnr1z92tRdv1Afov6j4%2F9at%2BW8ThbsS2s2kC0XQF919WxCl%2FfQe8EHz%2FYLrKoM%2FEnwAdC1f78%2Bvm1%2B%2FyjhzN9tW7XbS8%3D";
+        window.__genspark_locale = "es-ES";
+        window.__genspark_token = "To/BnjzloZ3UfQdcSaYfDjrV2KsEodnkOVKf9o6EZrWdOlBxF7swtrsFRHRZ+pd3yVBYIueE4/xDwjzOKCGeHV1t5uab9UCo2hK2y0tSuq3zFzZZClQwYZjkdft7IkQVjTA3cvsbENOEFBUXTzWOz9x2YubTvHoo+VzIGsoOnRghYQOv1003j04YuQ5BLSe1dgG1eS52+vy+YecpB70JVgOOHYRVW8KCjEzK7OUcX/1LawLS5pU7gHlrWlCT4FMpg5HMvcLSg+WYK5HMIez0SGSGdG9oAJH2av59oR9DgnQgycvhaECUOY/A5DJ4xvYSqtGqG/VXElGhK/JanaW6ZwvSbzLoBZwLXJ2ILLAP+4AfHUov4rWRQUIldx5nXba89VrX+Os+pqQ5Qg8y67dMps+WC/er2C1hVraAvD9mG4CsEt9jPhHr+F4JoOwO5ibCfoL3KGZ+50PZICEvnr1z92tRdv1Afov6j4/9at+W8ThbsS2s2kC0XQF919WxCl/fQe8EHz/YLrKoM/EnwAdC1f78+vm1+/yjhzN9tW7XbS8=";
+    </script>
+    
+    <script id="html_notice_dialog_script" src="https://www.genspark.ai/notice_dialog.js"></script>
+    

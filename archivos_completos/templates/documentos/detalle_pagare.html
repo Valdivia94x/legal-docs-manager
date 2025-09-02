@@ -1,0 +1,253 @@
+{% extends 'base.html' %}
+
+{% block title %}Detalle del Pagaré - Olea Abogados{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1>
+                <i class="fas fa-money-check text-success me-2"></i>
+                Detalle del Pagaré #{{ pagare.id }}
+            </h1>
+            <div>
+                {% if pagare.estado == 'borrador' %}
+                    <span class="badge bg-secondary fs-6">Borrador</span>
+                {% elif pagare.estado == 'emitido' %}
+                    <span class="badge bg-primary fs-6">Emitido</span>
+                {% elif pagare.estado == 'firmado' %}
+                    <span class="badge bg-success fs-6">Firmado</span>
+                {% elif pagare.estado == 'pagado' %}
+                    <span class="badge bg-info fs-6">Pagado</span>
+                {% elif pagare.estado == 'vencido' %}
+                    <span class="badge bg-danger fs-6">Vencido</span>
+                {% else %}
+                    <span class="badge bg-secondary fs-6">{{ pagare.estado|capfirst }}</span>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <!-- Información General -->
+    <div class="col-md-6 mb-4">
+        <div class="card h-100">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="fas fa-info-circle me-2"></i>
+                    Información General
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="row mb-3">
+                    <div class="col-sm-5"><strong>Lugar de Emisión:</strong></div>
+                    <div class="col-sm-7">{{ pagare.lugar_emision }}</div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-sm-5"><strong>Fecha de Emisión:</strong></div>
+                    <div class="col-sm-7">{{ pagare.fecha_emision|date:"d/m/Y" }}</div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-sm-5"><strong>Fecha de Vencimiento:</strong></div>
+                    <div class="col-sm-7">{{ pagare.fecha_vencimiento|date:"d/m/Y" }}</div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-sm-5"><strong>Lugar de Pago:</strong></div>
+                    <div class="col-sm-7">{{ pagare.lugar_pago }}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Información Financiera -->
+    <div class="col-md-6 mb-4">
+        <div class="card h-100">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="fas fa-calculator me-2"></i>
+                    Información Financiera
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="row mb-3">
+                    <div class="col-sm-5"><strong>Monto Principal:</strong></div>
+                    <div class="col-sm-7">
+                        <span class="text-success fw-bold fs-5">
+                            ${{ pagare.monto_numeric|floatformat:2|default:"" }}
+                        </span>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-sm-5"><strong>Monto en Texto:</strong></div>
+                    <div class="col-sm-7">{{ pagare.monto_literal|default:"" }}</div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-sm-5"><strong>Tasa de Interés Anual:</strong></div>
+                    <div class="col-sm-7">{{ pagare.tasa_interes_ordinario|default:"" }}%</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <!-- Acreedor -->
+    <div class="col-md-6 mb-4">
+        <div class="card h-100">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="fas fa-user-tie me-2"></i>
+                    Acreedor
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="row mb-3">
+                    <div class="col-sm-4"><strong>Nombre:</strong></div>
+                    <div class="col-sm-8">{{ pagare.acreedor_nombre }}</div>
+                </div>
+                {% if pagare.acreedor_rfc %}
+                <div class="row mb-3">
+                    <div class="col-sm-4"><strong>RFC:</strong></div>
+                    <div class="col-sm-8">{{ pagare.acreedor_rfc }}</div>
+                </div>
+                {% endif %}
+                <div class="row mb-3">
+                    <div class="col-sm-4"><strong>Domicilio:</strong></div>
+                    <div class="col-sm-8">{{ pagare.acreedor_domicilio|linebreaks }}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Deudor -->
+    <div class="col-md-6 mb-4">
+        <div class="card h-100">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="fas fa-user me-2"></i>
+                    Deudor
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="row mb-3">
+                    <div class="col-sm-4"><strong>Nombre:</strong></div>
+                    <div class="col-sm-8">{{ pagare.deudor_nombre }}</div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-sm-4"><strong>Domicilio:</strong></div>
+                    <div class="col-sm-8">{{ pagare.deudor_domicilio|linebreaks }}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <!-- Aval -->
+    <div class="col-md-6 mb-4">
+        <div class="card h-100">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="fas fa-handshake me-2"></i>
+                    Aval
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="row mb-3">
+                    <div class="col-sm-4"><strong>Nombre:</strong></div>
+                    <div class="col-sm-8">{{ pagare.aval_nombre|default:"No especificado" }}</div>
+                </div>
+                {% if pagare.aval_domicilio %}
+                <div class="row mb-3">
+                    <div class="col-sm-4"><strong>Domicilio:</strong></div>
+                    <div class="col-sm-8">{{ pagare.aval_domicilio|linebreaks }}</div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Cláusulas -->
+    <div class="col-md-6 mb-4">
+        <div class="card h-100">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="fas fa-file-contract me-2"></i>
+                    Cláusulas
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="row mb-3">
+                    <div class="col-12">
+                        <strong>Cláusula de Aceleración:</strong>
+                        <div class="mt-2">
+                            {{ pagare.clausula_aceleracion|linebreaks|default:"No especificada" }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <!-- Información de Auditoría -->
+    <div class="col-12 mb-4">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="fas fa-history me-2"></i>
+                    Información de Auditoría
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="row mb-2">
+                            <div class="col-sm-4"><strong>Creado:</strong></div>
+                            <div class="col-sm-8">{{ pagare.fecha_creacion|date:"d/m/Y H:i" }}</div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="row mb-2">
+                            <div class="col-sm-4"><strong>Actualizado:</strong></div>
+                            <div class="col-sm-8">{{ pagare.fecha_actualizacion|date:"d/m/Y H:i" }}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Botones de Acción -->
+<div class="row">
+    <div class="col-12">
+        <div class="d-flex justify-content-between">
+            <div>
+                <a href="{% url 'documentos:lista_pagares' %}" class="btn btn-outline-secondary">
+                    <i class="fas fa-arrow-left me-1"></i>Volver a la Lista
+                </a>
+                <a href="{% url 'dashboard' %}" class="btn btn-outline-primary ms-2">
+                    <i class="fas fa-home me-1"></i>Dashboard
+                </a>
+            </div>
+            <div class="btn-group">
+                <a href="{% url 'documentos:editar_pagare' pagare.pk %}" class="btn btn-warning text-white">
+                    <i class="fas fa-edit me-1"></i>Editar
+                </a>
+                <a href="{% url 'documentos:descargar_pdf_pagare' pagare.pk %}" class="btn btn-danger">
+                    <i class="fas fa-file-pdf me-1"></i>Descargar PDF
+                </a>
+                <a href="{% url 'documentos:descargar_docx_pagare' pagare.pk %}" class="btn btn-primary">
+                    <i class="fas fa-file-word me-1"></i>Descargar DOCX
+                </a>
+                <a href="{% url 'documentos:eliminar_pagare' pagare.pk %}" class="btn btn-outline-danger">
+                    <i class="fas fa-trash me-1"></i>Eliminar
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

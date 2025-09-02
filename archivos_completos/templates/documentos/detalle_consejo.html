@@ -1,0 +1,369 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ documento.razon_social }} - Acta de Sesión de Consejo - Olea Abogados{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <div class="d-flex justify-content-between align-items-start mb-4">
+            <div>
+                <h1 class="mb-2">
+                    <i class="fas fa-users-cog text-success me-2"></i>
+                    Acta de Sesión de Consejo
+                </h1>
+                <h4 class="text-muted">{{ documento.razon_social }}</h4>
+                <div class="mt-2">
+                    {% if documento.estado == 'borrador' %}
+                        <span class="badge bg-secondary fs-6">{{ documento.get_estado_display }}</span>
+                    {% elif documento.estado == 'revision' %}
+                        <span class="badge bg-warning fs-6">{{ documento.get_estado_display }}</span>
+                    {% elif documento.estado == 'aprobado' %}
+                        <span class="badge bg-success fs-6">{{ documento.get_estado_display }}</span>
+                    {% elif documento.estado == 'archivado' %}
+                        <span class="badge bg-info fs-6">{{ documento.get_estado_display }}</span>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="btn-group" role="group">
+                <a href="{% url 'documentos:editar_consejo' documento.pk %}" class="btn btn-warning text-white">
+                    <i class="fas fa-edit me-2"></i>Editar
+                </a>
+                <div class="btn-group">
+                    <a href="{% url 'documentos:descargar_pdf_consejo' documento.pk %}" class="btn btn-danger">
+                        <i class="fas fa-file-pdf me-2"></i>Descargar PDF
+                    </a>
+                    <a href="{% url 'documentos:descargar_docx_consejo' documento.pk %}" class="btn btn-primary">
+                        <i class="fas fa-file-word me-2"></i>Descargar DOCX
+                    </a>
+                </div>
+                <a href="{% url 'documentos:eliminar_consejo' documento.pk %}" class="btn btn-outline-danger">
+                    <i class="fas fa-trash me-2"></i>Eliminar
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-8">
+        <!-- Información Básica -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="fas fa-info-circle me-2"></i>
+                    Información Básica
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <p><strong>Fecha de la Sesión:</strong><br>
+                        {{ documento.fecha|date:"l, d \d\e F \d\e Y" }}</p>
+                        
+                        <p><strong>Horario:</strong><br>
+                        {{ documento.hora_inicio|time:"H:i" }}
+                        {% if documento.hora_cierre %}
+                            - {{ documento.hora_cierre|time:"H:i" }}
+                            {% if documento.duracion_minutos %}
+                                ({{ documento.duracion_minutos }} minutos)
+                            {% endif %}
+                        {% else %}
+                            (Sin hora de cierre registrada)
+                        {% endif %}
+                        </p>
+                    </div>
+                    <div class="col-md-6">
+                        <p><strong>Lugar:</strong><br>
+                        {{ documento.lugar }}</p>
+                        
+                        <p><strong>Convocatoria:</strong><br>
+                        {% if documento.convocatoria_realizada %}
+                            <span class="text-success"><i class="fas fa-check-circle me-1"></i>Realizada</span>
+                        {% else %}
+                            <span class="text-danger"><i class="fas fa-times-circle me-1"></i>No realizada</span>
+                        {% endif %}
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mesa Directiva y Quórum -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="fas fa-user-tie me-2"></i>
+                    Mesa Directiva y Quórum
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-4">
+                        <p><strong>Presidente:</strong><br>
+                        {{ documento.presidente }}</p>
+                    </div>
+                    <div class="col-md-4">
+                        <p><strong>Secretario:</strong><br>
+                        {{ documento.secretario }}</p>
+                    </div>
+                    <div class="col-md-4">
+                        <p><strong>Miembros Presentes:</strong><br>
+                        {{ documento.porcentaje_miembros_presentes }}%</p>
+                        
+                        <p><strong>Método de Instalación:</strong><br>
+                        {{ documento.get_metodo_instalacion_display }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Asistentes -->
+        {% if documento.asistentes_json %}
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="fas fa-users me-2"></i>
+                    Asistentes
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-sm">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Nombre</th>
+                                <th>Cargo</th>
+                                <th>Presente</th>
+                                <th>Representado</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for asistente in documento.asistentes_json %}
+                                {% if asistente %}
+                                    <tr>
+                                        <td colspan="4">
+                                            <div class="content-item">
+                                                {{ asistente }}
+                                            </div>
+                                        </td>
+                                    </tr>
+                                {% endif %}
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Invitados -->
+        {% if documento.invitados_json %}
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="fas fa-user-plus me-2"></i>
+                    Invitados
+                </h5>
+            </div>
+            <div class="card-body">
+                <ul class="list-unstyled">
+                    {% for invitado in documento.invitados_json %}
+                        {% if invitado %}
+                            <li class="mb-2">
+                                <i class="fas fa-user-circle text-muted me-2"></i>
+                                {{ invitado }}
+                            </li>
+                        {% endif %}
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Orden del Día -->
+        {% if documento.orden_dia_json %}
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="fas fa-list-ol me-2"></i>
+                    Orden del Día
+                </h5>
+            </div>
+            <div class="card-body">
+                <ol class="list-group list-group-numbered list-group-flush">
+                    {% for punto in documento.orden_dia_json %}
+                        {% if punto %}
+                            <li class="list-group-item border-0 px-0">{{ punto }}</li>
+                        {% endif %}
+                    {% endfor %}
+                </ol>
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Resoluciones -->
+        {% if documento.resoluciones_json %}
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="fas fa-gavel me-2"></i>
+                    Resoluciones
+                </h5>
+            </div>
+            <div class="card-body">
+                {% for resolucion in documento.resoluciones_json %}
+                    {% if resolucion %}
+                        <div class="border-start border-primary border-3 ps-3 mb-3">
+                            <div class="fw-bold text-primary">Resolución</div>
+                            <div class="mb-1">{{ resolucion }}</div>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Delegados -->
+        {% if documento.delegados_json %}
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="fas fa-user-check me-2"></i>
+                    Delegados
+                </h5>
+            </div>
+            <div class="card-body">
+                {% for delegado in documento.delegados_json %}
+                    {% if delegado %}
+                        <div class="d-flex align-items-start mb-3">
+                            <i class="fas fa-user-tie text-primary me-3 mt-1"></i>
+                            <div>
+                                <div class="fw-bold">{{ delegado }}</div>
+                            </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Anexos -->
+        {% if documento.anexos_json %}
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="fas fa-paperclip me-2"></i>
+                    Anexos
+                </h5>
+            </div>
+            <div class="card-body">
+                <ul class="list-unstyled">
+                    {% for anexo in documento.anexos_json %}
+                        {% if anexo %}
+                            <li class="mb-2">
+                                <i class="fas fa-file text-muted me-2"></i>
+                                {{ anexo }}
+                            </li>
+                        {% endif %}
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+
+    <div class="col-lg-4">
+        <!-- Acciones -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <h6 class="mb-0">
+                    <i class="fas fa-cogs me-2"></i>
+                    Acciones
+                </h6>
+            </div>
+            <div class="card-body">
+                <div class="d-grid gap-2">
+                    <a href="{% url 'documentos:editar_consejo' documento.pk %}" class="btn btn-warning">
+                        <i class="fas fa-edit me-2"></i>Editar Acta
+                    </a>
+                    <button class="btn btn-info" onclick="window.print()">
+                        <i class="fas fa-print me-2"></i>Imprimir
+                    </button>
+                    <a href="{% url 'documentos:eliminar_consejo' documento.pk %}" class="btn btn-outline-danger">
+                        <i class="fas fa-trash me-2"></i>Eliminar
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Información del Documento -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <h6 class="mb-0">
+                    <i class="fas fa-info-circle me-2"></i>
+                    Información del Documento
+                </h6>
+            </div>
+            <div class="card-body">
+                <div class="small">
+                    <p><strong>Estado:</strong><br>
+                    {{ documento.get_estado_display }}</p>
+                    
+                    <p><strong>Creado:</strong><br>
+                    {{ documento.creada_en|date:"d/m/Y H:i" }}</p>
+                    
+                    <p><strong>Última actualización:</strong><br>
+                    {{ documento.actualizada_en|date:"d/m/Y H:i" }}</p>
+                    
+                    {% if documento.duracion_minutos %}
+                        <p><strong>Duración de la sesión:</strong><br>
+                        {{ documento.duracion_minutos }} minutos</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Navegación -->
+        <div class="card">
+            <div class="card-header">
+                <h6 class="mb-0">
+                    <i class="fas fa-compass me-2"></i>
+                    Navegación
+                </h6>
+            </div>
+            <div class="card-body">
+                <div class="d-grid gap-2">
+                    <a href="{% url 'documentos:lista_consejo' %}" class="btn btn-outline-primary btn-sm">
+                        <i class="fas fa-list me-2"></i>Volver a Lista
+                    </a>
+                    <a href="{% url 'documentos:crear_consejo' %}" class="btn btn-outline-success btn-sm">
+                        <i class="fas fa-plus me-2"></i>Nueva Acta
+                    </a>
+                    <a href="{% url 'dashboard' %}" class="btn btn-outline-secondary btn-sm">
+                        <i class="fas fa-home me-2"></i>Dashboard
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Confirmar eliminación
+    document.querySelectorAll('a[href*="eliminar"]').forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            const razonSocial = '{{ documento.razon_social|escapejs }}';
+            
+            if (confirm(`¿Estás seguro de que deseas eliminar el acta de "${razonSocial}"?\n\nEsta acción no se puede deshacer.`)) {
+                window.location.href = this.href;
+            }
+        });
+    });
+});
+</script>
+{% endblock %}

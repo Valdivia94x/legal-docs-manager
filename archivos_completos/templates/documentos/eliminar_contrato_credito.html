@@ -1,0 +1,169 @@
+{% extends 'base.html' %}
+
+{% block title %}Eliminar Contrato de Crédito - Asistente Legal{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h1>
+                    <i class="fas fa-trash text-danger me-2"></i>
+                    Eliminar Contrato de Crédito
+                </h1>
+                <a href="{% url 'documentos:lista_contrato_credito' %}" class="btn btn-secondary">
+                    <i class="fas fa-arrow-left me-2"></i>Volver a Lista
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card border-danger">
+                <div class="card-header bg-danger text-white">
+                    <h5 class="mb-0">
+                        <i class="fas fa-exclamation-triangle me-2"></i>
+                        Confirmación de Eliminación
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="alert alert-warning" role="alert">
+                        <h6 class="alert-heading">
+                            <i class="fas fa-exclamation-triangle me-2"></i>
+                            ¡Atención!
+                        </h6>
+                        <p class="mb-0">
+                            Esta acción no se puede deshacer. Una vez eliminado, no podrás recuperar este contrato de crédito.
+                        </p>
+                    </div>
+
+                    <p class="lead">¿Estás seguro de que deseas eliminar el siguiente contrato de crédito?</p>
+
+                    <!-- Información del Contrato a Eliminar -->
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <div class="card bg-light">
+                                <div class="card-body">
+                                    <h6 class="text-primary mb-3">
+                                        <i class="fas fa-info-circle me-2"></i>Información del Contrato
+                                    </h6>
+                                    
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <strong>Acreditante:</strong><br>
+                                            <span class="text-muted">{{ contrato.acreditante_razon_social }}</span>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <strong>Acreditado:</strong><br>
+                                            <span class="text-muted">{{ contrato.acreditado_razon_social_original }}</span>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="row mt-3">
+                                        <div class="col-md-4">
+                                            <strong>Monto del Crédito:</strong><br>
+                                            <span class="text-success fw-bold">${{ contrato.monto_credito|floatformat:2 }}</span>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <strong>Fecha del Contrato:</strong><br>
+                                            <span class="text-muted">{{ contrato.fecha_contrato|date:"d/m/Y" }}</span>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <strong>Estado:</strong><br>
+                                            <span class="badge bg-{% if contrato.estado == 'activo' %}success{% elif contrato.estado == 'borrador' %}secondary{% else %}warning{% endif %}">
+                                                {{ contrato.get_estado_display }}
+                                            </span>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="row mt-3">
+                                        <div class="col-md-6">
+                                            <strong>Fecha de Creación:</strong><br>
+                                            <span class="text-muted">{{ contrato.creada_en|date:"d/m/Y H:i" }}</span>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <strong>Última Actualización:</strong><br>
+                                            <span class="text-muted">{{ contrato.actualizada_en|date:"d/m/Y H:i" }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Formulario de Confirmación -->
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <a href="{% url 'documentos:lista_contrato_credito' %}" class="btn btn-secondary me-2">
+                                    <i class="fas fa-arrow-left me-2"></i>Cancelar
+                                </a>
+                                <a href="{% url 'documentos:detalle_contrato_credito' contrato.pk %}" class="btn btn-info">
+                                    <i class="fas fa-eye me-2"></i>Ver Detalles
+                                </a>
+                            </div>
+                            <button type="submit" class="btn btn-danger">
+                                <i class="fas fa-trash me-2"></i>Sí, Eliminar Contrato
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal de Confirmación Adicional -->
+<div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-danger text-white">
+                <h5 class="modal-title" id="confirmDeleteModalLabel">
+                    <i class="fas fa-exclamation-triangle me-2"></i>
+                    Confirmación Final
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p class="mb-0">
+                    <strong>¿Estás completamente seguro?</strong><br>
+                    Esta acción eliminará permanentemente el contrato de crédito y no se puede deshacer.
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    <i class="fas fa-times me-2"></i>Cancelar
+                </button>
+                <button type="button" class="btn btn-danger" id="finalDeleteBtn">
+                    <i class="fas fa-trash me-2"></i>Eliminar Definitivamente
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const deleteForm = document.querySelector('form[method="post"]');
+    const deleteButton = deleteForm.querySelector('button[type="submit"]');
+    const confirmModal = new bootstrap.Modal(document.getElementById('confirmDeleteModal'));
+    const finalDeleteBtn = document.getElementById('finalDeleteBtn');
+    
+    // Interceptar el envío del formulario para mostrar modal de confirmación
+    deleteForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        confirmModal.show();
+    });
+    
+    // Manejar la confirmación final
+    finalDeleteBtn.addEventListener('click', function() {
+        confirmModal.hide();
+        deleteForm.submit();
+    });
+});
+</script>
+{% endblock %}

@@ -1,0 +1,139 @@
+{% extends 'base.html' %}
+
+{% block title %}Lista de Contratos de Crédito - Asistente Legal{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1>
+                <i class="fas fa-credit-card text-primary me-2"></i>
+                Contratos de Crédito
+            </h1>
+            <div>
+                <a href="{% url 'dashboard' %}" class="btn btn-secondary me-2">
+                    <i class="fas fa-arrow-left me-2"></i>Dashboard
+                </a>
+                <a href="{% url 'documentos:crear_contrato_credito' %}" class="btn btn-primary">
+                    <i class="fas fa-plus me-2"></i>Nuevo Contrato
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% if contratos %}
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Acreditante</th>
+                                    <th>Acreditado</th>
+                                    <th>Monto</th>
+                                    <th>Fecha Contrato</th>
+                                    <th>Estado</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for contrato in contratos %}
+                                <tr>
+                                    <td>
+                                        <strong>{{ contrato.acreditante_razon_social }}</strong>
+                                    </td>
+                                    <td>
+                                        {{ contrato.acreditado_razon_social_original }}
+                                    </td>
+                                    <td>
+                                        <span class="text-success fw-bold">
+                                            ${{ contrato.monto_credito|floatformat:2 }}
+                                        </span>
+                                    </td>
+                                    <td>{{ contrato.fecha_contrato|date:"d/m/Y" }}</td>
+                                    <td>
+                                        <span class="badge bg-{% if contrato.estado == 'activo' %}success{% elif contrato.estado == 'borrador' %}secondary{% else %}warning{% endif %}">
+                                            {{ contrato.get_estado_display }}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <div class="btn-group" role="group">
+                                            <a href="{% url 'documentos:detalle_contrato_credito' contrato.pk %}" 
+                                               class="btn btn-sm btn-outline-info" title="Ver detalles">
+                                                <i class="fas fa-eye"></i>
+                                            </a>
+                                            <a href="{% url 'documentos:editar_contrato_credito' contrato.pk %}" 
+                                               class="btn btn-sm btn-outline-primary" title="Editar">
+                                                <i class="fas fa-edit"></i>
+                                            </a>
+                                            <a href="{% url 'documentos:eliminar_contrato_credito' contrato.pk %}" 
+                                               class="btn btn-sm btn-outline-danger" title="Eliminar">
+                                                <i class="fas fa-trash"></i>
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Paginación -->
+    {% if is_paginated %}
+    <div class="row mt-4">
+        <div class="col-12">
+            <nav aria-label="Page navigation">
+                <ul class="pagination justify-content-center">
+                    {% if page_obj.has_previous %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page=1">Primera</a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Anterior</a>
+                        </li>
+                    {% endif %}
+                    
+                    <li class="page-item active">
+                        <span class="page-link">
+                            Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}
+                        </span>
+                    </li>
+                    
+                    {% if page_obj.has_next %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ page_obj.next_page_number }}">Siguiente</a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">Última</a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </nav>
+        </div>
+    </div>
+    {% endif %}
+
+{% else %}
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body text-center py-5">
+                    <i class="fas fa-credit-card fa-4x text-muted mb-3"></i>
+                    <h4 class="text-muted">No hay contratos de crédito registrados</h4>
+                    <p class="text-muted">Comienza creando tu primer contrato de crédito.</p>
+                    <a href="{% url 'documentos:crear_contrato_credito' %}" class="btn btn-primary">
+                        <i class="fas fa-plus me-2"></i>Crear Primer Contrato
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endif %}
+{% endblock %}

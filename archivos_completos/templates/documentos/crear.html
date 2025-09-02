@@ -1,0 +1,200 @@
+{% extends 'base.html' %}
+
+{% block title %}Crear Documento - Asistente Legal{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <h1 class="mb-4">
+            <i class="fas fa-plus text-success me-2"></i>
+            Crear Nuevo Documento
+        </h1>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-8">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="fas fa-wpforms me-2"></i>
+                    Información del Documento
+                </h5>
+            </div>
+            <div class="card-body">
+                <form method="post" id="documento-form">
+                    {% csrf_token %}
+                    
+                    <!-- Información Básica -->
+                    <div class="row mb-3">
+                        <div class="col-md-8">
+                            <label for="{{ form.nombre_sociedad.id_for_label }}" class="form-label">Nombre de la Sociedad</label>
+                            {{ form.nombre_sociedad }}
+                        </div>
+                        <div class="col-md-4">
+                            <label for="{{ form.tipo_asamblea.id_for_label }}" class="form-label">Tipo de Asamblea</label>
+                            {{ form.tipo_asamblea }}
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label for="{{ form.fecha_asamblea.id_for_label }}" class="form-label">Fecha de Asamblea</label>
+                            {{ form.fecha_asamblea }}
+                        </div>
+                        <div class="col-md-3">
+                            <label for="{{ form.hora_inicio.id_for_label }}" class="form-label">Hora de Inicio</label>
+                            {{ form.hora_inicio }}
+                        </div>
+                        <div class="col-md-3">
+                            <label for="{{ form.hora_finalizacion.id_for_label }}" class="form-label">Hora de Finalización</label>
+                            {{ form.hora_finalizacion }}
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="{{ form.domicilio.id_for_label }}" class="form-label">Domicilio Social</label>
+                        {{ form.domicilio }}
+                    </div>
+
+                    <!-- Personas Clave -->
+                    <h6 class="text-primary mb-3">Personas Clave</h6>
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label for="{{ form.presidente.id_for_label }}" class="form-label">Presidente</label>
+                            {{ form.presidente }}
+                        </div>
+                        <div class="col-md-6">
+                            <label for="{{ form.secretario.id_for_label }}" class="form-label">Secretario</label>
+                            {{ form.secretario }}
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label for="{{ form.escrutador.id_for_label }}" class="form-label">Escrutador</label>
+                            {{ form.escrutador }}
+                        </div>
+                        <div class="col-md-6">
+                            <label for="{{ form.comisario.id_for_label }}" class="form-label">Comisario</label>
+                            {{ form.comisario }}
+                        </div>
+                    </div>
+
+                    <!-- Información Financiera -->
+                    <h6 class="text-primary mb-3">Información Financiera</h6>
+                    <div class="row mb-3">
+                        <div class="col-md-4">
+                            <label for="{{ form.periodo_financiero.id_for_label }}" class="form-label">Período Financiero</label>
+                            {{ form.periodo_financiero }}
+                        </div>
+                        <div class="col-md-4">
+                            <label for="{{ form.cierre_ejercicio.id_for_label }}" class="form-label">Cierre del Ejercicio</label>
+                            {{ form.cierre_ejercicio }}
+                        </div>
+                        <div class="col-md-4">
+                            <label for="{{ form.honorarios_aprobados.id_for_label }}" class="form-label">Honorarios Aprobados</label>
+                            {{ form.honorarios_aprobados }}
+                        </div>
+                    </div>
+
+                    <!-- Anexos -->
+                    <h6 class="text-primary mb-3">Anexos</h6>
+                    <div class="mb-3">
+                        <div class="form-check">
+                            {{ form.tiene_anexos }}
+                            <label class="form-check-label" for="{{ form.tiene_anexos.id_for_label }}">
+                                ¿Tiene Anexos?
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="mb-3" id="descripcion-anexos" style="display: none;">
+                        <label for="{{ form.descripcion_anexos.id_for_label }}" class="form-label">Descripción de Anexos</label>
+                        {{ form.descripcion_anexos }}
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="{{ form.delegados_designados.id_for_label }}" class="form-label">Delegados Designados</label>
+                        {{ form.delegados_designados }}
+                    </div>
+
+                    <div class="d-flex justify-content-between">
+                        <a href="{% url 'documentos:lista' %}" class="btn btn-secondary">
+                            <i class="fas fa-arrow-left me-2"></i>Cancelar
+                        </a>
+                        <button type="submit" class="btn btn-success">
+                            <i class="fas fa-save me-2"></i>Crear Documento
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-4">
+        <div class="card">
+            <div class="card-header">
+                <h6 class="mb-0">
+                    <i class="fas fa-eye me-2"></i>
+                    Vista Previa
+                </h6>
+            </div>
+            <div class="card-body">
+                <div id="vista-previa">
+                    <p class="text-muted text-center">
+                        <i class="fas fa-file-alt fa-2x mb-2"></i><br>
+                        La vista previa aparecerá aquí mientras completas el formulario
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const tieneAnexosCheckbox = document.getElementById('id_tiene_anexos');
+    const descripcionAnexosDiv = document.getElementById('descripcion-anexos');
+    
+    // Mostrar/ocultar descripción de anexos
+    tieneAnexosCheckbox.addEventListener('change', function() {
+        if (this.checked) {
+            descripcionAnexosDiv.style.display = 'block';
+        } else {
+            descripcionAnexosDiv.style.display = 'none';
+        }
+    });
+    
+    // Vista previa en tiempo real
+    const form = document.getElementById('documento-form');
+    const inputs = form.querySelectorAll('input, select, textarea');
+    
+    inputs.forEach(input => {
+        input.addEventListener('input', updatePreview);
+        input.addEventListener('change', updatePreview);
+    });
+    
+    function updatePreview() {
+        const formData = new FormData(form);
+        
+        fetch('{% url "documentos:vista_previa" %}', {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+            }
+        })
+        .then(response => response.text())
+        .then(html => {
+            document.getElementById('vista-previa').innerHTML = html;
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    }
+});
+</script>
+{% endblock %}

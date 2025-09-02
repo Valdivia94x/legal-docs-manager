@@ -1,0 +1,384 @@
+{% extends 'base.html' %}
+
+{% block title %}Editar Contrato de Prenda - Asistente Legal{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h1>
+                    <i class="fas fa-edit text-warning me-2"></i>
+                    Editar Contrato de Prenda sobre Acciones
+                </h1>
+                <a href="{% url 'documentos:lista_contrato_prenda' %}" class="btn btn-secondary">
+                    <i class="fas fa-arrow-left me-2"></i>Volver a Lista
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="fas fa-handshake me-2"></i>Información del Contrato
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <!-- Mostrar errores del formulario -->
+                    {% if form.errors %}
+                        <div class="alert alert-danger" role="alert">
+                            <h6 class="alert-heading">
+                                <i class="fas fa-exclamation-triangle me-2"></i>
+                                Error en el formulario
+                            </h6>
+                            <ul class="mb-0">
+                                {% for field, errors in form.errors.items %}
+                                    {% for error in errors %}
+                                        <li>{{ field }}: {{ error }}</li>
+                                    {% endfor %}
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    {% endif %}
+
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        
+                        <!-- Datos Generales -->
+                        <div class="row mb-4">
+                            <div class="col-12">
+                                <h6 class="text-primary mb-3">
+                                    <i class="fas fa-info-circle me-2"></i>Datos Generales del Contrato
+                                </h6>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="{{ form.fecha_contrato.id_for_label }}" class="form-label">{{ form.fecha_contrato.label }}</label>
+                                    {{ form.fecha_contrato }}
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="{{ form.lugar_contrato.id_for_label }}" class="form-label">{{ form.lugar_contrato.label }}</label>
+                                    {{ form.lugar_contrato }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Fideicomiso -->
+                        <div class="row mb-4">
+                            <div class="col-12">
+                                <h6 class="text-primary mb-3">
+                                    <i class="fas fa-university me-2"></i>Información del Fideicomiso
+                                </h6>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="{{ form.numero_fideicomiso.id_for_label }}" class="form-label">{{ form.numero_fideicomiso.label }}</label>
+                                    {{ form.numero_fideicomiso }}
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="{{ form.fecha_fideicomiso.id_for_label }}" class="form-label">{{ form.fecha_fideicomiso.label }}</label>
+                                    {{ form.fecha_fideicomiso }}
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="{{ form.fecha_aprobacion_proyecto.id_for_label }}" class="form-label">{{ form.fecha_aprobacion_proyecto.label }}</label>
+                                    {{ form.fecha_aprobacion_proyecto }}
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="{{ form.descripcion_proyecto.id_for_label }}" class="form-label">{{ form.descripcion_proyecto.label }}</label>
+                                    {{ form.descripcion_proyecto }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Deudor Prendario -->
+                        <div class="row mb-4">
+                            <div class="col-12">
+                                <h6 class="text-primary mb-3">
+                                    <i class="fas fa-user-tie me-2"></i>Deudor Prendario
+                                </h6>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="{{ form.deudor_nombre.id_for_label }}" class="form-label">{{ form.deudor_nombre.label }}</label>
+                                    {{ form.deudor_nombre }}
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="{{ form.deudor_representante.id_for_label }}" class="form-label">{{ form.deudor_representante.label }}</label>
+                                    {{ form.deudor_representante }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Acciones Pignoradas -->
+                        <div class="row mb-4">
+                            <div class="col-12">
+                                <h6 class="text-primary mb-3">
+                                    <i class="fas fa-chart-line me-2"></i>Acciones Pignoradas
+                                </h6>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="{{ form.acciones_pledged_cantidad.id_for_label }}" class="form-label">{{ form.acciones_pledged_cantidad.label }}</label>
+                                    {{ form.acciones_pledged_cantidad }}
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="{{ form.acciones_pledged_texto.id_for_label }}" class="form-label">{{ form.acciones_pledged_texto.label }}</label>
+                                    {{ form.acciones_pledged_texto }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Acreedor Prendario -->
+                        <div class="row mb-4">
+                            <div class="col-12">
+                                <h6 class="text-primary mb-3">
+                                    <i class="fas fa-building me-2"></i>Acreedor Prendario (Fiduciario)
+                                </h6>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="{{ form.acreedor_nombre.id_for_label }}" class="form-label">{{ form.acreedor_nombre.label }}</label>
+                                    {{ form.acreedor_nombre }}
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="{{ form.delegado_fiduciario.id_for_label }}" class="form-label">{{ form.delegado_fiduciario.label }}</label>
+                                    {{ form.delegado_fiduciario }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Fideicomitente -->
+                        <div class="row mb-4">
+                            <div class="col-12">
+                                <h6 class="text-primary mb-3">
+                                    <i class="fas fa-handshake me-2"></i>Fideicomitente
+                                </h6>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="{{ form.fideicomitente_nombre.id_for_label }}" class="form-label">{{ form.fideicomitente_nombre.label }}</label>
+                                    {{ form.fideicomitente_nombre }}
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="{{ form.fideicomitente_representante.id_for_label }}" class="form-label">{{ form.fideicomitente_representante.label }}</label>
+                                    {{ form.fideicomitente_representante }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Domicilios -->
+                        <div class="row mb-4">
+                            <div class="col-12">
+                                <h6 class="text-primary mb-3">
+                                    <i class="fas fa-map-marker-alt me-2"></i>Domicilios para Notificaciones
+                                </h6>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <label for="{{ form.domicilio_deudor.id_for_label }}" class="form-label">{{ form.domicilio_deudor.label }}</label>
+                                    {{ form.domicilio_deudor }}
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <label for="{{ form.domicilio_acreedor.id_for_label }}" class="form-label">{{ form.domicilio_acreedor.label }}</label>
+                                    {{ form.domicilio_acreedor }}
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <label for="{{ form.domicilio_fideicomitente.id_for_label }}" class="form-label">{{ form.domicilio_fideicomitente.label }}</label>
+                                    {{ form.domicilio_fideicomitente }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Estado -->
+                        <div class="row mb-4">
+                            <div class="col-12">
+                                <h6 class="text-primary mb-3">
+                                    <i class="fas fa-flag me-2"></i>Estado del Contrato
+                                </h6>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="{{ form.estado.id_for_label }}" class="form-label">{{ form.estado.label }}</label>
+                                    {{ form.estado }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Campos ocultos obligatorios -->
+                        <div style="display: none;">
+                            {{ form.deudor_constitucion_escritura_num }}
+                            {{ form.deudor_constitucion_fecha }}
+                            {{ form.deudor_constitucion_notario }}
+                            {{ form.deudor_constitucion_registro }}
+                            {{ form.deudor_adopcion_sapi_escritura_num }}
+                            {{ form.deudor_adopcion_sapi_fecha }}
+                            {{ form.deudor_adopcion_sapi_notario }}
+                            {{ form.deudor_adopcion_sapi_registro }}
+                            {{ form.acreedor_constitucion_escritura_num }}
+                            {{ form.acreedor_constitucion_fecha }}
+                            {{ form.acreedor_constitucion_notario }}
+                            {{ form.acreedor_constitucion_registro }}
+                            {{ form.delegado_fiduciario_escritura_num }}
+                            {{ form.delegado_fiduciario_fecha }}
+                            {{ form.delegado_fiduciario_notario }}
+                            {{ form.delegado_fiduciario_registro }}
+                            {{ form.fideicomitente_constitucion_escritura_num }}
+                            {{ form.fideicomitente_constitucion_fecha }}
+                            {{ form.fideicomitente_constitucion_notario }}
+                            {{ form.fideicomitente_constitucion_registro }}
+                            {{ form.fideicomitente_rep_escritura_num }}
+                            {{ form.fideicomitente_rep_fecha }}
+                            {{ form.fideicomitente_rep_notario }}
+                            {{ form.fideicomitente_rep_registro }}
+                        </div>
+
+                        <!-- Botones de acción -->
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="d-flex justify-content-between">
+                                    <div>
+                                        <a href="{% url 'documentos:lista_contrato_prenda' %}" class="btn btn-secondary">
+                                            <i class="fas fa-times me-2"></i>Cancelar
+                                        </a>
+                                    </div>
+                                    <div>
+                                        <button type="button" class="btn btn-info me-2" onclick="cargarEjemplo()">
+                                            <i class="fas fa-magic me-2"></i>Cargar Ejemplo
+                                        </button>
+                                        <button type="submit" class="btn btn-warning">
+                                            <i class="fas fa-save me-2"></i>Actualizar Contrato
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function cargarEjemplo() {
+    // Función auxiliar para llenar campos solo si existen
+    function llenarCampo(id, valor) {
+        const campo = document.getElementById(id);
+        if (campo) {
+            campo.value = valor;
+        }
+    }
+
+    // Datos Generales
+    llenarCampo('id_fecha_contrato', '2024-06-15');
+    llenarCampo('id_lugar_contrato', 'Ciudad de México, México');
+    
+    // Fideicomiso
+    llenarCampo('id_numero_fideicomiso', '1051');
+    llenarCampo('id_fecha_fideicomiso', '2022-05-12');
+    llenarCampo('id_fecha_aprobacion_proyecto', '2022-05-31');
+    llenarCampo('id_descripcion_proyecto', 'Proyecto de desarrollo inmobiliario aprobado por el Comité Técnico del Fideicomiso');
+    
+    // Deudor Prendario
+    llenarCampo('id_deudor_nombre', 'Finanzas, S.A.P.I. de C.V.');
+    llenarCampo('id_deudor_representante', 'Raúl García Mendoza');
+    
+    // Acciones Pignoradas
+    llenarCampo('id_acciones_pledged_cantidad', '5853796');
+    llenarCampo('id_acciones_pledged_texto', 'Cinco millones ochocientas cincuenta y tres mil setecientas noventa y seis');
+    
+    // Acreedor Prendario
+    llenarCampo('id_acreedor_nombre', 'Casa de Bolsa, S.A. de C.V.');
+    llenarCampo('id_delegado_fiduciario', 'Manuel Arturo Mollevi Palacios');
+    
+    // Fideicomitente
+    llenarCampo('id_fideicomitente_nombre', 'Hotelería, S.A. de C.V.');
+    llenarCampo('id_fideicomitente_representante', 'Mauricio Martín del Campo Barrón');
+    
+    // Domicilios
+    llenarCampo('id_domicilio_deudor', 'Av. Insurgentes Sur 1234, Col. Del Valle, C.P. 03100, Ciudad de México');
+    llenarCampo('id_domicilio_acreedor', 'Paseo de la Reforma 505, Col. Cuauhtémoc, C.P. 06500, Ciudad de México');
+    llenarCampo('id_domicilio_fideicomitente', 'Av. Santa Fe 482, Col. Cruz Manca, C.P. 05349, Ciudad de México');
+    
+    // Estado
+    llenarCampo('id_estado', 'borrador');
+    
+    // Campos ocultos obligatorios (escrituras notariales)
+    // Deudor
+    llenarCampo('id_deudor_constitucion_escritura_num', '12345');
+    llenarCampo('id_deudor_constitucion_fecha', '2020-01-15');
+    llenarCampo('id_deudor_constitucion_notario', 'Notario Público No. 123, Lic. Juan Pérez');
+    llenarCampo('id_deudor_constitucion_registro', 'Folio 456789');
+    llenarCampo('id_deudor_adopcion_sapi_escritura_num', '12346');
+    llenarCampo('id_deudor_adopcion_sapi_fecha', '2021-03-10');
+    llenarCampo('id_deudor_adopcion_sapi_notario', 'Notario Público No. 124, Lic. María García');
+    llenarCampo('id_deudor_adopcion_sapi_registro', 'Folio 456790');
+    
+    // Acreedor
+    llenarCampo('id_acreedor_constitucion_escritura_num', '54321');
+    llenarCampo('id_acreedor_constitucion_fecha', '2018-05-20');
+    llenarCampo('id_acreedor_constitucion_notario', 'Notario Público No. 200, Lic. Carlos López');
+    llenarCampo('id_acreedor_constitucion_registro', 'Folio 987654');
+    
+    // Delegado Fiduciario
+    llenarCampo('id_delegado_fiduciario_escritura_num', '98765');
+    llenarCampo('id_delegado_fiduciario_fecha', '2023-02-14');
+    llenarCampo('id_delegado_fiduciario_notario', 'Notario Público No. 300, Lic. Ana Martínez');
+    llenarCampo('id_delegado_fiduciario_registro', 'Folio 123456');
+    
+    // Fideicomitente
+    llenarCampo('id_fideicomitente_constitucion_escritura_num', '11111');
+    llenarCampo('id_fideicomitente_constitucion_fecha', '2019-08-30');
+    llenarCampo('id_fideicomitente_constitucion_notario', 'Notario Público No. 400, Lic. Roberto Sánchez');
+    llenarCampo('id_fideicomitente_constitucion_registro', 'Folio 111222');
+    llenarCampo('id_fideicomitente_rep_escritura_num', '22222');
+    llenarCampo('id_fideicomitente_rep_fecha', '2023-01-25');
+    llenarCampo('id_fideicomitente_rep_notario', 'Notario Público No. 500, Lic. Laura Hernández');
+    llenarCampo('id_fideicomitente_rep_registro', 'Folio 333444');
+    
+    // Mostrar mensaje de confirmación
+    const alert = document.createElement('div');
+    alert.className = 'alert alert-success alert-dismissible fade show';
+    alert.innerHTML = `
+        <i class="fas fa-check-circle me-2"></i>
+        <strong>¡Ejemplo cargado!</strong> Los campos han sido llenados con datos de ejemplo.
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    `;
+    
+    const form = document.querySelector('form');
+    form.insertBefore(alert, form.firstChild);
+    
+    // Auto-dismiss después de 3 segundos
+    setTimeout(() => {
+        if (alert.parentNode) {
+            alert.remove();
+        }
+    }, 3000);
+}
+</script>
+{% endblock %}

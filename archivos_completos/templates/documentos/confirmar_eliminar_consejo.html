@@ -1,0 +1,147 @@
+{% extends 'base.html' %}
+
+{% block title %}Eliminar Acta de Sesión de Consejo - Olea Abogados{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+        <div class="card border-danger">
+            <div class="card-header bg-danger text-white">
+                <h5 class="mb-0">
+                    <i class="fas fa-exclamation-triangle me-2"></i>
+                    Confirmar Eliminación
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="text-center mb-4">
+                    <i class="fas fa-users-cog fa-4x text-danger mb-3"></i>
+                    <h4>¿Eliminar Acta de Sesión de Consejo?</h4>
+                </div>
+                
+                <div class="alert alert-warning">
+                    <i class="fas fa-exclamation-triangle me-2"></i>
+                    <strong>¡Atención!</strong> Esta acción no se puede deshacer.
+                </div>
+                
+                <div class="card bg-light">
+                    <div class="card-body">
+                        <h6 class="card-title">Información del documento a eliminar:</h6>
+                        <ul class="list-unstyled mb-0">
+                            <li><strong>Razón Social:</strong> {{ documento.razon_social }}</li>
+                            <li><strong>Fecha:</strong> {{ documento.fecha|date:"d/m/Y" }}</li>
+                            <li><strong>Hora:</strong> {{ documento.hora_inicio|time:"H:i" }}
+                                {% if documento.hora_cierre %}
+                                    - {{ documento.hora_cierre|time:"H:i" }}
+                                {% endif %}
+                            </li>
+                            <li><strong>Lugar:</strong> {{ documento.lugar|truncatechars:50 }}</li>
+                            <li><strong>Estado:</strong> {{ documento.get_estado_display }}</li>
+                            <li><strong>Presidente:</strong> {{ documento.presidente }}</li>
+                            <li><strong>Secretario:</strong> {{ documento.secretario }}</li>
+                            <li><strong>Creada:</strong> {{ documento.creada_en|date:"d/m/Y H:i" }}</li>
+                            <li><strong>Última actualización:</strong> {{ documento.actualizada_en|date:"d/m/Y H:i" }}</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="mt-4">
+                    <p class="text-muted">
+                        Al eliminar este documento se perderán permanentemente:
+                    </p>
+                    <ul class="text-muted">
+                        <li>Toda la información básica del acta</li>
+                        <li>Lista de asistentes e invitados</li>
+                        <li>Orden del día y resoluciones</li>
+                        <li>Delegados y anexos</li>
+                        <li>Historial de cambios</li>
+                    </ul>
+                </div>
+                
+                <form method="post" class="mt-4">
+                    {% csrf_token %}
+                    <div class="d-flex justify-content-between">
+                        <a href="{% url 'documentos:detalle_consejo' documento.pk %}" class="btn btn-secondary">
+                            <i class="fas fa-arrow-left me-2"></i>
+                            Cancelar
+                        </a>
+                        <button type="submit" class="btn btn-danger">
+                            <i class="fas fa-trash me-2"></i>
+                            Sí, Eliminar Acta
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        
+        <!-- Alternativas -->
+        <div class="card mt-4">
+            <div class="card-header">
+                <h6 class="mb-0">
+                    <i class="fas fa-lightbulb me-2"></i>
+                    ¿Consideraste estas alternativas?
+                </h6>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="d-flex align-items-start mb-3">
+                            <i class="fas fa-archive text-info me-3 mt-1"></i>
+                            <div>
+                                <h6 class="mb-1">Archivar</h6>
+                                <p class="text-muted small mb-0">
+                                    Cambia el estado a "Archivado" para mantener el historial sin que aparezca en listas activas.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="d-flex align-items-start mb-3">
+                            <i class="fas fa-edit text-warning me-3 mt-1"></i>
+                            <div>
+                                <h6 class="mb-1">Editar</h6>
+                                <p class="text-muted small mb-0">
+                                    Modifica la información del acta si hay errores o necesitas actualizarla.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="d-flex gap-2 mt-3">
+                    <a href="{% url 'documentos:editar_consejo' documento.pk %}" class="btn btn-outline-warning btn-sm">
+                        <i class="fas fa-edit me-2"></i>Editar en su lugar
+                    </a>
+                    <button type="button" class="btn btn-outline-info btn-sm" onclick="archivarDocumento()">
+                        <i class="fas fa-archive me-2"></i>Archivar en su lugar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Foco en el botón cancelar por seguridad
+    document.querySelector('a[href*="detalle"]').focus();
+    
+    // Confirmar antes de enviar el formulario
+    document.querySelector('form').addEventListener('submit', function(e) {
+        const razonSocial = '{{ documento.razon_social|escapejs }}';
+        if (!confirm(`¿Estás COMPLETAMENTE SEGURO de que deseas eliminar el acta de "${razonSocial}"?\n\nEsta acción es IRREVERSIBLE.`)) {
+            e.preventDefault();
+        }
+    });
+});
+
+function archivarDocumento() {
+    const razonSocial = '{{ documento.razon_social|escapejs }}';
+    if (confirm(`¿Archivar el acta de "${razonSocial}" en lugar de eliminarla?\n\nEsto la ocultará de las listas activas pero conservará toda la información.`)) {
+        // Redirigir a la página de edición con un parámetro para cambiar estado
+        window.location.href = '{% url "documentos:editar_consejo" documento.pk %}?archivar=true';
+    }
+}
+</script>
+{% endblock %}

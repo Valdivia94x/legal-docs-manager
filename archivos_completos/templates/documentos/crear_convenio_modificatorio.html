@@ -1,0 +1,624 @@
+{% extends 'base.html' %}
+
+{% block title %}Crear Convenio Modificatorio - Olea Abogados{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <h1 class="mb-4">
+            <i class="fas fa-edit text-info me-2"></i>
+            Crear Convenio Modificatorio
+        </h1>
+    </div>
+</div>
+
+<!-- Mostrar errores del formulario -->
+{% if form.errors %}
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <h6><i class="fas fa-exclamation-triangle me-2"></i>Por favor corrige los siguientes errores:</h6>
+        <ul class="mb-0">
+            {% for field, errors in form.errors.items %}
+                {% for error in errors %}
+                    <li>{{ field }}: {{ error }}</li>
+                {% endfor %}
+            {% endfor %}
+        </ul>
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+{% endif %}
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="fas fa-wpforms me-2"></i>
+                    Información del Convenio Modificatorio
+                </h5>
+            </div>
+            <div class="card-body">
+                <form method="post" id="documento-form">
+                    {% csrf_token %}
+                    
+                    <!-- Datos Generales -->
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <h6 class="text-primary mb-3">
+                                <i class="fas fa-info-circle me-2"></i>Datos Generales
+                            </h6>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="{{ form.fecha_convenio.id_for_label }}" class="form-label">{{ form.fecha_convenio.label }}</label>
+                                {{ form.fecha_convenio }}
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="{{ form.lugar_convenio.id_for_label }}" class="form-label">{{ form.lugar_convenio.label }}</label>
+                                {{ form.lugar_convenio }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Inversionista -->
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <h6 class="text-primary mb-3">
+                                <i class="fas fa-building me-2"></i>Inversionista (F101)
+                            </h6>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="{{ form.inversionista_razon_social.id_for_label }}" class="form-label">{{ form.inversionista_razon_social.label }}</label>
+                                {{ form.inversionista_razon_social }}
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="{{ form.inversionista_representante.id_for_label }}" class="form-label">{{ form.inversionista_representante.label }}</label>
+                                {{ form.inversionista_representante }}
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="{{ form.inversionista_constitucion_escritura.id_for_label }}" class="form-label">{{ form.inversionista_constitucion_escritura.label }}</label>
+                                {{ form.inversionista_constitucion_escritura }}
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="{{ form.inversionista_constitucion_fecha.id_for_label }}" class="form-label">{{ form.inversionista_constitucion_fecha.label }}</label>
+                                {{ form.inversionista_constitucion_fecha }}
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="mb-3">
+                                <label for="{{ form.inversionista_notario_constitucion.id_for_label }}" class="form-label">{{ form.inversionista_notario_constitucion.label }}</label>
+                                {{ form.inversionista_notario_constitucion }}
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="{{ form.inversionista_registro_constitucion.id_for_label }}" class="form-label">{{ form.inversionista_registro_constitucion.label }}</label>
+                                {{ form.inversionista_registro_constitucion }}
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="{{ form.inversionista_poder_escritura.id_for_label }}" class="form-label">{{ form.inversionista_poder_escritura.label }}</label>
+                                {{ form.inversionista_poder_escritura }}
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="{{ form.inversionista_poder_fecha.id_for_label }}" class="form-label">{{ form.inversionista_poder_fecha.label }}</label>
+                                {{ form.inversionista_poder_fecha }}
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="{{ form.inversionista_poder_notario.id_for_label }}" class="form-label">{{ form.inversionista_poder_notario.label }}</label>
+                                {{ form.inversionista_poder_notario }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Contrato Original -->
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <h6 class="text-primary mb-3">
+                                <i class="fas fa-file-contract me-2"></i>Contrato Original
+                            </h6>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="{{ form.contrato_original_fecha.id_for_label }}" class="form-label">{{ form.contrato_original_fecha.label }}</label>
+                                {{ form.contrato_original_fecha }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Estudiante -->
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <h6 class="text-primary mb-3">
+                                <i class="fas fa-user-graduate me-2"></i>Estudiante
+                            </h6>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="{{ form.estudiante_nombre.id_for_label }}" class="form-label">{{ form.estudiante_nombre.label }}</label>
+                                {{ form.estudiante_nombre }}
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="{{ form.estudiante_estado_civil.id_for_label }}" class="form-label">{{ form.estudiante_estado_civil.label }}</label>
+                                {{ form.estudiante_estado_civil }}
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label for="{{ form.estudiante_nacionalidad.id_for_label }}" class="form-label">{{ form.estudiante_nacionalidad.label }}</label>
+                                {{ form.estudiante_nacionalidad }}
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label for="{{ form.estudiante_ocupacion.id_for_label }}" class="form-label">{{ form.estudiante_ocupacion.label }}</label>
+                                {{ form.estudiante_ocupacion }}
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label for="{{ form.estudiante_rfc.id_for_label }}" class="form-label">{{ form.estudiante_rfc.label }}</label>
+                                {{ form.estudiante_rfc }}
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="{{ form.estudiante_curp.id_for_label }}" class="form-label">{{ form.estudiante_curp.label }}</label>
+                                {{ form.estudiante_curp }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Adeudo Anterior -->
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <h6 class="text-primary mb-3">
+                                <i class="fas fa-calculator me-2"></i>Adeudo Anterior
+                            </h6>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="{{ form.adeudo_principal_anterior.id_for_label }}" class="form-label">{{ form.adeudo_principal_anterior.label }}</label>
+                                {{ form.adeudo_principal_anterior }}
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="{{ form.adeudo_principal_anterior_texto.id_for_label }}" class="form-label">{{ form.adeudo_principal_anterior_texto.label }}</label>
+                                {{ form.adeudo_principal_anterior_texto }}
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="{{ form.credito_original.id_for_label }}" class="form-label">{{ form.credito_original.label }}</label>
+                                {{ form.credito_original }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Obligados Solidarios -->
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <h6 class="text-primary mb-3">
+                                <i class="fas fa-users me-2"></i>Obligados Solidarios
+                            </h6>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="{{ form.luis_nombre.id_for_label }}" class="form-label">{{ form.luis_nombre.label }}</label>
+                                {{ form.luis_nombre }}
+                            </div>
+                        <!--</div>-->
+                        <!--<div class="col-md-6">-->
+                            <div class="mb-3">
+                                <label for="{{ form.luis_rfc.id_for_label }}" class="form-label">{{ form.luis_rfc.label }}</label>
+                                {{ form.luis_rfc }}
+                            </div>
+                        <!--</div>-->
+                        <!--<div class="col-md-6">-->
+                            <div class="mb-3">
+                                <label for="{{ form.luis_curp.id_for_label }}" class="form-label">{{ form.luis_curp.label }}</label>
+                                {{ form.luis_curp }}
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="{{ form.lizette_nombre.id_for_label }}" class="form-label">{{ form.lizette_nombre.label }}</label>
+                                {{ form.lizette_nombre }}
+                            </div>
+                        <!--</div>-->
+                        <!--<div class="col-md-6">-->
+                            <div class="mb-3">
+                                <label for="{{ form.lizette_rfc.id_for_label }}" class="form-label">{{ form.lizette_rfc.label }}</label>
+                                {{ form.lizette_rfc }}
+                            </div>
+                        <!--</div>-->
+                        <!--<div class="col-md-6">-->
+                            <div class="mb-3">
+                                <label for="{{ form.lizette_curp.id_for_label }}" class="form-label">{{ form.lizette_curp.label }}</label>
+                                {{ form.lizette_curp }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Aumento de Inversión -->
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <h6 class="text-primary mb-3">
+                                <i class="fas fa-chart-line me-2"></i>Aumento de Inversión
+                            </h6>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="{{ form.aumento_monto.id_for_label }}" class="form-label">{{ form.aumento_monto.label }}</label>
+                                {{ form.aumento_monto }}
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="{{ form.aumento_monto_texto.id_for_label }}" class="form-label">{{ form.aumento_monto_texto.label }}</label>
+                                {{ form.aumento_monto_texto }}
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="{{ form.inversion_total.id_for_label }}" class="form-label">{{ form.inversion_total.label }}</label>
+                                {{ form.inversion_total }}
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="{{ form.inversion_total_texto.id_for_label }}" class="form-label">{{ form.inversion_total_texto.label }}</label>
+                                {{ form.inversion_total_texto }}
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="{{ form.adeudo_actualizado.id_for_label }}" class="form-label">{{ form.adeudo_actualizado.label }}</label>
+                                {{ form.adeudo_actualizado }}
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="{{ form.pagare_ii_fecha.id_for_label }}" class="form-label">{{ form.pagare_ii_fecha.label }}</label>
+                                {{ form.pagare_ii_fecha }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Periodo de Disposición -->
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <h6 class="text-primary mb-3">
+                                <i class="fas fa-calendar-alt me-2"></i>Periodo de Disposición
+                            </h6>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="{{ form.dispo_periodo_inicio.id_for_label }}" class="form-label">{{ form.dispo_periodo_inicio.label }}</label>
+                                {{ form.dispo_periodo_inicio }}
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="{{ form.dispo_periodo_fin.id_for_label }}" class="form-label">{{ form.dispo_periodo_fin.label }}</label>
+                                {{ form.dispo_periodo_fin }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Términos Financieros -->
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <h6 class="text-primary mb-3">
+                                <i class="fas fa-percentage me-2"></i>Términos Financieros
+                            </h6>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label for="{{ form.cat_anual.id_for_label }}" class="form-label">{{ form.cat_anual.label }}</label>
+                                {{ form.cat_anual }}
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label for="{{ form.tasa_interes_mensual.id_for_label }}" class="form-label">{{ form.tasa_interes_mensual.label }}</label>
+                                {{ form.tasa_interes_mensual }}
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label for="{{ form.tasa_moratoria_mensual.id_for_label }}" class="form-label">{{ form.tasa_moratoria_mensual.label }}</label>
+                                {{ form.tasa_moratoria_mensual }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Pagos en Etapa de Estudios -->
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <h6 class="text-primary mb-3">
+                                <i class="fas fa-graduation-cap me-2"></i>Pagos en Etapa de Estudios
+                            </h6>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="{{ form.pagos_estudios_num1.id_for_label }}" class="form-label">{{ form.pagos_estudios_num1.label }}</label>
+                                {{ form.pagos_estudios_num1 }}
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="{{ form.pagos_estudios_imp1.id_for_label }}" class="form-label">{{ form.pagos_estudios_imp1.label }}</label>
+                                {{ form.pagos_estudios_imp1 }}
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="{{ form.pagos_estudios_num2.id_for_label }}" class="form-label">{{ form.pagos_estudios_num2.label }}</label>
+                                {{ form.pagos_estudios_num2 }}
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="{{ form.pagos_estudios_imp2.id_for_label }}" class="form-label">{{ form.pagos_estudios_imp2.label }}</label>
+                                {{ form.pagos_estudios_imp2 }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Pagos en Etapa de Egreso -->
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <h6 class="text-primary mb-3">
+                                <i class="fas fa-briefcase me-2"></i>Pagos en Etapa de Egreso
+                            </h6>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label for="{{ form.pagos_egreso_num.id_for_label }}" class="form-label">{{ form.pagos_egreso_num.label }}</label>
+                                {{ form.pagos_egreso_num }}
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label for="{{ form.pagos_egreso_imp.id_for_label }}" class="form-label">{{ form.pagos_egreso_imp.label }}</label>
+                                {{ form.pagos_egreso_imp }}
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label for="{{ form.pago_egreso_ultimo.id_for_label }}" class="form-label">{{ form.pago_egreso_ultimo.label }}</label>
+                                {{ form.pago_egreso_ultimo }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Cuenta Bancaria -->
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <h6 class="text-primary mb-3">
+                                <i class="fas fa-university me-2"></i>Cuenta Bancaria
+                            </h6>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="{{ form.cuenta_numero.id_for_label }}" class="form-label">{{ form.cuenta_numero.label }}</label>
+                                {{ form.cuenta_numero }}
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="{{ form.cuenta_banco.id_for_label }}" class="form-label">{{ form.cuenta_banco.label }}</label>
+                                {{ form.cuenta_banco }}
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="{{ form.cuenta_titular.id_for_label }}" class="form-label">{{ form.cuenta_titular.label }}</label>
+                                {{ form.cuenta_titular }}
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="{{ form.cuenta_clabe.id_for_label }}" class="form-label">{{ form.cuenta_clabe.label }}</label>
+                                {{ form.cuenta_clabe }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Cursos y Beneficios -->
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <h6 class="text-primary mb-3">
+                                <i class="fas fa-award me-2"></i>Cursos y Beneficios
+                            </h6>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="{{ form.cursos_requeridos.id_for_label }}" class="form-label">{{ form.cursos_requeridos.label }}</label>
+                                {{ form.cursos_requeridos }}
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="{{ form.confidencialidad_years.id_for_label }}" class="form-label">{{ form.confidencialidad_years.label }}</label>
+                                {{ form.confidencialidad_years }}
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="mb-3">
+                                <label for="{{ form.beneficio_descripcion.id_for_label }}" class="form-label">{{ form.beneficio_descripcion.label }}</label>
+                                {{ form.beneficio_descripcion }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Estado -->
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <h6 class="text-primary mb-3">
+                                <i class="fas fa-flag me-2"></i>Estado del Convenio
+                            </h6>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="{{ form.estado.id_for_label }}" class="form-label">{{ form.estado.label }}</label>
+                                {{ form.estado }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Botones de acción -->
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="d-flex justify-content-between">
+                                <a href="{% url 'dashboard' %}" class="btn btn-secondary">
+                                    <i class="fas fa-arrow-left me-2"></i>Cancelar
+                                </a>
+                                <div>
+                                    <button type="button" class="btn btn-outline-info me-2" onclick="cargarEjemplo()">
+                                        <i class="fas fa-magic me-2"></i>Cargar Ejemplo
+                                    </button>
+                                    <button type="submit" class="btn btn-primary">
+                                        <i class="fas fa-save me-2"></i>Guardar Convenio
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// Función auxiliar para llenar campos de forma segura
+function llenarCampo(id, valor) {
+    const campo = document.getElementById(id);
+    if (campo) {
+        campo.value = valor;
+    }
+}
+
+function cargarEjemplo() {
+    // Datos Generales
+    llenarCampo('id_fecha_convenio', '2024-03-15');
+    llenarCampo('id_lugar_convenio', 'Ciudad de México');
+    
+    // Inversionista (F101)
+    llenarCampo('id_inversionista_razon_social', 'Fomento Mexicano de Posgrados 101, S.A.P.I. de C.V.');
+    llenarCampo('id_inversionista_representante', 'Lic. María Elena Rodríguez Hernández');
+    llenarCampo('id_inversionista_constitucion_escritura', '12345');
+    llenarCampo('id_inversionista_constitucion_fecha', '2020-01-15');
+    llenarCampo('id_inversionista_notario_constitucion', 'Lic. Carlos Alberto Mendoza Ruiz, Notario Público No. 45');
+    llenarCampo('id_inversionista_registro_constitucion', 'Folio Mercantil 98765');
+    llenarCampo('id_inversionista_poder_escritura', '54321');
+    llenarCampo('id_inversionista_poder_fecha', '2023-06-10');
+    llenarCampo('id_inversionista_poder_notario', 'Lic. Ana Patricia González López, Notario Público No. 23');
+    
+    // Contrato Original
+    llenarCampo('id_contrato_original_fecha', '2023-08-20');
+    
+    // Estudiante
+    llenarCampo('id_estudiante_nombre', 'Ana Patricia Rodríguez Martínez');
+    llenarCampo('id_estudiante_estado_civil', 'Soltera');
+    llenarCampo('id_estudiante_nacionalidad', 'Mexicana');
+    llenarCampo('id_estudiante_ocupacion', 'Estudiante');
+    llenarCampo('id_estudiante_rfc', 'ROMA950315ABC');
+    llenarCampo('id_estudiante_curp', 'ROMA950315MDFDRN01');
+    
+    // Adeudo Anterior
+    llenarCampo('id_adeudo_principal_anterior', '250000.00');
+    llenarCampo('id_adeudo_principal_anterior_texto', 'Doscientos cincuenta mil pesos 00/100 M.N.');
+    llenarCampo('id_credito_original', '300000.00');
+    
+    // Obligados Solidarios
+    llenarCampo('id_luis_nombre', 'Luis Alejandro Cuevas Padilla');
+    llenarCampo('id_luis_rfc', 'CUPL800422XYZ');
+    llenarCampo('id_luis_curp', 'CUPL800422HDFVLS09');
+    llenarCampo('id_lizette_nombre', 'Lizette Guadalupe López Ortega');
+    llenarCampo('id_lizette_rfc', 'LOOL850610DEF');
+    llenarCampo('id_lizette_curp', 'LOOL850610MDFPRZ03');
+    
+    // Aumento de Inversión
+    llenarCampo('id_aumento_monto', '100000.00');
+    llenarCampo('id_aumento_monto_texto', 'Cien mil pesos 00/100 M.N.');
+    llenarCampo('id_inversion_total', '350000.00');
+    llenarCampo('id_inversion_total_texto', 'Trescientos cincuenta mil pesos 00/100 M.N.');
+    llenarCampo('id_adeudo_actualizado', '350000.00');
+    llenarCampo('id_pagare_ii_fecha', '2024-03-15');
+    
+    // Periodo de Disposición
+    llenarCampo('id_dispo_periodo_inicio', '2024-04-01');
+    llenarCampo('id_dispo_periodo_fin', '2024-12-31');
+    
+    // Términos Financieros
+    llenarCampo('id_cat_anual', '24.50');
+    llenarCampo('id_tasa_interes_mensual', '1.85');
+    llenarCampo('id_tasa_moratoria_mensual', '2.75');
+    
+    // Pagos en Etapa de Estudios
+    llenarCampo('id_pagos_estudios_num1', '12');
+    llenarCampo('id_pagos_estudios_imp1', '5000.00');
+    llenarCampo('id_pagos_estudios_num2', '6');
+    llenarCampo('id_pagos_estudios_imp2', '7500.00');
+    
+    // Pagos en Etapa de Egreso
+    llenarCampo('id_pagos_egreso_num', '24');
+    llenarCampo('id_pagos_egreso_imp', '12000.00');
+    llenarCampo('id_pago_egreso_ultimo', '15000.00');
+    
+    // Cuenta Bancaria
+    llenarCampo('id_cuenta_numero', '1234567890');
+    llenarCampo('id_cuenta_banco', 'Banco Nacional de México');
+    llenarCampo('id_cuenta_titular', 'Fomento Mexicano de Posgrados 101, S.A.P.I. de C.V.');
+    llenarCampo('id_cuenta_clabe', '012345678901234567');
+    
+    // Cursos y Beneficios
+    llenarCampo('id_cursos_requeridos', '3');
+    llenarCampo('id_beneficio_descripcion', 'Descuento del 10% en el saldo final al completar satisfactoriamente los cursos de capacitación financiera.');
+    llenarCampo('id_confidencialidad_years', '5');
+    
+    // Estado
+    llenarCampo('id_estado', 'borrador');
+    
+    // Mostrar mensaje de confirmación
+    const alert = document.createElement('div');
+    alert.className = 'alert alert-success alert-dismissible fade show';
+    alert.innerHTML = `
+        <i class="fas fa-check-circle me-2"></i>
+        Datos de ejemplo cargados exitosamente.
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    `;
+    document.querySelector('.card-body').insertBefore(alert, document.querySelector('form'));
+    
+    // Auto-remover el mensaje después de 3 segundos
+    setTimeout(() => {
+        if (alert.parentNode) {
+            alert.remove();
+        }
+    }, 3000);
+}
+</script>
+{% endblock %}

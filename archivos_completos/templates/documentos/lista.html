@@ -1,0 +1,133 @@
+{% extends 'base.html' %}
+
+{% block title %}Lista de Documentos - Asistente Legal{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1>
+                <i class="fas fa-file-alt text-primary me-2"></i>
+                Mis Documentos
+            </h1>
+            <a href="{% url 'documentos:crear' %}" class="btn btn-primary">
+                <i class="fas fa-plus me-2"></i>Nuevo Documento
+            </a>
+        </div>
+    </div>
+</div>
+
+{% if documentos %}
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Sociedad</th>
+                                    <th>Tipo de Asamblea</th>
+                                    <th>Fecha de Asamblea</th>
+                                    <th>Fecha de Creación</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for documento in documentos %}
+                                <tr>
+                                    <td>
+                                        <strong>{{ documento.razon_social }}</strong>
+                                    </td>
+                                    <td>
+                                        <span class="badge bg-secondary">
+                                            {{ documento.get_tipo_asamblea_display }}
+                                        </span>
+                                    </td>
+                                    <td>{{ documento.fecha|date:"d/m/Y" }}</td>
+                                    <td>{{ documento.creada_en|date:"d/m/Y H:i" }}</td>
+                                    <td>
+                                        <div class="btn-group" role="group">
+                                            <a href="{% url 'documentos:detalle' documento.pk %}" 
+                                               class="btn btn-sm btn-outline-primary" 
+                                               title="Ver detalle">
+                                                <i class="fas fa-eye"></i>
+                                            </a>
+                                            <a href="{% url 'documentos:editar' documento.pk %}" 
+                                               class="btn btn-sm btn-outline-warning" 
+                                               title="Editar">
+                                                <i class="fas fa-edit"></i>
+                                            </a>
+                                            <a href="{% url 'documentos:descargar_pdf_asamblea' documento.pk %}" 
+                                               class="btn btn-sm btn-outline-danger" 
+                                               title="Descargar PDF">
+                                                <i class="fas fa-file-pdf"></i>
+                                            </a>
+                                            <a href="{% url 'documentos:eliminar' documento.pk %}" 
+                                               class="btn btn-sm btn-outline-secondary" 
+                                               title="Eliminar">
+                                                <i class="fas fa-trash"></i>
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Paginación -->
+    {% if is_paginated %}
+        <div class="row mt-4">
+            <div class="col-12">
+                <nav aria-label="Paginación de documentos">
+                    <ul class="pagination justify-content-center">
+                        {% if page_obj.has_previous %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page=1">Primera</a>
+                            </li>
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Anterior</a>
+                            </li>
+                        {% endif %}
+
+                        <li class="page-item active">
+                            <span class="page-link">
+                                Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}
+                            </span>
+                        </li>
+
+                        {% if page_obj.has_next %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ page_obj.next_page_number }}">Siguiente</a>
+                            </li>
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">Última</a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    {% endif %}
+{% else %}
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body text-center py-5">
+                    <i class="fas fa-file-alt fa-4x text-muted mb-4"></i>
+                    <h4 class="text-muted">No tienes documentos aún</h4>
+                    <p class="text-muted mb-4">Comienza creando tu primer documento legal</p>
+                    <a href="{% url 'documentos:crear' %}" class="btn btn-primary btn-lg">
+                        <i class="fas fa-plus me-2"></i>Crear Primer Documento
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endif %}
+{% endblock %}

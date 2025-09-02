@@ -1,0 +1,427 @@
+{% extends 'base.html' %}
+
+{% block title %}Editar Estatutos Sociales{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2><i class="fas fa-edit text-success me-2"></i>Editar Estatutos Sociales</h2>
+                <div>
+                    <a href="{% url 'documentos:lista_estatutos_sociedad' %}" class="btn btn-outline-secondary me-2">
+                        <i class="fas fa-list"></i> Lista
+                    </a>
+                    <a href="{% url 'documentos:detalle_estatutos_sociedad' object.pk %}" class="btn btn-outline-info me-2">
+                        <i class="fas fa-eye"></i> Ver Detalle
+                    </a>
+                    <button type="button" class="btn btn-outline-info" onclick="cargarEjemplo()">
+                        <i class="fas fa-magic"></i> Cargar Ejemplo
+                    </button>
+                </div>
+            </div>
+
+            <div class="card shadow">
+                <div class="card-body">
+                    <form method="post" id="estatutosForm">
+                        {% csrf_token %}
+                        
+                        <!-- Mostrar errores generales del formulario -->
+                        {% if form.non_field_errors %}
+                            <div class="alert alert-danger">
+                                {{ form.non_field_errors }}
+                            </div>
+                        {% endif %}
+
+                        <!-- Sección 1: Datos de Identificación -->
+                        <div class="card mb-4">
+                            <div class="card-header bg-success text-white">
+                                <h5 class="mb-0"><i class="fas fa-id-card me-2"></i>Datos de Identificación</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-8">
+                                        <div class="mb-3">
+                                            <label for="{{ form.denominacion.id_for_label }}" class="form-label">{{ form.denominacion.label }}</label>
+                                            {{ form.denominacion }}
+                                            {% if form.denominacion.errors %}
+                                                <div class="text-danger small">{{ form.denominacion.errors }}</div>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="mb-3">
+                                            <label for="{{ form.forma_legal.id_for_label }}" class="form-label">{{ form.forma_legal.label }}</label>
+                                            {{ form.forma_legal }}
+                                            {% if form.forma_legal.errors %}
+                                                <div class="text-danger small">{{ form.forma_legal.errors }}</div>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-8">
+                                        <div class="mb-3">
+                                            <label for="{{ form.domicilio.id_for_label }}" class="form-label">{{ form.domicilio.label }}</label>
+                                            {{ form.domicilio }}
+                                            {% if form.domicilio.errors %}
+                                                <div class="text-danger small">{{ form.domicilio.errors }}</div>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="mb-3">
+                                            <label for="{{ form.nacionalidad.id_for_label }}" class="form-label">{{ form.nacionalidad.label }}</label>
+                                            {{ form.nacionalidad }}
+                                            {% if form.nacionalidad.errors %}
+                                                <div class="text-danger small">{{ form.nacionalidad.errors }}</div>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Sección 2: Objeto Social y Duración -->
+                        <div class="card mb-4">
+                            <div class="card-header bg-success text-white">
+                                <h5 class="mb-0"><i class="fas fa-bullseye me-2"></i>Objeto Social y Duración</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="mb-3">
+                                    <label for="{{ form.objeto_social_texto.id_for_label }}" class="form-label">{{ form.objeto_social_texto.label }}</label>
+                                    {{ form.objeto_social_texto }}
+                                    {% if form.objeto_social_texto.help_text %}
+                                        <div class="form-text">{{ form.objeto_social_texto.help_text }}</div>
+                                    {% endif %}
+                                    {% if form.objeto_social_texto.errors %}
+                                        <div class="text-danger small">{{ form.objeto_social_texto.errors }}</div>
+                                    {% endif %}
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-check mb-3">
+                                            {{ form.duracion_indefinida }}
+                                            <label for="{{ form.duracion_indefinida.id_for_label }}" class="form-check-label">
+                                                {{ form.duracion_indefinida.label }}
+                                            </label>
+                                            {% if form.duracion_indefinida.errors %}
+                                                <div class="text-danger small">{{ form.duracion_indefinida.errors }}</div>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-check mb-3">
+                                            {{ form.convenio_admision_extranjeros }}
+                                            <label for="{{ form.convenio_admision_extranjeros.id_for_label }}" class="form-check-label">
+                                                {{ form.convenio_admision_extranjeros.label }}
+                                            </label>
+                                            {% if form.convenio_admision_extranjeros.errors %}
+                                                <div class="text-danger small">{{ form.convenio_admision_extranjeros.errors }}</div>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Sección 3: Capital Social -->
+                        <div class="card mb-4">
+                            <div class="card-header bg-success text-white">
+                                <h5 class="mb-0"><i class="fas fa-coins me-2"></i>Capital Social</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label for="{{ form.capital_fijo_monto.id_for_label }}" class="form-label">{{ form.capital_fijo_monto.label }}</label>
+                                            {{ form.capital_fijo_monto }}
+                                            {% if form.capital_fijo_monto.errors %}
+                                                <div class="text-danger small">{{ form.capital_fijo_monto.errors }}</div>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label for="{{ form.capital_fijo_texto.id_for_label }}" class="form-label">{{ form.capital_fijo_texto.label }}</label>
+                                            {{ form.capital_fijo_texto }}
+                                            {% if form.capital_fijo_texto.errors %}
+                                                <div class="text-danger small">{{ form.capital_fijo_texto.errors }}</div>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label for="{{ form.acciones_serie_a.id_for_label }}" class="form-label">{{ form.acciones_serie_a.label }}</label>
+                                            {{ form.acciones_serie_a }}
+                                            {% if form.acciones_serie_a.errors %}
+                                                <div class="text-danger small">{{ form.acciones_serie_a.errors }}</div>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-check mb-3">
+                                            {{ form.capital_variable_ilimitado }}
+                                            <label for="{{ form.capital_variable_ilimitado.id_for_label }}" class="form-check-label">
+                                                {{ form.capital_variable_ilimitado.label }}
+                                            </label>
+                                            {% if form.capital_variable_ilimitado.errors %}
+                                                <div class="text-danger small">{{ form.capital_variable_ilimitado.errors }}</div>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="{{ form.clase_acciones_texto.id_for_label }}" class="form-label">{{ form.clase_acciones_texto.label }}</label>
+                                    {{ form.clase_acciones_texto }}
+                                    {% if form.clase_acciones_texto.help_text %}
+                                        <div class="form-text">{{ form.clase_acciones_texto.help_text }}</div>
+                                    {% endif %}
+                                    {% if form.clase_acciones_texto.errors %}
+                                        <div class="text-danger small">{{ form.clase_acciones_texto.errors }}</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Sección 4: Libros y Transmisión -->
+                        <div class="card mb-4">
+                            <div class="card-header bg-success text-white">
+                                <h5 class="mb-0"><i class="fas fa-book me-2"></i>Libros y Transmisión</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="mb-3">
+                                    <label for="{{ form.libro_registro_acciones.id_for_label }}" class="form-label">{{ form.libro_registro_acciones.label }}</label>
+                                    {{ form.libro_registro_acciones }}
+                                    {% if form.libro_registro_acciones.errors %}
+                                        <div class="text-danger small">{{ form.libro_registro_acciones.errors }}</div>
+                                    {% endif %}
+                                </div>
+                                <div class="mb-3">
+                                    <div class="form-check">
+                                        {{ form.derecho_preferencia }}
+                                        <label for="{{ form.derecho_preferencia.id_for_label }}" class="form-check-label">
+                                            {{ form.derecho_preferencia.label }}
+                                        </label>
+                                        {% if form.derecho_preferencia.errors %}
+                                            <div class="text-danger small">{{ form.derecho_preferencia.errors }}</div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="{{ form.procedimiento_transmision.id_for_label }}" class="form-label">{{ form.procedimiento_transmision.label }}</label>
+                                    {{ form.procedimiento_transmision }}
+                                    {% if form.procedimiento_transmision.errors %}
+                                        <div class="text-danger small">{{ form.procedimiento_transmision.errors }}</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Sección 5: Asambleas de Accionistas -->
+                        <div class="card mb-4">
+                            <div class="card-header bg-success text-white">
+                                <h5 class="mb-0"><i class="fas fa-users me-2"></i>Asambleas de Accionistas</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="mb-3">
+                                    <label for="{{ form.periodicidad_asamblea.id_for_label }}" class="form-label">{{ form.periodicidad_asamblea.label }}</label>
+                                    {{ form.periodicidad_asamblea }}
+                                    {% if form.periodicidad_asamblea.errors %}
+                                        <div class="text-danger small">{{ form.periodicidad_asamblea.errors }}</div>
+                                    {% endif %}
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label for="{{ form.quorum_ordinaria.id_for_label }}" class="form-label">{{ form.quorum_ordinaria.label }}</label>
+                                            {{ form.quorum_ordinaria }}
+                                            {% if form.quorum_ordinaria.errors %}
+                                                <div class="text-danger small">{{ form.quorum_ordinaria.errors }}</div>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label for="{{ form.quorum_extraordinaria.id_for_label }}" class="form-label">{{ form.quorum_extraordinaria.label }}</label>
+                                            {{ form.quorum_extraordinaria }}
+                                            {% if form.quorum_extraordinaria.errors %}
+                                                <div class="text-danger small">{{ form.quorum_extraordinaria.errors }}</div>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Sección 6: Administración y Vigilancia -->
+                        <div class="card mb-4">
+                            <div class="card-header bg-success text-white">
+                                <h5 class="mb-0"><i class="fas fa-user-tie me-2"></i>Administración y Vigilancia</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label for="{{ form.num_consejeros.id_for_label }}" class="form-label">{{ form.num_consejeros.label }}</label>
+                                            {{ form.num_consejeros }}
+                                            {% if form.num_consejeros.errors %}
+                                                <div class="text-danger small">{{ form.num_consejeros.errors }}</div>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-check mb-3">
+                                            {{ form.suplentes_permitidos }}
+                                            <label for="{{ form.suplentes_permitidos.id_for_label }}" class="form-check-label">
+                                                {{ form.suplentes_permitidos.label }}
+                                            </label>
+                                            {% if form.suplentes_permitidos.errors %}
+                                                <div class="text-danger small">{{ form.suplentes_permitidos.errors }}</div>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label for="{{ form.num_comisarios.id_for_label }}" class="form-label">{{ form.num_comisarios.label }}</label>
+                                            {{ form.num_comisarios }}
+                                            {% if form.num_comisarios.errors %}
+                                                <div class="text-danger small">{{ form.num_comisarios.errors }}</div>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-check mb-3">
+                                            {{ form.comisarios_suplentes }}
+                                            <label for="{{ form.comisarios_suplentes.id_for_label }}" class="form-check-label">
+                                                {{ form.comisarios_suplentes.label }}
+                                            </label>
+                                            {% if form.comisarios_suplentes.errors %}
+                                                <div class="text-danger small">{{ form.comisarios_suplentes.errors }}</div>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Sección 7: Ejercicio Social y Utilidades -->
+                        <div class="card mb-4">
+                            <div class="card-header bg-success text-white">
+                                <h5 class="mb-0"><i class="fas fa-calendar-alt me-2"></i>Ejercicio Social y Utilidades</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="mb-3">
+                                            <label for="{{ form.ejercicio_inicio.id_for_label }}" class="form-label">{{ form.ejercicio_inicio.label }}</label>
+                                            {{ form.ejercicio_inicio }}
+                                            {% if form.ejercicio_inicio.errors %}
+                                                <div class="text-danger small">{{ form.ejercicio_inicio.errors }}</div>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="mb-3">
+                                            <label for="{{ form.ejercicio_fin.id_for_label }}" class="form-label">{{ form.ejercicio_fin.label }}</label>
+                                            {{ form.ejercicio_fin }}
+                                            {% if form.ejercicio_fin.errors %}
+                                                <div class="text-danger small">{{ form.ejercicio_fin.errors }}</div>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="mb-3">
+                                            <label for="{{ form.reserva_legal_pct.id_for_label }}" class="form-label">{{ form.reserva_legal_pct.label }}</label>
+                                            {{ form.reserva_legal_pct }}
+                                            {% if form.reserva_legal_pct.errors %}
+                                                <div class="text-danger small">{{ form.reserva_legal_pct.errors }}</div>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Sección 8: Estado -->
+                        <div class="card mb-4">
+                            <div class="card-header bg-success text-white">
+                                <h5 class="mb-0"><i class="fas fa-flag me-2"></i>Estado del Documento</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="mb-3">
+                                    <label for="{{ form.estado.id_for_label }}" class="form-label">{{ form.estado.label }}</label>
+                                    {{ form.estado }}
+                                    {% if form.estado.errors %}
+                                        <div class="text-danger small">{{ form.estado.errors }}</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Botones de acción -->
+                        <div class="d-flex justify-content-between">
+                            <a href="{% url 'documentos:lista_estatutos_sociedad' %}" class="btn btn-secondary">
+                                <i class="fas fa-times"></i> Cancelar
+                            </a>
+                            <button type="submit" class="btn btn-success">
+                                <i class="fas fa-save"></i> Guardar Cambios
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function cargarEjemplo() {
+    // Datos de Identificación
+    setFieldValue('id_denominacion', 'Tecnología e Innovación Empresarial');
+    setFieldValue('id_forma_legal', 'S.A.P.I. de C.V.');
+    setFieldValue('id_domicilio', 'Av. Reforma 123, Col. Centro, Ciudad de México, C.P. 06000');
+    setFieldValue('id_nacionalidad', 'mexicana');
+    
+    // Objeto Social y Duración
+    setFieldValue('id_objeto_social_texto', 'I. Desarrollo, implementación y comercialización de soluciones tecnológicas.\nII. Consultoría en transformación digital y sistemas de información.\nIII. Prestación de servicios de software y desarrollo de aplicaciones.\nIV. Comercialización de productos tecnológicos y equipos de cómputo.');
+    setCheckboxValue('id_duracion_indefinida', true);
+    setCheckboxValue('id_convenio_admision_extranjeros', true);
+    
+    // Capital Social
+    setFieldValue('id_capital_fijo_monto', '50000.00');
+    setFieldValue('id_capital_fijo_texto', 'Cincuenta mil pesos 00/100 M.N.');
+    setFieldValue('id_acciones_serie_a', '50000');
+    setCheckboxValue('id_capital_variable_ilimitado', true);
+    setFieldValue('id_clase_acciones_texto', 'Serie A: Acciones ordinarias con derecho a voto.\nSerie B: Acciones preferentes sin derecho a voto.\nSerie P: Acciones para empleados con restricciones de transferencia.');
+    
+    // Estado
+    setSelectValue('id_estado', 'borrador');
+}
+
+function setFieldValue(fieldId, value) {
+    const field = document.getElementById(fieldId);
+    if (field) {
+        field.value = value;
+    }
+}
+
+function setCheckboxValue(fieldId, checked) {
+    const field = document.getElementById(fieldId);
+    if (field) {
+        field.checked = checked;
+    }
+}
+
+function setSelectValue(fieldId, value) {
+    const field = document.getElementById(fieldId);
+    if (field) {
+        field.value = value;
+    }
+}
+</script>
+{% endblock %}

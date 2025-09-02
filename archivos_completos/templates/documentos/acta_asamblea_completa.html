@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Acta de Asamblea General Ordinaria Anual</title>
+    <style>
+        body {
+            font-family: 'Times New Roman', Times, serif;
+            font-size: 12pt;
+            line-height: 1.5;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+        }
+        .document-container {
+            background-color: white;
+            width: 8.5in;
+            min-height: 11in;
+            padding: 1in;
+            margin: 20px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            box-sizing: border-box;
+        }
+        .page {
+            min-height: 9in; /* 11in - 2in margins */
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+        .cover-page {
+            justify-content: space-between;
+            text-align: center;
+        }
+        .header {
+            font-weight: bold;
+            text-transform: uppercase;
+            font-size: 14pt;
+        }
+        .cover-header {
+            margin-top: 2in; /* Pushes the header down a bit */
+        }
+        .cover-footer {
+            margin-bottom: 2in; /* Pushes the date up a bit */
+        }
+        h1, h2, h3, h4 {
+            font-weight: bold;
+            text-align: center;
+            margin-top: 24px;
+            margin-bottom: 12px;
+            font-family: 'Times New Roman', Times, serif;
+        }
+        h1 { font-size: 16pt; }
+        h2 { font-size: 14pt; }
+        h3 { font-size: 12pt; text-decoration: underline; }
+        h4 { font-size: 12pt; text-decoration: none; }
+        p, ol, ul {
+            text-align: justify;
+            margin-bottom: 1em;
+        }
+        ol, ul {
+            padding-left: 40px;
+        }
+        li {
+            margin-bottom: 0.5em;
+        }
+        .text-center {
+            text-align: center;
+        }
+        .bold {
+            font-weight: bold;
+        }
+        .table-container {
+            margin: 20px auto;
+            width: 100%;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+        }
+        th, td {
+            border: 1px solid #000;
+            padding: 8px;
+            text-align: left;
+            vertical-align: top;
+        }
+        .page-break {
+            page-break-before: always;
+        }
+        
+        /* Updated Signature Styles */
+        .signature-section {
+            margin-top: 80px;
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            text-align: center;
+        }
+        .signature-block {
+            width: 300px;
+        }
+        .signature-block p {
+            margin: 0;
+            padding: 0;
+        }
+        .signature-block .bold { /* The title */
+            margin-bottom: 40px; /* This creates the space for the signature, between title and line */
+            text-transform: uppercase;
+        }
+        .signature-line {
+            border-bottom: 1px solid #000;
+            margin: 0 auto 5px auto; /* A small margin between line and name */
+            width: 90%;
+        }
+
+        @media print {
+            body {
+                background-color: white;
+            }
+            .document-container {
+                margin: 0;
+                padding: 0;
+                box-shadow: none;
+                width: auto;
+            }
+            .page {
+                 margin: 1in;
+                 min-height: 0;
+            }
+            .cover-page {
+                 height: 9in;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="document-container">
+
+        <div class="page cover-page">
+            <div class="header cover-header">
+                ASAMBLEA GENERAL ORDINARIA DE ACCIONISTAS DE<br>
+                OLEA ABOGADOS, S.A. DE C.V.
+            </div>
+            <div class="cover-footer">
+                De fecha 30 de mayo de 2000
+            </div>
+        </div>
+
+        <div class="page page-break">
+            <h2>ASAMBLEA GENERAL ORDINARIA DE ACCIONISTAS DE<br>OLEA ABOGADOS, S.A. DE C.V.</h2>
+            <p>
+                Siendo las 11:30 horas del 30 de mayo de 2000, se reunieron en el domicilio social de OLEA ABOGADOS, S.A. de C.V. (en adelante referida indistintamente por su denominación social, "OA" o la "Sociedad") ubicado en Bosque de Ciruelos No. 186, 10º piso, colonia Bosques de las Lomas, Miguel Hidalgo, C.P. 11700, Ciudad de México, las personas cuyos nombres aparecen en la lista de asistencia (en adelante y en conjunto denominados los "Asambleistas"), que firmada por el Secretario, Escrutador y los accionistas, se agrega a la presente acta como "Anexo Uno", para celebrar una Asamblea General Ordinaria de Accionistas de la Sociedad (en adelante la "Asamblea"), para la cual no se requirió convocatoria alguna, al encontrarse presente el 100% (cien por ciento) de las acciones con derecho a voto representativas del capital social de la Sociedad de conformidad con lo dispuesto en la cláusula décima quinta de los estatutos sociales.
+            </p>
+            <p>
+                De conformidad con la cláusula décima séptima de los estatutos sociales, en ausencia del Presidente del Consejo de Administración, fungió como Presidente de la Asamblea el doctor Alonso Pérez López por así haberlo decidido los presentes y como Secretario actuó el licenciado Roberto Pérez López, en calidad de Secretario de dicho órgano de administración.
+            </p>
+            <p>
+                Se hace constar la presencia del Comisario de la Sociedad, el señor Ángel Niebla.
+            </p>
+            <p>
+                El Presidente de la Asamblea designó como Escrutador al licenciado Luis Roberto Pérez López, de conformidad con lo señalado en la cláusula décima séptima de los estatutos sociales, quien después de aceptar su cargo, procedió a realizar el escrutinio, para lo cual revisó el Libro de Registro de Acciones de la Sociedad y preparó la Lista de Asistencia, misma que aquí se tiene por integramente reproducida como si a la letra se insertase y en la cual, se hace constar que estuvieron presentes y representadas en la Asamblea la totalidad de las acciones con derecho a voto, representativas del capital social de la Sociedad.
+            </p>
+            <p>
+                Con base en el escrutinio debidamente certificado por el Secretario y Escrutador, el Presidente declaró formalmente instalada la Asamblea, no obstante que no se publicó la convocatoria respectiva, ello en virtud de encontrarse presente el 100% (cien por ciento) de las acciones en circulación con derecho a voto, que integran la totalidad del capital social suscrito y pagado de la Sociedad, al tenor de lo dispuesto por la cláusula décima quinta y décima octava de los estatutos sociales, así como el artículo 188 de la Ley General de Sociedades Mercantiles.
+            </p>
+            <p>
+                A continuación, el Presidente preguntó a los Asambleístas si estaban de acuerdo en que la votación se hiciese en forma económica, a lo cual estos contestaron unánimemente en sentido afirmativo.
+            </p>
+            <p>
+                Acto seguido y a solicitud del Presidente de la Asamblea, el Secretario dio lectura al "Orden del Día", mismo que sometió a la aprobación de los Asambleistas y que a continuación se transcribe:
+            </p>
+        </div>
+
+        <div class="page page-break">
+            <h2>ORDEN DEL DÍA</h2>
+            <ol>
+                <li>Presentación, discusión y en su CORPORACIÓN o, aprobación de los informes que rinde el Consejo de Administración sobre la marcha de la Sociedad, de conformidad con el Artículo 172 de la Ley General de Sociedades Mercantiles por el periodo comprendido del 1º de enero al 31 de diciembre del año 2000, incluyendo el informe del Comisario. Resoluciones al respecto.</li>
+                <li>Propuesta, discusión y en su CORPORACIÓN o, aprobación, de los estados financieros dictaminados de la Sociedad por lo que hace al periodo comprendido del 1º de enero al 31 de diciembre del año 2000. Resoluciones al respecto.</li>
+                <li>Resoluciones sobre la aplicación de resultados del ejercicio social concluido el 31 de diciembre del año 2000.</li>
+                <li>Propuesta, discusión y en su CORPORACIÓN o ratificación o nombramiento de los miembros del Consejo de Administración y del Comisario de la Sociedad. Resoluciones al respecto.</li>
+                <li>Propuesta, discusión y en su CORPORACIÓN o, ratificación o nombramiento de los miembros del Comité de Auditoría y Finanzas. Resoluciones al respecto.</li>
+                <li>Propuesta, discusión y, en su CORPORACIÓN o, determinación de los emolumentos a los miembros del Consejo de Administración, Secretario, Comisario y del Comité de Auditoría y Finanzas de la Sociedad. Resoluciones al Respecto.</li>
+                <li>Nombramiento de delegados especiales que den cumplimiento a las resoluciones tomadas en la Asamblea. Resoluciones al respecto.</li>
+            </ol>
+            <p>
+                Los Asambleístas después de escuchar el Orden del Día antes trascrito y de haberlo aprobado por unanimidad, procedieron a discutir ampliamente todos y cada uno de los asuntos contenidos en el mismo, como sigue:
+            </p>
+            <h3>I. Presentación, discusión y en su CORPORACIÓN o, aprobación de los informes que rinde el Consejo de Administración sobre la marcha de la Sociedad, de conformidad con el Artículo 172 de la Ley General de Sociedades Mercantiles por el periodo comprendido del 1º de enero al 31 de diciembre del año 2000 incluyendo el informe del Comisario. Resoluciones al respecto.</h3>
+            <p>
+                Con relación en el primer punto del Orden del Dia, en uso de la palabra el Presidente de la Asamblea, presentó a los Asambleistas los informes de referencia de conformidad por lo dispuesto en los estatutos sociales y el artículo 172 de la Ley General de Sociedades Mercantiles, sobre la marcha de la Sociedad durante el ejercicio social concluido el 31 de diciembre del año 2000 el cual comprende principalmente los documentos que a continuación se mencionan:
+            </p>
+        </div>
+
+        <div class="page page-break">
+            <ul>
+                <li>a) Informe que del Presidente del Consejo de Administración, en representación de dicho órgano, respecto de la situación financiera y sobre la marcha de la Sociedad, por el ejercicio social concluido el 31 de diciembre del año 2000.</li>
+                <li>b) Informe del Comisario de la Sociedad respecto del ejercicio social concluido el 31 de diciembre del año 2000.</li>
+            </ul>
+            <p>
+                Como consecuencia de lo anterior, y después de una breve deliberación, los Asambleístas adoptaron por unanimidad las siguientes:
+            </p>
+            <h2>RESOLUCIONES</h2>
+            <p><span class="bold">1.1</span> "Se aprueba el informe del Consejo de Administración de la Sociedad, respecto de la marcha de la misma, por el ejercicio social concluido el 31 de diciembre del año 2000."</p>
+            <p><span class="bold">1.2</span> "Se aprueba el informe del Comisario de la Sociedad, respecto de la marcha de la Sociedad por el ejercicio social concluido el 31 de diciembre del año 2000."</p>
+            <p><span class="bold">1.3</span> "Se toma nota de que los accionistas tuvieron a su disposición con 15 (quince) días de anticipación a la celebración de la Asamblea para su debido conocimiento, la totalidad de los documentos a que se refiere este punto del Orden del Día."</p>
+            <p><span class="bold">1.4</span> "Se ordena agregar un ejemplar de los documentos mencionados en este punto del Orden del Día al expediente que se forma con motivo de la celebración de la presente Asamblea, como "Anexos Dos y Tres" de la presente acta."</p>
+            <p><span class="bold">1.5</span> "Se aprueban en este acto, todas y cada una de las operaciones llevadas a cabo por la Sociedad, en el periodo correspondiente al ejercicio social concluido el 31 de diciembre del año 2000."</p>
+            <p><span class="bold">1.6</span> "Se hace constar el agradecimiento de la Asamblea al Consejo de Administración, y al Comisario de la Sociedad por su labor en el ejercicio social concluido el 31 de diciembre del año 2000, y se les libera de cualquier responsabilidad en la que hubiesen podido incurrir con motivo de su gestión."</p>
+            <h3>II. Propuesta, discusión y en su CORPORACIÓN o, aprobación, de los estados financieros dictaminados de la Sociedad por el periodo comprendido del 1º de enero al 31 de diciembre del año 2000. Resoluciones al respecto.</h3>
+            <p>
+                Con relación en el segundo punto del Orden del Día y tomando en consideración lo acordado en el punto anterior el Presidente de la Asamblea, en uso de la palabra, sometió a la aprobación de los presentes los estados financieros dictaminados de la Sociedad por el ejercicio social concluido el 31 de diciembre del año 2000, que comprenden principalmente los documentos que a continuación se mencionan:
+            </p>
+        </div>
+
+        <div class="page page-break">
+            <ul>
+                <li>a. Estado de Situación Financiera no consolidado al 31 de diciembre del año 2000.</li>
+                <li>b. Estado de Resultados no consolidado por el periodo comprendido del 1º de enero al 31 de diciembre del año 2000.</li>
+                <li>c. Estado de Cambios en el Capital Contable no consolidado por el periodo comprendido el 1º de enero al 31 de diciembre del año 2000.</li>
+                <li>d. Estado de Flujo de Efectivo no consolidado por el periodo comprendido el 1º de enero al 31 de diciembre del año 2000.</li>
+            </ul>
+            <p>
+                Como consecuencia de lo anterior, y después de una breve deliberación los Asambleístas adoptaron las siguientes:
+            </p>
+            <h2>RESOLUCIONES</h2>
+            <p><span class="bold">II.1</span> "Se aprueban los estados financieros dictaminados de la Sociedad correspondientes al ejercicio social concluido el 31 de diciembre del año 2000, estados financieros que comprende principalmente los documentos a que se refiere este punto del Orden del Día."</p>
+            <p><span class="bold">II.2</span> "Se toma nota de que los accionistas tuvieron a su disposición con 15 (quince) días de anticipación a la celebración de la Asamblea para su debido conocimiento, la totalidad de los documentos a que se refiere este punto del Orden del Día."</p>
+            <p><span class="bold">II.3</span> "Se ordena agregar un ejemplar de los documentos mencionados en este punto del Orden del Día, al expediente que se forma con motivo de la celebración de la presente Asamblea, los cuales se adjuntan en conjunto como "Anexo Cuatro" de la presente acta."</p>
+            <p><span class="bold">II.4</span> "Se aprueban en este acto, todas y cada una de las operaciones llevadas a cabo por la Sociedad, en el ejercicio social concluido el 31 de diciembre del año 2000, aprobándose y ratificándose todos y cada uno de los actos realizados por el Consejo de Administración de la Sociedad, durante el ejercicio social citado."</p>
+            <h3>III. Resoluciones sobre la aplicación de resultados del ejercicio social concluido el 31 de diciembre del año 2000.</h3>
+            <p>
+                En relación al presente punto del Orden del Día, el Presidente de la Asamblea explicó a los presentes que del Estado de Resultados de la Sociedad aprobado en la presente Asamblea se desprende que por el ejercicio social concluido el 31 de diciembre de 2000, la Sociedad obtuvo una utilidad de $233.00 M.N. (Doscientos treinta y tres pesos 00/100 Moneda Nacional), de la cual no existe obligación de separar cantidad alguna por concepto de reserva legal, toda vez que a la fecha, la reserva legal constituida es equivalente a la quinta parte del capital social de la Sociedad, conforme a lo ordenado por el artículo 20 de la LGSM.", por lo que la totalidad de la utilidad del ejercicio se acumulará en la cuenta de "Resultados de Ejercicios Anteriores".
+            </p>
+        </div>
+        
+        <div class="page page-break">
+            <p>
+                Acto seguido, el Presidente comentó que la Sociedad se encuentra en aptitud de repartir entre los accionistas y consecuentemente, en términos del Contrato de Fideicomiso Irrevocable de Garantía, Administración y Fuente de Pago identificado con el número F/3319 ("F/3319"), a los beneficiarios de los derechos económicos, es decir, a Corporación, S.A.P.I. de C.V. ("CORPORACIÓN") y al señor Alonso Pérez López ("HOH"), por concepto de dividendos, la cantidad de hasta por $213.00 M.N. (Doscientos trece pesos 00/100 Moneda Nacional), la cual resulta de lo siguiente:
+            </p>
+            <ul>
+                <li>a) La cantidad de hasta $111.00 M.N. (Ciento once pesos 00/100 Moneda Nacional), provenientes de Resultados de Ejercicios Anteriores.</li>
+                <li>b) La cantidad de hasta $102.00 M.N. (Ciento dos pesos 00/100 M.N.) provenientes del reparto de dividendos autorizados por Renovable, S.A.P.I. de C.V. ("RENOVABLE"), mediante Asamblea General Ordinaria de Accionistas de esta misma fecha.</li>
+            </ul>
+            <p>
+                No obstante lo anterior, el Presidente de la Asamblea comentó que para efectos fiscales la totalidad de los dividendos a repartirse, provendrán de la cuenta denominada Cuenta de Utilidad Fiscal por Inversiones en Energía Renovable ("CUFINIER").
+            </p>
+            <p>
+                Continuando con su exposición el Presidente de la Asamblea explicó a los presentes que las cantidades mencionadas serían entregadas a CORPORACIÓN HOH dentro de los 10 (diez) días naturales siguientes a que se obtenga la autorización de los bancos financiadores, se cumpla con los procedimientos o instrucciones a que haya lugar con base en lo establecido en el Fideicomiso F/3319 y la Sociedad reciba de parte de RENOVABLE los pagos correspondientes.
+            </p>
+            <p>
+                Asimismo, el Presidente de la Asamblea explicó a los Asambleístas que una vez aprobado el reparto de dividendos antes mencionado, la cantidad correspondiente se distribuirá en proporción a la tenencia accionaria de cada accionista y consecuentemente en proporción a la titularidad de los derechos económicos que conforme al F/3319 pueden ejercer CORPORACIÓN y HOH, en Moneda Nacional, en una o varias exhibiciones, en el entendido que, los montos correspondientes se pagarán conforme a la normatividad aplicable, es decir, realizando la retención del porcentaje que corresponda según lo establece la Ley del Impuesto Sobre la Renta ("ISR").
+            </p>
+            <p>
+                Finalmente, el Presidente explicó la forma en que se llevaría a cabo el reparto de dividendos, lo cual aquí se tiene por reproducido como si a la letra se insertase.
+            </p>
+            <p>
+                Como consecuencia de lo anterior, después de una breve deliberación los Asambleístas adoptaron por unanimidad de votos, las siguientes:
+            </p>
+            <h2>RESOLUCIONES</h2>
+            <p><span class="bold">III.1</span> "Se aprueba la utilidad de la Sociedad obtenida durante el ejercicio social concluido el 31 de diciembre de 2000, por la cantidad de $233.00 M.N. (Doscientos treinta y tres pesos 00/100 Moneda Nacional) y que dicho monto se acumule en la cuenta de Resultados de Ejercicios Anteriores."</p>
+        </div>
+        
+        <div class="page page-break">
+            <p><span class="bold">III.2</span> "Se toma nota de que de las utilidades obtenidas, no existe obligación de separar cantidad alguna por concepto de reserva legal, toda vez que a la fecha la reserva legal constituida es equivalente a la quinta parte del capital social de la Sociedad, conforme a lo ordenado por el artículo 20 de la LGSM."</p>
+            <p><span class="bold">III.3</span> "Se aprueba que para efectos fiscales con cargo al saldo de la cuenta CUFINIER, se decrete en favor de los accionistas y consecuentemente de CORPORACIÓN, el reparto de dividendos por la cantidad de hasta $213.00 M.N. (Doscientos trece pesos 00/100 Moneda Nacional)."</p>
+            <p><span class="bold">III.4</span> "Se aprueba que el pago de dividendos a los accionistas se realice de manera proporcional a su tenencia accionaria y consecuentemente a CORPORACIÓN conforme al porcentaje de los derechos económicos que en la actualidad puede ejercer según el F/3319, es decir, en las cantidades que se indican a continuación (cifras en M.N.):</p>
+            <div class="table-container">
+                <table>
+                    <tr><th>Nombre</th><th>Monto</th><th>Porcentaje</th></tr>
+                    <tr><td>Alonso Pérez López</td><td>$133.00</td><td>0.001%</td></tr>
+                    <tr><td>Corporación, S.A.P.I. de C.V.</td><td>$213.00</td><td>99.999%</td></tr>
+                    <tr><td class="bold">Total</td><td class="bold">$213.00</td><td class="bold">100%</td></tr>
+                </table>
+            </div>
+            <p><span class="bold">III.5</span> "Se aprueba que dentro de los 10 (diez) días naturales siguientes a que se obtenga la autorización de los bancos financiadores, a que se cumpla con los procedimientos o instrucciones a que haya lugar con base en lo establecido en el Fideicomiso F/3319 y cuando corresponda sujeto a la recepción de los recursos correspondientes por parte de RENOVABLE; la Sociedad pague los dividendos a los accionistas y consecuentemente a CORPORACIÓN, según las cantidades referidas en la tabla de la resolución anterior, en Moneda Nacional y en una o varias exhibiciones."</p>
+            <p><span class="bold">III.6</span> "Se toma nota de la aceptación de los accionistas, para dar cumplimiento a cualquier obligación de naturaleza fiscal, que se actualice en razón de la entrega de dividendos decretada mediante la presente Asamblea."</p>
+            <p><span class="bold">III.7</span> "Se ordena al Consejo de Administración de la Sociedad, que efectúe los actos necesarios para la entrega de los dividendos correspondientes y, desde este momento, se deslinda a los integrantes de dicho órgano colegiado de cualquier responsabilidad que se les pudiera fincar con fundamento en lo establecido en la fracción II del artículo 158 de la Ley General de Sociedades Mercantiles."</p>
+        </div>
+
+        <div class="page page-break">
+            <p><span class="bold">III.8</span> "Se aprueba que una vez descontado el monto destinado al reparto de dividendos, el remanente de la utilidad obtenida por el ejercicio 2000, es decir, la cantidad de $122.00 M.N. (Ciento veintidós pesos 00/100 Moneda Nacional) permanezca en la cuenta de Resultados de Ejercicios Anteriores."</p>
+            <h3>IV. Propuesta, discusión y en su CORPORACIÓN o ratificación o nombramiento de los miembros del Consejo de Administración y del Comisario de la Sociedad. Resoluciones al respecto.</h3>
+            <p>En desahogo del presente punto del Orden del Día, el Presidente de la Asamblea sugirió a los Asambleístas ratificar a los actuales miembros del Consejo de Administración y al Secretario no Miembro del Consejo, para continuar ocupando los cargos conferidos en el ejercicio social en curso o en su CORPORACIÓN o hasta que sean destituidos o presenten su renuncia.</p>
+            <p>Asimismo, el Presidente informó que con fecha 31 de agosto de 2000, el señor José Fernando Ramírez Muñoz, titular del Órgano de Vigilancia de la Sociedad, renunció al cago conferido, por lo cual sugirió que con efectos retroactivos al 1º de septiembre de 2000, se nombre como nuevo Comisario de la Sociedad, al señor Ángel Radamés Corral Niebla.</p>
+            <p>Como consecuencia de lo anterior, después de una breve deliberación, los Asambleístas adoptaron por unanimidad de votos, las siguientes:</p>
+            <h2>RESOLUCIONES</h2>
+            <p><span class="bold">IV.1</span> "Se acepta la propuesta del Presidente de la Asamblea sobre la ratificación de los actuales miembros del Consejo de Administración como Vocales de dicho órgano colegiado."</p>
+            <p><span class="bold">IV.2</span> "Se hace constar que las personas citadas en la resolución que antecede, teniendo conocimiento con anterioridad de su ratificación como Presidente y Vocales del Consejo de Administración de la Sociedad, han aceptado continuar ocupando dichos cargos y han protestado el fiel y leal desempeño de los mismos."</p>
+            <p><span class="bold">IV.3</span> "Se acepta la propuesta del Presidente de la Asamblea sobre la ratificación del Secretario no miembro del Consejo de Administración, el licenciado Luis Roberto Pérez López, quien teniendo conocimiento con anterioridad de su ratificación manifestó su aceptación para continuar ocupando el cargo referido sin formar parte de dicho órgano, y protestó el fiel y leal desempeño del mismo."</p>
+            <p><span class="bold">IV.4</span> "Con efectos retroactivos al 31 de agosto de 2000, se aprueba la renuncia del señor José Fernando Ramírez Muñoz como titular del órgano de vigilancia a quien se le agradece su labor en el desempeño del cargo y se le libera de cualquier responsabilidad en la que hubiese podido incurrir por el ejercicio del mismo."</p>
+            <p><span class="bold">IV.5</span> "Con efectos retroactivos al 1º de septiembre de 2000, se aprueba el nombramiento del señor Ángel Radamés Corral Nieblas como Comisario de la Sociedad, a la vez que se hace constar su aceptación para continuar ocupando el cargo, protestando el fiel y leal desempeño del mismo."</p>
+        </div>
+
+        <div class="page page-break">
+            <p><span class="bold">IV.6</span> "En virtud de las resoluciones anteriores, se resuelve que el órgano de administración y el órgano de vigilancia de la Sociedad quedan integrados de la siguiente manera:</p>
+            <div class="table-container">
+                <h4>CONSEJO DE ADMINISTRACIÓN</h4>
+                <table>
+                    <tr><td>Daniel Martínez</td><td>Presidente</td></tr>
+                    <tr><td>Luis Fernando Ramírez</td><td>Vocal</td></tr>
+                    <tr><td>Alonso Pérez López</td><td>Vocal</td></tr>
+                    <tr><td>Nicolás Martínez</td><td>Vocal</td></tr>
+                    <tr><td>Roberto Pérez López</td><td>Secretario no Miembro</td></tr>
+                </table>
+                <h4>ÓRGANO DE VIGILANCIA</h4>
+                <p class="text-center">Ángel Radamés Corral Niebla<br>Comisario.</p>
+            </div>
+            <h3>V. Propuesta, discusión y en su CORPORACIÓN o, ratificación o nombramiento de los miembros del Comité de Auditoría y Finanzas. Resoluciones al respecto.</h3>
+            <p>En desahogo del presente punto del Orden del Día el Presidente de la Asamblea informó a los Asambleístas que resultaba oportuno que la Sociedad ratifique el nombramiento de los miembros del Comité de Auditoría y Finanzas, salvo por el señor José Fernando Ramírez Muñoz, quien con fecha 31 de agosto de 2000 presentó su renuncia al cargo conferido, por lo cual el Presidente propuso que con efectos retroactivos al 1º de septiembre de 2000 se nombre Vocal del citado comité, al señor Ángel Radamés Corral Nieblas.</p>
+            <p>Después de la deliberación por parte de los Asambleistas, por unanimidad de votos, se adoptaron las siguientes:</p>
+            <h2>RESOLUCIONES</h2>
+            <p><span class="bold">V.1</span> "Se acepta la propuesta del Presidente de la Asamblea sobre la ratificación de los miembros del Comité de Auditoría y Finanzas es decir, de los señores Héctor Marcelino Gómez Velasco y Sanromán en su calidad de Presidente, y de los señores Luis Fernando Sampson Riquelme, Héctor Alonso Pérez López e Iñigo Mariscal Servitje en calidad de Vocales."</p>
+            <p><span class="bold">V.2</span> "Con efectos retroactivos al 31 de agosto de 2000, se acepta la renuncia del señor José Fernando Ramírez Muñoz en calidad de Vocal del Comité de Auditoría y Finanzas, a quien se le agradece el buen desempeño del cargo y se le libera de cualquier responsabilidad en la que hubiese podido incurrir por el ejercicio del mismo."</p>
+            <p><span class="bold">V.3</span> "Con efectos retroactivos al 1º de septiembre de 2000, se aprueba el nombramiento del señor Ángel Radamés Corral Nieblas como Vocal del Comité de Auditoría y Finanzas, quien acepta y protesta el fiel y cumplido desempeño del cargo."</p>
+        </div>
+
+        <div class="page page-break">
+            <p><span class="bold">V.4</span> "Derivado de lo anterior, se resuelve que el Comité de Auditoría y Finanzas de la Sociedad quedará integrado de la siguiente manera:</p>
+            <div class="table-container">
+                <h4>COMITÉ DE AUDITORÍA Y FINANZAS</h4>
+                <table>
+                    <tr><td>Daniel Martinez</td><td>Presidente</td></tr>
+                    <tr><td>Luis Fernando Ramírez</td><td>Vocal</td></tr>
+                    <tr><td>Alonso Pérez López</td><td>Vocal</td></tr>
+                    <tr><td>Nicolás Martinez</td><td>Vocal</td></tr>
+                </table>
+            </div>
+            <h3>VI. Propuesta, discusión y, en su CORPORACIÓN o, determinación de los emolumentos a los miembros del Consejo de Administración, Secretario, Comisario y del Comité de Auditoría y Finanzas de la Sociedad. Resoluciones al Respecto.</h3>
+            <p>En desahogo del presente punto del Orden del Día, el Presidente de la Asamblea propuso que se pague a los miembros del Consejo de Administración de la Sociedad y al Secretario no Miembro, de manera individual y por cada asistencia a las Sesiones del Consejo de Administración, un honorario de $100,.00 M.N. (Cien pesos 00/100 Moneda Nacional) cantidad que se entregará neta, después del pago de cualesquier impuesto y/o retención que correspondan de conformidad con lo establecido por Ley de Impuesto Sobre la Renta o cualesquier otra normatividad que resulte aplicable.</p>
+            <p>Asimismo, sugirió que por la propia naturaleza del cargo de Comisario, este sea honorifico es decir, que no se genere a favor del señor Angel Nieblas ningún honorario por el desempeño del mismo.</p>
+            <p>Respecto a los miembros del Comité de Auditoría y Finanzas de la Sociedad, el Presidente de la Asamblea comentó a los presentes que los mismos renuncian a percibir cualquier emolumento que pudieran tener por el desempeño de sus cargos durante el tiempo en el que se encuentren en el mismo, haciéndose constar el agradecimiento por parte de los accionistas.</p>
+            <p>Previa discusión por parte de los Asambleistas, por unanimidad de votos, se adoptaron las siguientes:</p>
+            <h2>RESOLUCIONES</h2>
+            <p><span class="bold">VI.1</span> "Se aprueba que con excepción del señor Angel Nieblas en calidad de Comisario de la Sociedad, se pague a los miembros del Consejo de Administración de la Sociedad y al Secretario no Miembro, de manera individual y por cada asistencia a las Sesiones del Consejo, un honorario de $100,.00 M.N. (Cien pesos 00/100 Moneda Nacional) cantidad que se entregará neta, después del pago de cualesquier impuesto y/o retención que correspondan de conformidad con lo establecido por Ley de Impuesto Sobre la Renta o cualesquier otra normatividad que resulte aplicable."</p>
+        </div>
+
+        <div class="page page-break">
+            <p><span class="bold">VI.2</span> "Se acepta la renuncia de los miembros del Comité de Auditoría y Finanzas de la Sociedad y del Comisario, para percibir cualquier emolumento por el desempeño de sus cargos durante el tiempo en el que se encuentren en el mismo, haciéndose constar el agradecimiento por parte de los accionistas."</p>
+            <h3>VII. Nombramiento de delegados especiales que den cumplimiento a las resoluciones tomadas en la Asamblea. Resoluciones al respecto.</h3>
+            <p>Con relación en este punto del Orden del Día, el Presidente sugirió a la Asamblea que para dar cumplimiento a las resoluciones adoptadas por la misma, se designe indistintamente al doctor Alonso Pérez López, así como a los licenciados Roberto Pérez López y Diana Torres, como delegados especiales de la presente Asamblea.</p>
+            <p>Como consecuencia de lo anterior, los Asambleístas adoptaron por unanimidad de votos, la siguiente:</p>
+            <h2>RESOLUCIÓN</h2>
+            <p><span class="bold">Única.</span> "Se acuerda designar al doctor Alonso Pérez López, así como a los licenciados Roberto Pérez López y Diana Torres, como delegados especiales, con facultades amplísimas para que concurra cualquiera de ellos, de manera indistinta e individual, en representación de la Sociedad y de los accionistas, al Fedatario Público de su elección a protocolizar y ratificar en todo o en parte, el acta que de esta Asamblea se levanta y en general para que realicen cualquier acto que sea necesario para la formalización o perfeccionamiento de las resoluciones adoptadas por la misma."</p>
+            <p>No habiendo más asuntos que tratar, se suspendió la Asamblea por el tiempo necesario para la preparación de la presente acta, la cual, una vez leída, fue aprobada por la Asamblea y autorizada para ser firmada por el Presidente y el Secretario y Escrutador, dándose por terminada a las 13:30 horas de su fecha de inicio.</p>
+            <p>Se adjunta al expediente que se abre de la presente Asamblea:</p>
+            <ol>
+                <li>Anexo Uno: Lista de Asistencia.</li>
+                <li>Anexo Dos: Informe del Consejo de Administración.</li>
+                <li>Anexo Tres: Informe del Comisario.</li>
+                <li>Anexo Cuatro: Estados Financieros.</li>
+            </ol>
+            <p>Se hace constar que durante el tiempo que se desarrolló la Asamblea General Ordinaria de Accionistas de OLEA ABOGADOS, S.A. de C.V. celebrada el 30 de mayo de 2000, desde su inicio hasta su terminación, estuvieron presentes todas las personas que en ella intervinieron.</p>
+        </div>
+
+        <div class="page page-break">
+            <div class="signature-section">
+                <div class="signature-block">
+                    <p class="bold">PRESIDENTE</p>
+                    <div class="signature-line"></div>
+                    <p>Alonso Pérez López</p>
+                </div>
+                <div class="signature-block">
+                    <p class="bold">SECRETARIO Y ESCRUTADOR</p>
+                    <div class="signature-line"></div>
+                    <p>Roberto Pérez López</p>
+                </div>
+            </div>
+            <div class="signature-section" style="justify-content: center;">
+                <div class="signature-block">
+                    <p class="bold">COMISARIO</p>
+                    <div class="signature-line"></div>
+                    <p>Angel Nieblas</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</body>
+</html>

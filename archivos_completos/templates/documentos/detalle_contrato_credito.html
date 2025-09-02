@@ -1,0 +1,283 @@
+{% extends 'base.html' %}
+
+{% block title %}Detalle del Contrato de Crédito - Asistente Legal{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h1>
+                    <i class="fas fa-eye text-primary me-2"></i>
+                    Detalle del Contrato de Crédito
+                </h1>
+                <div>
+                    <a href="{% url 'documentos:lista_contrato_credito' %}" class="btn btn-secondary me-2">
+                        <i class="fas fa-arrow-left me-2"></i>Volver a Lista
+                    </a>
+                    <a href="{% url 'documentos:editar_contrato_credito' contrato.pk %}" class="btn btn-warning text-white">
+                        <i class="fas fa-edit me-2"></i>Editar
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <!-- Información General -->
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <h5 class="text-primary border-bottom pb-2">
+                                <i class="fas fa-info-circle me-2"></i>Información General
+                            </h5>
+                        </div>
+                        <div class="col-md-4">
+                            <strong>Fecha del Contrato:</strong><br>
+                            <span class="text-muted">{{ contrato.fecha_contrato|date:"d/m/Y" }}</span>
+                        </div>
+                        <div class="col-md-4">
+                            <strong>Lugar del Contrato:</strong><br>
+                            <span class="text-muted">{{ contrato.lugar_contrato }}</span>
+                        </div>
+                        <div class="col-md-4">
+                            <strong>Estado:</strong><br>
+                            <span class="badge bg-{% if contrato.estado == 'activo' %}success{% elif contrato.estado == 'borrador' %}secondary{% else %}warning{% endif %}">
+                                {{ contrato.get_estado_display }}
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Información del Acreditante -->
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <h5 class="text-primary border-bottom pb-2">
+                                <i class="fas fa-building me-2"></i>Acreditante
+                            </h5>
+                        </div>
+                        <div class="col-md-6">
+                            <strong>Razón Social:</strong><br>
+                            <span class="text-muted">{{ contrato.acreditante_razon_social }}</span>
+                        </div>
+                        <div class="col-md-6">
+                            <strong>Forma Legal:</strong><br>
+                            <span class="text-muted">{{ contrato.acreditante_forma_legal }}</span>
+                        </div>
+                        <div class="col-md-6 mt-3">
+                            <strong>Representante:</strong><br>
+                            <span class="text-muted">{{ contrato.acreditante_representante }}</span>
+                        </div>
+                        <div class="col-md-12 mt-3">
+                            <strong>Domicilio:</strong><br>
+                            <span class="text-muted">{{ contrato.domicilio_acreditante }}</span>
+                        </div>
+                    </div>
+
+                    <!-- Información del Acreditado -->
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <h5 class="text-primary border-bottom pb-2">
+                                <i class="fas fa-user-tie me-2"></i>Acreditado
+                            </h5>
+                        </div>
+                        <div class="col-md-6">
+                            <strong>Razón Social:</strong><br>
+                            <span class="text-muted">{{ contrato.acreditado_razon_social_original }}</span>
+                        </div>
+                        <div class="col-md-12 mt-3">
+                            <strong>Domicilio:</strong><br>
+                            <span class="text-muted">{{ contrato.domicilio_acreditado }}</span>
+                        </div>
+                    </div>
+
+                    <!-- Términos del Crédito -->
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <h5 class="text-primary border-bottom pb-2">
+                                <i class="fas fa-dollar-sign me-2"></i>Términos del Crédito
+                            </h5>
+                        </div>
+                        <div class="col-md-4">
+                            <strong>Monto del Crédito:</strong><br>
+                            <span class="text-success fw-bold fs-5">${{ contrato.monto_credito|floatformat:2 }}</span>
+                        </div>
+                        <div class="col-md-8">
+                            <strong>Monto en Texto:</strong><br>
+                            <span class="text-muted">{{ contrato.monto_credito_texto }}</span>
+                        </div>
+                        <div class="col-md-4 mt-3">
+                            <strong>Tasa de Interés Ordinaria:</strong><br>
+                            <span class="text-muted">{{ contrato.tasa_interes_ordinaria }}%</span>
+                        </div>
+                        <div class="col-md-4 mt-3">
+                            <strong>Tasa de Interés Moratoria:</strong><br>
+                            <span class="text-muted">{{ contrato.tasa_interes_moratoria }}%</span>
+                        </div>
+                        <div class="col-md-4 mt-3">
+                            <strong>Fecha de Vencimiento:</strong><br>
+                            <span class="text-muted">{{ contrato.plazo_credito_fecha_vencimiento|date:"d/m/Y" }}</span>
+                        </div>
+                    </div>
+
+                    <!-- Disposiciones del Crédito -->
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <h5 class="text-primary border-bottom pb-2">
+                                <i class="fas fa-calendar-alt me-2"></i>Disposiciones del Crédito
+                            </h5>
+                        </div>
+                        <div class="col-md-12">
+                            <strong>Número de Disposiciones:</strong> {{ contrato.numero_disposiciones }}
+                        </div>
+                        {% if contrato.disposicion1_fecha %}
+                        <div class="col-md-4 mt-3">
+                            <div class="card bg-light">
+                                <div class="card-body p-3">
+                                    <h6 class="card-title">Disposición 1</h6>
+                                    <p class="card-text mb-1"><strong>Fecha:</strong> {{ contrato.disposicion1_fecha|date:"d/m/Y" }}</p>
+                                    <p class="card-text mb-0"><strong>Importe:</strong> ${{ contrato.disposicion1_importe|floatformat:2 }}</p>
+                                </div>
+                            </div>
+                        </div>
+                        {% endif %}
+                        {% if contrato.disposicion2_fecha %}
+                        <div class="col-md-4 mt-3">
+                            <div class="card bg-light">
+                                <div class="card-body p-3">
+                                    <h6 class="card-title">Disposición 2</h6>
+                                    <p class="card-text mb-1"><strong>Fecha:</strong> {{ contrato.disposicion2_fecha|date:"d/m/Y" }}</p>
+                                    <p class="card-text mb-0"><strong>Importe:</strong> ${{ contrato.disposicion2_importe|floatformat:2 }}</p>
+                                </div>
+                            </div>
+                        </div>
+                        {% endif %}
+                        {% if contrato.disposicion3_fecha %}
+                        <div class="col-md-4 mt-3">
+                            <div class="card bg-light">
+                                <div class="card-body p-3">
+                                    <h6 class="card-title">Disposición 3</h6>
+                                    <p class="card-text mb-1"><strong>Fecha:</strong> {{ contrato.disposicion3_fecha|date:"d/m/Y" }}</p>
+                                    <p class="card-text mb-0"><strong>Importe:</strong> ${{ contrato.disposicion3_importe|floatformat:2 }}</p>
+                                </div>
+                            </div>
+                        </div>
+                        {% endif %}
+                    </div>
+
+                    <!-- Fechas de Pago -->
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <h5 class="text-primary border-bottom pb-2">
+                                <i class="fas fa-calendar-check me-2"></i>Fechas de Pago
+                            </h5>
+                        </div>
+                        <div class="col-md-3">
+                            <strong>Pago de Intereses 1:</strong><br>
+                            <span class="text-muted">{{ contrato.pagos_intereses_fecha1|date:"d/m/Y" }}</span>
+                        </div>
+                        <div class="col-md-3">
+                            <strong>Pago de Intereses 2:</strong><br>
+                            <span class="text-muted">{{ contrato.pagos_intereses_fecha2|date:"d/m/Y" }}</span>
+                        </div>
+                        <div class="col-md-3">
+                            <strong>Pago de Intereses 3:</strong><br>
+                            <span class="text-muted">{{ contrato.pagos_intereses_fecha3|date:"d/m/Y" }}</span>
+                        </div>
+                        <div class="col-md-3">
+                            <strong>Pago Principal:</strong><br>
+                            <span class="text-muted">{{ contrato.pago_principal_fecha|date:"d/m/Y" }}</span>
+                        </div>
+                    </div>
+
+                    <!-- Información Bancaria -->
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <h5 class="text-primary border-bottom pb-2">
+                                <i class="fas fa-university me-2"></i>Información Bancaria
+                            </h5>
+                        </div>
+                        <div class="col-md-6">
+                            <strong>Banco:</strong><br>
+                            <span class="text-muted">{{ contrato.banco_nombre }}</span>
+                        </div>
+                        <div class="col-md-6">
+                            <strong>Titular:</strong><br>
+                            <span class="text-muted">{{ contrato.banco_titular }}</span>
+                        </div>
+                        <div class="col-md-6 mt-3">
+                            <strong>Número de Cuenta:</strong><br>
+                            <span class="text-muted">{{ contrato.banco_cuenta_numero }}</span>
+                        </div>
+                        <div class="col-md-6 mt-3">
+                            <strong>CLABE:</strong><br>
+                            <span class="text-muted">{{ contrato.banco_clabe }}</span>
+                        </div>
+                    </div>
+
+                    <!-- Información del Aval -->
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <h5 class="text-primary border-bottom pb-2">
+                                <i class="fas fa-user-shield me-2"></i>Información del Aval
+                            </h5>
+                        </div>
+                        <div class="col-md-6">
+                            <strong>Nombre del Aval:</strong><br>
+                            <span class="text-muted">{{ contrato.aval_nombre }}</span>
+                        </div>
+                        <div class="col-md-12 mt-3">
+                            <strong>Domicilio del Aval:</strong><br>
+                            <span class="text-muted">{{ contrato.aval_domicilio }}</span>
+                        </div>
+                    </div>
+
+                    <!-- Información de Auditoría -->
+                    <div class="row">
+                        <div class="col-12">
+                            <h5 class="text-primary border-bottom pb-2">
+                                <i class="fas fa-clock me-2"></i>Información de Auditoría
+                            </h5>
+                        </div>
+                        <div class="col-md-4">
+                            <strong>Creado:</strong><br>
+                            <span class="text-muted">{{ contrato.creada_en|date:"d/m/Y H:i" }}</span>
+                        </div>
+                        <div class="col-md-4">
+                            <strong>Última Actualización:</strong><br>
+                            <span class="text-muted">{{ contrato.actualizada_en|date:"d/m/Y H:i" }}</span>
+                        </div>
+                        <div class="col-md-4">
+                            <strong>Usuario:</strong><br>
+                            <span class="text-muted">{{ contrato.usuario.username }}</span>
+                        </div>
+                    </div>
+
+                    <!-- Botones de Acción -->
+                    <div class="row mt-4">
+                        <div class="col-12">
+                            <div class="d-flex justify-content-between align-items-center mb-4">
+                                <a href="{% url 'documentos:lista_contrato_credito' %}" class="btn btn-secondary">
+                                    <i class="fas fa-arrow-left me-2"></i>Volver a Lista
+                                </a>
+                                <div class="btn-group">
+                                    <a href="{% url 'documentos:editar_contrato_credito' contrato.pk %}" class="btn btn-warning text-white">
+                                        <i class="fas fa-edit me-2"></i>Editar
+                                    </a>
+                                    <a href="{% url 'documentos:descargar_docx_contrato_credito' contrato.pk %}" class="btn btn-primary">
+                                        <i class="fas fa-file-word me-2"></i>DESCARGAR DOCX
+                                    </a>
+                                    <a href="{% url 'documentos:eliminar_contrato_credito' contrato.pk %}" class="btn btn-outline-danger">
+                                        <i class="fas fa-trash me-2"></i>Eliminar
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

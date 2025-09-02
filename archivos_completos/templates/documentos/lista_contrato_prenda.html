@@ -1,0 +1,169 @@
+{% extends 'base.html' %}
+
+{% block title %}Contratos de Prenda sobre Acciones - Asistente Legal{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h1>
+                    <i class="fas fa-handshake text-primary me-2"></i>
+                    Contratos de Prenda sobre Acciones
+                </h1>
+                <div>
+                    <a href="{% url 'dashboard' %}" class="btn btn-secondary me-2">
+                        <i class="fas fa-arrow-left me-2"></i>Dashboard
+                    </a>
+                    <a href="{% url 'documentos:crear_contrato_prenda' %}" class="btn btn-primary">
+                        <i class="fas fa-plus me-2"></i>Nuevo Contrato
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% if contratos %}
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="fas fa-list me-2"></i>
+                        Lista de Contratos ({{ contratos|length }} total{{ contratos|length|pluralize:"es" }})
+                    </h5>
+                </div>
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover mb-0">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Deudor Prendario</th>
+                                    <th>Acreedor Prendario</th>
+                                    <th>Fideicomiso</th>
+                                    <th>Acciones Pignoradas</th>
+                                    <th>Fecha Contrato</th>
+                                    <th>Estado</th>
+                                    <th class="text-center">Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for contrato in contratos %}
+                                <tr>
+                                    <td>
+                                        <div class="fw-bold">{{ contrato.deudor_nombre }}</div>
+                                        <small class="text-muted">{{ contrato.deudor_representante }}</small>
+                                    </td>
+                                    <td>
+                                        <div class="fw-bold">{{ contrato.acreedor_nombre }}</div>
+                                        <small class="text-muted">{{ contrato.delegado_fiduciario }}</small>
+                                    </td>
+                                    <td>
+                                        <div class="fw-bold">No. {{ contrato.numero_fideicomiso }}</div>
+                                        <small class="text-muted">{{ contrato.fecha_fideicomiso|date:"d/m/Y" }}</small>
+                                    </td>
+                                    <td>
+                                        <div class="fw-bold text-success">{{ contrato.acciones_pledged_cantidad|floatformat:0 }}</div>
+                                        <small class="text-muted">acciones</small>
+                                    </td>
+                                    <td>{{ contrato.fecha_contrato|date:"d/m/Y" }}</td>
+                                    <td>
+                                        <span class="badge {{ contrato.get_estado_badge_class }}">
+                                            {{ contrato.get_estado_display }}
+                                        </span>
+                                    </td>
+                                    <td class="text-center">
+                                        <div class="btn-group" role="group">
+                                            <a href="{% url 'documentos:detalle_contrato_prenda' contrato.pk %}" 
+                                               class="btn btn-sm btn-outline-primary" 
+                                               title="Ver detalles">
+                                                <i class="fas fa-eye"></i>
+                                            </a>
+                                            <a href="{% url 'documentos:editar_contrato_prenda' contrato.pk %}" 
+                                               class="btn btn-sm btn-outline-warning" 
+                                               title="Editar">
+                                                <i class="fas fa-edit"></i>
+                                            </a>
+                                            <a href="{% url 'documentos:eliminar_contrato_prenda' contrato.pk %}" 
+                                               class="btn btn-sm btn-outline-danger" 
+                                               title="Eliminar">
+                                                <i class="fas fa-trash"></i>
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Paginación -->
+    {% if is_paginated %}
+    <div class="row mt-4">
+        <div class="col-12">
+            <nav aria-label="Paginación de contratos">
+                <ul class="pagination justify-content-center">
+                    {% if page_obj.has_previous %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page=1">
+                                <i class="fas fa-angle-double-left"></i>
+                            </a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ page_obj.previous_page_number }}">
+                                <i class="fas fa-angle-left"></i>
+                            </a>
+                        </li>
+                    {% endif %}
+
+                    <li class="page-item active">
+                        <span class="page-link">
+                            Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}
+                        </span>
+                    </li>
+
+                    {% if page_obj.has_next %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ page_obj.next_page_number }}">
+                                <i class="fas fa-angle-right"></i>
+                            </a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">
+                                <i class="fas fa-angle-double-right"></i>
+                            </a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </nav>
+        </div>
+    </div>
+    {% endif %}
+
+    {% else %}
+    <!-- Estado vacío -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body text-center py-5">
+                    <div class="mb-4">
+                        <i class="fas fa-handshake fa-4x text-muted"></i>
+                    </div>
+                    <h4 class="text-muted mb-3">No hay contratos de prenda registrados</h4>
+                    <p class="text-muted mb-4">
+                        Comienza creando tu primer contrato de prenda sobre acciones para gestionar garantías y fideicomisos.
+                    </p>
+                    <a href="{% url 'documentos:crear_contrato_prenda' %}" class="btn btn-primary btn-lg">
+                        <i class="fas fa-plus me-2"></i>Crear Primer Contrato
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,161 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ documento.razon_social }} - Buffet de Abogados Olea{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1>
+                <i class="fas fa-file-alt text-primary me-2"></i>
+                {{ documento.razon_social }}
+            </h1>
+            <div class="btn-group">
+                <a href="{% url 'documentos:editar' documento.pk %}" class="btn btn-warning text-white">
+                    <i class="fas fa-edit me-2"></i>Editar
+                </a>
+                <a href="{% url 'documentos:descargar_pdf_asamblea' documento.pk %}" class="btn btn-danger">
+                    <i class="fas fa-file-pdf me-2"></i>Descargar PDF
+                </a>
+                <a href="{% url 'documentos:descargar_docx_asamblea' documento.pk %}" class="btn btn-primary">
+                    <i class="fas fa-file-word me-2"></i>Descargar DOCX
+                </a>
+                <a href="{% url 'documentos:eliminar' documento.pk %}" class="btn btn-outline-danger">
+                    <i class="fas fa-trash me-2"></i>Eliminar
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-8">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="fas fa-info-circle me-2"></i>
+                    Información del Documento
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <strong>Tipo de Asamblea:</strong>
+                        <span class="badge bg-secondary ms-2">{{ documento.get_tipo_asamblea_display }}</span>
+                    </div>
+                    <div class="col-md-6">
+                        <strong>Fecha de Asamblea:</strong>
+                        {{ documento.fecha|date:"d/m/Y" }}
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <strong>Hora de Inicio:</strong>
+                        {{ documento.hora_inicio|time:"H:i" }}
+                    </div>
+                    <div class="col-md-6">
+                        <strong>Hora de Finalización:</strong>
+                        {{ documento.hora_finalizacion|time:"H:i" }}
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <strong>Domicilio Social:</strong>
+                    <p class="mt-1">{{ documento.domicilio }}</p>
+                </div>
+
+                <h6 class="text-primary mb-3">Personas Clave</h6>
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <strong>Presidente:</strong> {{ documento.presidente }}
+                    </div>
+                    <div class="col-md-6">
+                        <strong>Secretario:</strong> {{ documento.secretario }}
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <strong>Escrutador:</strong> {{ documento.escrutador }}
+                    </div>
+                    <div class="col-md-6">
+                        <strong>Comisario:</strong> {{ documento.comisario }}
+                    </div>
+                </div>
+
+                <h6 class="text-primary mb-3">Información Financiera</h6>
+                <div class="row mb-3">
+                    <div class="col-md-4">
+                        <strong>Período Financiero:</strong><br>
+                        {{ documento.periodo_financiero }}
+                    </div>
+                    <div class="col-md-4">
+                        <strong>Cierre del Ejercicio:</strong><br>
+                        {{ documento.cierre_ejercicio }}
+                    </div>
+                    <div class="col-md-4">
+                        <strong>Honorarios Aprobados:</strong><br>
+                        {{ documento.honorarios_aprobados }}
+                    </div>
+                </div>
+
+                {% if documento.delegados_designados %}
+                    <div class="mb-3">
+                        <strong>Delegados Designados:</strong>
+                        <p class="mt-1">{{ documento.delegados_designados }}</p>
+                    </div>
+                {% endif %}
+
+                {% if documento.tiene_anexos %}
+                    <div class="mb-3">
+                        <strong>Anexos:</strong>
+                        <span class="badge bg-success ms-2">Sí</span>
+                        {% if documento.descripcion_anexos %}
+                            <p class="mt-1">{{ documento.descripcion_anexos }}</p>
+                        {% endif %}
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-4">
+        <div class="card">
+            <div class="card-header">
+                <h6 class="mb-0">
+                    <i class="fas fa-clock me-2"></i>
+                    Información de Seguimiento
+                </h6>
+            </div>
+            <div class="card-body">
+                <p><strong>Creado:</strong><br>{{ documento.creada_en|date:"d/m/Y H:i" }}</p>
+                <p><strong>Última Modificación:</strong><br>{{ documento.actualizada_en|date:"d/m/Y H:i" }}</p>
+                <p><strong>Usuario:</strong><br>{{ documento.usuario.get_full_name|default:documento.usuario.username }}</p>
+            </div>
+        </div>
+
+        <div class="card mt-3">
+            <div class="card-header">
+                <h6 class="mb-0">
+                    <i class="fas fa-tools me-2"></i>
+                    Acciones
+                </h6>
+            </div>
+            <div class="card-body">
+                <div class="d-grid gap-2">
+                    <a href="{% url 'documentos:editar' documento.pk %}" class="btn btn-warning">
+                        <i class="fas fa-edit me-2"></i>Editar Documento
+                    </a>
+                    <button class="btn btn-info" onclick="window.print()">
+                        <i class="fas fa-print me-2"></i>Imprimir
+                    </button>
+                    <a href="{% url 'documentos:lista' %}" class="btn btn-secondary">
+                        <i class="fas fa-arrow-left me-2"></i>Volver a Lista
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
