@@ -41,6 +41,13 @@ try:
 except ImportError:
     DOCX_AVAILABLE = False
 
+# DOCX to PDF conversion
+try:
+    from docx2pdf import convert
+    DOCX2PDF_AVAILABLE = True
+except ImportError:
+    DOCX2PDF_AVAILABLE = False
+
 # DOC imports (for older .doc files)
 try:
     import docx2txt
@@ -461,11 +468,17 @@ def generar_pdf_pagare(pagare):
 
 @login_required
 def descargar_pdf_pagare(request, pk):
-    """Vista para descargar PDF de Pagaré"""
+    """Vista para descargar PDF de Pagaré - Convierte DOCX a PDF"""
     pagare = get_object_or_404(Pagare, pk=pk, usuario=request.user)
     try:
-        pdf = generar_pdf_pagare(pagare)
-        response = HttpResponse(pdf, content_type='application/pdf')
+        # Generar DOCX primero usando la función existente
+        temp_response = descargar_docx_pagare(request, pk)
+        docx_content = temp_response.content
+        
+        # Convertir DOCX a PDF manteniendo formato
+        pdf_content = convertir_docx_a_pdf(docx_content)
+        
+        response = HttpResponse(pdf_content, content_type='application/pdf')
         filename = f'pagare_{pagare.pk}_{pagare.fecha_emision.strftime("%Y%m%d")}.pdf'
         response['Content-Disposition'] = f'attachment; filename="{filename}"'
         return response
@@ -834,16 +847,111 @@ def generar_docx_acta_consejo(acta):
 
 @login_required
 def descargar_pdf_consejo(request, pk):
+    """Vista para descargar PDF de Acta de Sesión de Consejo - Convierte DOCX a PDF"""
     acta = get_object_or_404(ActaSesionConsejo, pk=pk, usuario=request.user)
     try:
-        pdf = generar_pdf_acta_consejo(acta)
-        response = HttpResponse(pdf, content_type='application/pdf')
+        # Generar DOCX primero
+        docx_content = generar_docx_acta_consejo(acta)
+        
+        # Convertir DOCX a PDF manteniendo formato
+        pdf_content = convertir_docx_a_pdf(docx_content)
+        
+        response = HttpResponse(pdf_content, content_type='application/pdf')
         filename = f'acta_consejo_{acta.pk}_{acta.fecha.strftime("%Y%m%d")}.pdf'
         response['Content-Disposition'] = f'attachment; filename="{filename}"'
         return response
     except Exception as e:
         messages.error(request, f'Error al generar PDF: {e}')
         return redirect('documentos:detalle_consejo', pk=pk)
+
+
+@login_required
+def descargar_pdf_contrato_credito(request, pk):
+    """Vista para descargar PDF de Contrato de Crédito - Convierte DOCX a PDF"""
+    contrato = get_object_or_404(ContratoCredito, pk=pk, usuario=request.user)
+    try:
+        # Generar DOCX primero
+        from .docx_contrato_credito_generator import descargar_docx_contrato_credito
+        from django.http import HttpResponse
+        from io import BytesIO
+        
+        # Crear una respuesta temporal para obtener el contenido DOCX
+        temp_response = descargar_docx_contrato_credito(request, pk)
+        docx_content = temp_response.content
+        
+        # Convertir DOCX a PDF manteniendo formato
+        pdf_content = convertir_docx_a_pdf(docx_content)
+        
+        response = HttpResponse(pdf_content, content_type='application/pdf')
+        filename = f'contrato_credito_{contrato.pk}_{contrato.fecha_contrato.strftime("%Y%m%d")}.pdf'
+        response['Content-Disposition'] = f'attachment; filename="{filename}"'
+        return response
+    except Exception as e:
+        messages.error(request, f'Error al generar PDF: {e}')
+        return redirect('documentos:detalle_contrato_credito', pk=pk)
+
+
+@login_required
+def descargar_pdf_prenda(request, pk):
+    """Vista para descargar PDF de Contrato de Prenda - Convierte DOCX a PDF"""
+    contrato = get_object_or_404(ContratoPrendaAcciones, pk=pk, usuario=request.user)
+    try:
+        # Generar DOCX primero usando la función existente
+        temp_response = descargar_docx_prenda(request, pk)
+        docx_content = temp_response.content
+        
+        # Convertir DOCX a PDF manteniendo formato
+        pdf_content = convertir_docx_a_pdf(docx_content)
+        
+        response = HttpResponse(pdf_content, content_type='application/pdf')
+        filename = f'contrato_prenda_{contrato.pk}_{contrato.fecha_contrato.strftime("%Y%m%d")}.pdf'
+        response['Content-Disposition'] = f'attachment; filename="{filename}"'
+        return response
+    except Exception as e:
+        messages.error(request, f'Error al generar PDF: {e}')
+        return redirect('documentos:detalle_contrato_prenda', pk=pk)
+
+
+@login_required
+def descargar_pdf_convenio_modificatorio(request, pk):
+    """Vista para descargar PDF de Convenio Modificatorio - Convierte DOCX a PDF"""
+    convenio = get_object_or_404(ConvenioModificatorio, pk=pk, usuario=request.user)
+    try:
+        # Generar DOCX primero usando la función existente
+        temp_response = descargar_docx_convenio_modificatorio(request, pk)
+        docx_content = temp_response.content
+        
+        # Convertir DOCX a PDF manteniendo formato
+        pdf_content = convertir_docx_a_pdf(docx_content)
+        
+        response = HttpResponse(pdf_content, content_type='application/pdf')
+        filename = f'convenio_modificatorio_{convenio.pk}_{convenio.fecha_convenio.strftime("%Y%m%d")}.pdf'
+        response['Content-Disposition'] = f'attachment; filename="{filename}"'
+        return response
+    except Exception as e:
+        messages.error(request, f'Error al generar PDF: {e}')
+        return redirect('documentos:detalle_convenio_modificatorio', pk=pk)
+
+
+@login_required
+def descargar_pdf_estatutos_sociedad(request, pk):
+    """Vista para descargar PDF de Estatutos Sociales - Convierte DOCX a PDF"""
+    estatutos = get_object_or_404(EstatutosSociedad, pk=pk, usuario=request.user)
+    try:
+        # Generar DOCX primero usando la función existente
+        temp_response = descargar_docx_estatutos_sociedad(request, pk)
+        docx_content = temp_response.content
+        
+        # Convertir DOCX a PDF manteniendo formato
+        pdf_content = convertir_docx_a_pdf(docx_content)
+        
+        response = HttpResponse(pdf_content, content_type='application/pdf')
+        filename = f'estatutos_sociedad_{estatutos.pk}_{estatutos.fecha_creacion.strftime("%Y%m%d")}.pdf'
+        response['Content-Disposition'] = f'attachment; filename="{filename}"'
+        return response
+    except Exception as e:
+        messages.error(request, f'Error al generar PDF: {e}')
+        return redirect('documentos:detalle_estatutos_sociedad', pk=pk)
 
 
 @login_required
@@ -1228,12 +1336,107 @@ def generar_pdf_acta_asamblea(acta):
     doc.build(story)
     buffer.seek(0)
     return buffer.getvalue()
+
+
+def convertir_docx_a_pdf(docx_content):
+    """Convierte contenido DOCX a PDF usando reportlab como fallback"""
+    import tempfile
+    import os
+    
+    # Intentar primero con docx2pdf si está disponible
+    if DOCX2PDF_AVAILABLE:
+        try:
+            # Crear archivos temporales
+            with tempfile.NamedTemporaryFile(suffix='.docx', delete=False) as docx_temp:
+                docx_temp.write(docx_content)
+                docx_path = docx_temp.name
+            
+            pdf_path = docx_path.replace('.docx', '.pdf')
+            
+            # Convertir DOCX a PDF
+            convert(docx_path, pdf_path)
+            
+            # Leer contenido del PDF
+            with open(pdf_path, 'rb') as pdf_file:
+                pdf_content = pdf_file.read()
+            
+            # Limpiar archivos temporales
+            os.unlink(docx_path)
+            os.unlink(pdf_path)
+            
+            return pdf_content
+            
+        except Exception as e:
+            print(f"DEBUG: Error con docx2pdf: {e}")
+            # Continuar con método alternativo
+            try:
+                if 'docx_path' in locals():
+                    os.unlink(docx_path)
+                if 'pdf_path' in locals() and os.path.exists(pdf_path):
+                    os.unlink(pdf_path)
+            except:
+                pass
+    
+    # Método alternativo: extraer texto del DOCX y generar PDF simple
+    try:
+        from docx import Document
+        from io import BytesIO
+        
+        # Cargar DOCX desde bytes
+        docx_stream = BytesIO(docx_content)
+        doc = Document(docx_stream)
+        
+        # Extraer todo el texto
+        full_text = []
+        for paragraph in doc.paragraphs:
+            if paragraph.text.strip():
+                full_text.append(paragraph.text)
+        
+        # Extraer texto de tablas
+        for table in doc.tables:
+            for row in table.rows:
+                row_text = []
+                for cell in row.cells:
+                    cell_text = ' '.join([p.text for p in cell.paragraphs if p.text.strip()])
+                    row_text.append(cell_text)
+                if any(row_text):
+                    full_text.append(' | '.join(row_text))
+        
+        # Generar PDF simple con reportlab
+        from reportlab.lib.pagesizes import letter
+        from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer
+        from reportlab.lib.styles import getSampleStyleSheet
+        from io import BytesIO
+        
+        buffer = BytesIO()
+        doc_pdf = SimpleDocTemplate(buffer, pagesize=letter)
+        styles = getSampleStyleSheet()
+        story = []
+        
+        for text in full_text:
+            if text.strip():
+                story.append(Paragraph(text, styles['Normal']))
+                story.append(Spacer(1, 12))
+        
+        doc_pdf.build(story)
+        buffer.seek(0)
+        return buffer.getvalue()
+        
+    except Exception as e:
+        raise ImportError(f"No se pudo convertir DOCX a PDF. Error: {e}")
+
+
 def descargar_pdf_asamblea(request, pk):
-    """Vista para descargar PDF de Acta de Asamblea"""
+    """Vista para descargar PDF de Acta de Asamblea - Convierte DOCX a PDF"""
     acta = get_object_or_404(ActaAsamblea, pk=pk, usuario=request.user)
     try:
-        pdf = generar_pdf_acta_asamblea(acta)
-        response = HttpResponse(pdf, content_type='application/pdf')
+        # Generar DOCX primero
+        docx_content = generar_docx_acta_asamblea(acta)
+        
+        # Convertir DOCX a PDF manteniendo formato
+        pdf_content = convertir_docx_a_pdf(docx_content)
+        
+        response = HttpResponse(pdf_content, content_type='application/pdf')
         filename = f'acta_asamblea_{acta.pk}_{acta.fecha.strftime("%Y%m%d") if acta.fecha else "sin_fecha"}.pdf'
         response['Content-Disposition'] = f'attachment; filename="{filename}"'
         messages.success(request, f'PDF generado: {filename}')

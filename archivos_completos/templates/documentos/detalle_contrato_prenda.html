@@ -18,6 +18,9 @@
                     <a href="{% url 'documentos:editar_contrato_prenda' contrato.pk %}" class="btn btn-warning text-white">
                         <i class="fas fa-edit me-2"></i>Editar
                     </a>
+                    <a href="{% url 'documentos:descargar_pdf_prenda' contrato.pk %}" class="btn btn-danger">
+                        <i class="fas fa-file-pdf me-2"></i>Descargar PDF
+                    </a>
                     <a href="{% url 'documentos:descargar_docx_prenda' contrato.pk %}" class="btn btn-primary">
                         <i class="fas fa-file-word me-2"></i>DOCX
                     </a>

@@ -42,6 +42,7 @@ urlpatterns = [
     path('contratos-credito/<int:pk>/', views.ContratoCreditoDetailView.as_view(), name='detalle_contrato_credito'),
     path('contratos-credito/<int:pk>/editar/', views.ContratoCreditoUpdateView.as_view(), name='editar_contrato_credito'),
     path('contratos-credito/<int:pk>/eliminar/', views.ContratoCreditoDeleteView.as_view(), name='eliminar_contrato_credito'),
+    path('contratos-credito/<int:pk>/pdf/', views.descargar_pdf_contrato_credito, name='descargar_pdf_contrato_credito'),
     path('contratos-credito/<int:pk>/docx/', views.descargar_docx_contrato_credito, name='descargar_docx_contrato_credito'),
     
     # Contrato de Prenda de Acciones URLs
@@ -50,6 +51,7 @@ urlpatterns = [
     path('contratos-prenda/<int:pk>/', views.ContratoPrendaAccionesDetailView.as_view(), name='detalle_contrato_prenda'),
     path('contratos-prenda/<int:pk>/editar/', views.ContratoPrendaAccionesUpdateView.as_view(), name='editar_contrato_prenda'),
     path('contratos-prenda/<int:pk>/eliminar/', views.ContratoPrendaAccionesDeleteView.as_view(), name='eliminar_contrato_prenda'),
+    path('contratos-prenda/<int:pk>/pdf/', views.descargar_pdf_prenda, name='descargar_pdf_prenda'),
     path('contratos-prenda/<int:pk>/docx/', views.descargar_docx_prenda, name='descargar_docx_prenda'),
     
     # Convenio Modificatorio URLs
@@ -58,6 +60,7 @@ urlpatterns = [
     path('convenios-modificatorios/<int:pk>/', views.ConvenioModificatorioDetailView.as_view(), name='detalle_convenio_modificatorio'),
     path('convenios-modificatorios/<int:pk>/editar/', views.ConvenioModificatorioUpdateView.as_view(), name='editar_convenio_modificatorio'),
     path('convenios-modificatorios/<int:pk>/eliminar/', views.ConvenioModificatorioDeleteView.as_view(), name='eliminar_convenio_modificatorio'),
+    path('convenios-modificatorios/<int:pk>/pdf/', views.descargar_pdf_convenio_modificatorio, name='descargar_pdf_convenio_modificatorio'),
     path('convenios-modificatorios/<int:pk>/docx/', views.descargar_docx_convenio_modificatorio, name='descargar_docx_convenio_modificatorio'),
     
     # Pagarés URLs
@@ -73,5 +76,6 @@ urlpatterns = [
     path('estatutos-sociales/<int:pk>/', views.EstatutosSociedadDetailView.as_view(), name='detalle_estatutos_sociedad'),
     path('estatutos-sociales/<int:pk>/editar/', views.EstatutosSociedadUpdateView.as_view(), name='editar_estatutos_sociedad'),
     path('estatutos-sociales/<int:pk>/eliminar/', views.EstatutosSociedadDeleteView.as_view(), name='eliminar_estatutos_sociedad'),
+    path('estatutos-sociales/<int:pk>/pdf/', views.descargar_pdf_estatutos_sociedad, name='descargar_pdf_estatutos_sociedad'),
     path('estatutos-sociales/<int:pk>/docx/', views.descargar_docx_estatutos_sociedad, name='descargar_docx_estatutos_sociedad'),
 ]

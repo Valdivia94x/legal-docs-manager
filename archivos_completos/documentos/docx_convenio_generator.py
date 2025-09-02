@@ -51,11 +51,13 @@ def descargar_docx_convenio_modificatorio(request, pk):
         replacements = {
             # Datos Generales
             '{{fecha_convenio}}': formatear_fecha(convenio.fecha_convenio),
+            '{{FECHA_CONVENIO}}': formatear_fecha(convenio.fecha_convenio).upper(),
             '{{lugar_convenio}}': convenio.lugar_convenio or '',
             
             # Inversionista (F101)
             '{{inversionista_razon_social}}': convenio.inversionista_razon_social or '',
             '{{INVERSIONISTA_RAZON_SOCIAL}}': convenio.inversionista_razon_social.upper() or '',
+            '{{ABREVIATURA INVERSIONISTA}}': (convenio.inversionista_razon_social[:3].upper() if convenio.inversionista_razon_social else ''),
             '{{inversionista_representante}}': convenio.inversionista_representante or '',
             '{{INVERSIONISTA_REPRESENTANTE}}': convenio.inversionista_representante.upper() or '',
             '{{inversionista_constitucion_escritura}}': convenio.inversionista_constitucion_escritura or '',

@@ -12,8 +12,11 @@
                     <a href="{% url 'documentos:lista_estatutos_sociedad' %}" class="btn btn-outline-secondary me-2">
                         <i class="fas fa-list"></i> Lista
                     </a>
-                    <a href="{% url 'documentos:editar_estatutos_sociedad' estatutos.pk %}" class="btn btn-warning">
+                    <a href="{% url 'documentos:editar_estatutos_sociedad' estatutos.pk %}" class="btn btn-warning text-white">
                         <i class="fas fa-edit"></i> Editar
+                    </a>
+                    <a href="{% url 'documentos:descargar_pdf_estatutos_sociedad' estatutos.pk %}" class="btn btn-danger">
+                        <i class="fas fa-file-pdf me-2"></i>Descargar PDF
                     </a>
                     <a href="{% url 'documentos:descargar_docx_estatutos_sociedad' estatutos.pk %}" class="btn btn-primary">
                         <i class="fas fa-download"></i> Descargar DOCX

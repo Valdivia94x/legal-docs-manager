@@ -38,6 +38,7 @@ def descargar_docx_estatutos_sociedad(request, pk):
         replacements = {
             '{{denominacion}}': estatutos.denominacion or '',
             '{{DENOMINACION}}': estatutos.denominacion.upper() or '',
+            #'{{DENOMINACION_BOLD}}': f"<b>{estatutos.denominacion.upper()}</b>" if estatutos.denominacion.upper() else '',
             '{{forma_legal}}': estatutos.forma_legal or '',
             '{{domicilio}}': estatutos.domicilio or '',
             '{{nacionalidad}}': estatutos.nacionalidad or '',

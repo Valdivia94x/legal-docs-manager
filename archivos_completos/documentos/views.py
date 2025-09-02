@@ -30,7 +30,7 @@ from .models import ActaAsamblea, ActaSesionConsejo, Pagare, ContratoCredito, Co
 from .estatutos_sociedad import EstatutosSociedad
 from .forms import ActaAsambleaForm, ActaSesionConsejoForm, RegistroForm, PagareForm, ContratoCreditoForm, ContratoPrendaAccionesForm, ConvenioModificatorioForm
 from .forms_estatutos_fixed import EstatutosSociedadForm
-from .pdf_generator import descargar_pdf_consejo, descargar_pdf_asamblea, descargar_pdf_pagare, descargar_docx_consejo, descargar_docx_pagare, descargar_docx_acta_asamblea, descargar_docx_prenda
+from .pdf_generator import descargar_pdf_consejo, descargar_pdf_asamblea, descargar_pdf_pagare, descargar_docx_consejo, descargar_docx_pagare, descargar_docx_acta_asamblea, descargar_docx_prenda, descargar_pdf_contrato_credito, descargar_pdf_prenda, descargar_pdf_convenio_modificatorio, descargar_pdf_estatutos_sociedad
 from .docx_estatutos_generator import descargar_docx_estatutos_sociedad
 from .docx_convenio_generator import descargar_docx_convenio_modificatorio
 from .docx_contrato_credito_generator import descargar_docx_contrato_credito
